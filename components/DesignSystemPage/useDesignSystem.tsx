@@ -8,7 +8,12 @@ import {exampleValidationSchema} from "@/validations/ExampleValidation";
 
 const useDesignSystem = () => {
   const form = useForm({
-    resolver: zodResolver(exampleValidationSchema)
+    resolver: zodResolver(exampleValidationSchema),
+    defaultValues: {
+      name: '',
+      gender: 0,
+      status: []
+    }
   })
 
   const [isLoading, setIsLoading] = useState(false)

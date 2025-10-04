@@ -205,7 +205,7 @@ const SelectionInput = (props: { value: any, options: OptionType[] | [] | undefi
       ) : (
         value ? <>{options?.find(opt => String(opt.value) === String(value))?.label}</> : <>{ placeholder }</>
       )}
-      { (multiple ? !!value?.length : value) && (
+      { (multiple ? !!value?.length : !!value) && (
         <div onClick={handleClear}>
           <X />
         </div>
