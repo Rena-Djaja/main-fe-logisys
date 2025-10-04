@@ -3,9 +3,13 @@
 import React, {useState} from 'react';
 import {useForm} from "react-hook-form";
 import {OptionType} from "@/type/FormInputs";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {exampleValidationSchema} from "@/validations/ExampleValidation";
 
 const useDesignSystem = () => {
-  const form = useForm()
+  const form = useForm({
+    resolver: zodResolver(exampleValidationSchema)
+  })
 
   const [isLoading, setIsLoading] = useState(false)
 
@@ -63,11 +67,16 @@ const useDesignSystem = () => {
     },
   ]
 
+  const onSubmit = async () => {
+    setIsLoading(true)
+  }
+
   return {
     form,
     genders,
     statuses,
     isLoading,
+    onSubmit,
   }
 };
 

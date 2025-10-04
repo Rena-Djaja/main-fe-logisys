@@ -9,12 +9,12 @@ import CustomButton from "@/components/shared/FormInputs/CustomButton";
 import {ButtonVariant} from "@/type/FormInputs";
 
 const DesignSystemPage = () => {
-  const { form, genders, statuses, isLoading } = useDesignSystem()
+  const { form, genders, statuses, isLoading, onSubmit } = useDesignSystem()
   return (
-    <div className='w-full justify-center px-[10rem] py-20'>
+    <div className='w-full justify-center px-6 lg:px-[10rem] py-20'>
       <div className='w-full max-w-2xl'>
         <Form { ...form }>
-          <div className='w-full grid lg:grid-cols-2 gap-8'>
+          <form onSubmit={form.handleSubmit(onSubmit)} className='w-full grid lg:grid-cols-2 gap-8'>
             <div className='w-full'>
               <CustomInput
                 name={'name'}
@@ -53,7 +53,7 @@ const DesignSystemPage = () => {
                 isLoading={isLoading}
               />
             </div>
-          </div>
+          </form>
         </Form>
       </div>
     </div>

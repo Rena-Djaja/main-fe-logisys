@@ -45,6 +45,11 @@ export enum IconPlacementType {
     RIGHT = 'RIGHT',
 }
 
+export enum ButtonType {
+    SUBMIT = 'submit',
+    BUTTON = 'button',
+}
+
 export enum ButtonSize {
     SMALL = 'sm',
     LARGE = 'lg',

@@ -23,7 +23,7 @@ import {
   PopoverTrigger,
 } from "@/components/shared/ui/popover"
 import {FC, useEffect, useState} from "react";
-import {CustomSelectProps, OptionType} from "@/type/FormInputs";
+import {ButtonType, CustomSelectProps, OptionType} from "@/type/FormInputs";
 import {Check, X} from "lucide-react";
 import {cn} from "@/lib/utils";
 import {ScrollArea} from "@/components/shared/ui/scroll-area";
@@ -148,7 +148,7 @@ const CustomSelect: FC<CustomSelectProps> = (props) => {
                   <DrawerTitle></DrawerTitle>
                 </div>
                 <DrawerContent>
-                  <div className="mt-4 border-t">
+                  <div className="mt-4 border-t min-h-[20dvh]">
                     <OptionList
                       options={options}
                       handleSelect={handleSelect}
@@ -175,7 +175,7 @@ const SelectionInput = (props: { value: any, options: OptionType[] | [] | undefi
   const { value, options, placeholder, handleSelect, handleClear, multiple } = props
 
   return (
-    <Button variant="outline" className="w-full flex justify-between items-center font-normal h-full">
+    <Button type={ButtonType.BUTTON} variant="outline" className="w-full flex justify-between items-center font-normal h-full">
       {multiple ? options?.length && (
         <div className='w-full flex flex-wrap gap-1'>
           {
