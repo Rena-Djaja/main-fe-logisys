@@ -1,9 +1,9 @@
-"use client"
+'use client'
 
-import * as React from "react"
+import * as React from 'react'
 
-import { useMediaQuery } from "@/hooks/use-media-query"
-import { Button } from "@/components/shared/ui/button"
+import { useMediaQuery } from '@/hooks/use-media-query'
+import { Button } from '@/components/shared/ui/button'
 import {
   Command,
   CommandEmpty,
@@ -11,35 +11,44 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "@/components/shared/ui/command"
+} from '@/components/shared/ui/command'
 import {
   Drawer,
-  DrawerContent, DrawerTitle,
+  DrawerContent,
+  DrawerTitle,
   DrawerTrigger,
-} from "@/components/shared/ui/drawer"
+} from '@/components/shared/ui/drawer'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/shared/ui/popover"
-import {FC, useEffect, useState} from "react";
-import {ButtonType, CustomSelectProps, OptionType} from "@/type/FormInputs";
-import {Check, X} from "lucide-react";
-import {cn} from "@/lib/utils";
-import {ScrollArea} from "@/components/shared/ui/scroll-area";
-import {FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from "@/components/shared/ui/form";
+} from '@/components/shared/ui/popover'
+import { FC, useEffect, useState } from 'react'
+import { ButtonType, CustomSelectProps, OptionType } from '@/type/FormInputs'
+import { Check, X } from 'lucide-react'
+import { cn } from '@/lib/utils'
+import { ScrollArea } from '@/components/shared/ui/scroll-area'
+import {
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/shared/ui/form'
 
 const CustomSelect: FC<CustomSelectProps> = (props) => {
-  const { label, placeholder, options, multiple, control, name, helperText } = props
+  const { label, placeholder, options, multiple, control, name, helperText } =
+    props
   const [isMounted, setIsMounted] = useState(false)
   const [open, setOpen] = React.useState(false)
-  const isDesktop = useMediaQuery("(min-width: 768px)")
+  const isDesktop = useMediaQuery('(min-width: 768px)')
 
   useEffect(() => {
     setIsMounted(true)
-  }, []);
+  }, [])
 
-  if(!isMounted) {
+  if (!isMounted) {
     return null
   }
 
@@ -68,7 +77,7 @@ const CustomSelect: FC<CustomSelectProps> = (props) => {
 
           return (
             <FormItem>
-              {!!label && <FormLabel>{ label }</FormLabel>}
+              {!!label && <FormLabel>{label}</FormLabel>}
               <FormControl>
                 <Popover open={open} onOpenChange={setOpen}>
                   <PopoverTrigger asChild>
@@ -92,11 +101,11 @@ const CustomSelect: FC<CustomSelectProps> = (props) => {
                   </PopoverContent>
                 </Popover>
               </FormControl>
-              { helperText && (
-                <FormDescription className='text-[0.8rem]'>
-                  { helperText }
+              {helperText && (
+                <FormDescription className="text-[0.8rem]">
+                  {helperText}
                 </FormDescription>
-              ) }
+              )}
               <FormMessage />
             </FormItem>
           )
@@ -144,7 +153,7 @@ const CustomSelect: FC<CustomSelectProps> = (props) => {
                     />
                   </div>
                 </DrawerTrigger>
-                <div className='hidden'>
+                <div className="hidden">
                   <DrawerTitle></DrawerTitle>
                 </div>
                 <DrawerContent>
@@ -158,11 +167,11 @@ const CustomSelect: FC<CustomSelectProps> = (props) => {
                 </DrawerContent>
               </Drawer>
             </FormControl>
-            { helperText && (
-              <FormDescription className='text-[0.8rem]'>
-                { helperText }
+            {helperText && (
+              <FormDescription className="text-[0.8rem]">
+                {helperText}
               </FormDescription>
-            ) }
+            )}
             <FormMessage />
           </FormItem>
         )
@@ -171,83 +180,112 @@ const CustomSelect: FC<CustomSelectProps> = (props) => {
   )
 }
 
-const SelectionInput = (props: { value: any, options: OptionType[] | [] | undefined, placeholder: string, handleSelect: (value: string | number) => void, multiple: boolean, handleClear: () => void }) => {
-  const { value, options, placeholder, handleSelect, handleClear, multiple } = props
+const SelectionInput = (props: {
+  value: any
+  options: OptionType[] | [] | undefined
+  placeholder: string
+  handleSelect: (value: string | number) => void
+  multiple: boolean
+  handleClear: () => void
+}) => {
+  const { value, options, placeholder, handleSelect, handleClear, multiple } =
+    props
 
   return (
-    <Button type={ButtonType.BUTTON} variant="outline" className="w-full flex justify-between items-center font-normal h-full">
-      {multiple ? options?.length && (
-        <div className='w-full flex flex-wrap gap-1'>
-          {
-            !!options.filter(option => Array.isArray(value) && value.includes(option.value)).length ? options.filter(
-              (option) => Array.isArray(value) && value.includes(option.value))
-              .map((option) => (
-                <span
-                  key={option.value}
-                  className="inline-flex items-center gap-1 rounded-md border py-0.5 pl-2 pr-1 text-xs font-medium text-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
-                >
-                  <span>{option.label}</span>
+    <Button
+      type={ButtonType.BUTTON}
+      variant="outline"
+      className="w-full flex justify-between items-center font-normal h-full"
+    >
+      {multiple ? (
+        options?.length && (
+          <div className="w-full flex flex-wrap gap-1">
+            {!!options.filter(
+              (option) => Array.isArray(value) && value.includes(option.value)
+            ).length ? (
+              options
+                .filter(
+                  (option) =>
+                    Array.isArray(value) && value.includes(option.value)
+                )
+                .map((option) => (
                   <span
-                    onClick={(e) => {
-                      e.preventDefault()
-                      handleSelect(option.value)
-                    }}
-                    className="flex items-center rounded-sm px-[1px] text-muted-foreground/60 hover:bg-accent hover:text-muted-foreground"
+                    key={option.value}
+                    className="inline-flex items-center gap-1 rounded-md border py-0.5 pl-2 pr-1 text-xs font-medium text-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
                   >
-                    <X />
+                    <span>{option.label}</span>
+                    <span
+                      onClick={(e) => {
+                        e.preventDefault()
+                        handleSelect(option.value)
+                      }}
+                      className="flex items-center rounded-sm px-[1px] text-muted-foreground/60 hover:bg-accent hover:text-muted-foreground"
+                    >
+                      <X />
+                    </span>
                   </span>
-                </span>
-              )) : (
-              <>{ placeholder }</>
-            )
-          }
-        </div>
+                ))
+            ) : (
+              <>{placeholder}</>
+            )}
+          </div>
+        )
+      ) : value ? (
+        <>
+          {options?.find((opt) => String(opt.value) === String(value))?.label}
+        </>
       ) : (
-        value ? <>{options?.find(opt => String(opt.value) === String(value))?.label}</> : <>{ placeholder }</>
+        <>{placeholder}</>
       )}
-      { (multiple ? !!value?.length : !!value) && (
+      {(multiple ? !!value?.length : !!value) && (
         <div onClick={handleClear}>
           <X />
         </div>
-      ) }
+      )}
     </Button>
   )
 }
 
-function OptionList({ options, handleSelect, value }: {
+function OptionList({
+  options,
+  handleSelect,
+  value,
+}: {
   options: OptionType[] | [] | undefined
   handleSelect: (selectedValue: string | number) => void
   value: string | number
 }) {
   return (
-    <Command className='w-full'>
+    <Command className="w-full">
       <CommandInput placeholder="Search..." />
       <CommandList>
         <CommandEmpty>No results found.</CommandEmpty>
         <CommandGroup>
           <ScrollArea>
             <div>
-              {options?.length && options.map((opt) => {
-                const isSelected = Array.isArray(value) && value.includes(opt.value)
+              {options?.length &&
+                options.map((opt) => {
+                  const isSelected =
+                    Array.isArray(value) && value.includes(opt.value)
 
-                return (
-                  <CommandItem
-                    key={opt.value}
-                    value={opt.label}
-                    onSelect={() => handleSelect(opt.value)}
-                  >
-                    {opt.label}
-                    <Check
-                      className={cn(
-                        "ml-auto",
-                        opt.value === value || isSelected
-                          ? "opacity-100"
-                          : "opacity-0"
-                      )}
-                    />
-                  </CommandItem>
-                )
-              })}
+                  return (
+                    <CommandItem
+                      key={opt.value}
+                      value={opt.label}
+                      onSelect={() => handleSelect(opt.value)}
+                    >
+                      {opt.label}
+                      <Check
+                        className={cn(
+                          'ml-auto',
+                          opt.value === value || isSelected
+                            ? 'opacity-100'
+                            : 'opacity-0'
+                        )}
+                      />
+                    </CommandItem>
+                  )
+                })}
             </div>
           </ScrollArea>
         </CommandGroup>

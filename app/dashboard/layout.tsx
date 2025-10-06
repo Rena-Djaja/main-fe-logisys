@@ -1,34 +1,37 @@
 'use client'
 
-import React from 'react';
-import {SidebarInset, SidebarProvider, SidebarTrigger} from "@/components/shared/ui/sidebar";
-import AppSidebar from "@/components/shared/MainLayout/AppSidebar/AppSidebar";
-import {breadcrumbMap, menuList} from "@/constant/Menu";
-import {Separator} from "@/components/shared/ui/separator";
+import React from 'react'
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from '@/components/shared/ui/sidebar'
+import AppSidebar from '@/components/shared/MainLayout/AppSidebar/AppSidebar'
+import { breadcrumbMap, menuList } from '@/constant/Menu'
+import { Separator } from '@/components/shared/ui/separator'
 import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
-  BreadcrumbList, BreadcrumbPage,
-  BreadcrumbSeparator
-} from "@/components/shared/ui/breadcrumb";
-import Link from "next/link";
-import {usePathname} from "next/navigation";
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/shared/ui/breadcrumb'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 
-const DashboardMainLayout = ({ children }: {
-  children: React.ReactNode;
-}) => {
+const DashboardMainLayout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname()
-  const segments = pathname.split("/").filter(Boolean)
+  const segments = pathname.split('/').filter(Boolean)
 
   return (
     <SidebarProvider
-      // style={
-      //   {
-      //     "--sidebar-width": "calc(var(--spacing) * 72)",
-      //     "--header-height": "calc(var(--spacing) * 12)",
-      //   } as React.CSSProperties
-      // }
+    // style={
+    //   {
+    //     "--sidebar-width": "calc(var(--spacing) * 72)",
+    //     "--header-height": "calc(var(--spacing) * 12)",
+    //   } as React.CSSProperties
+    // }
     >
       <AppSidebar menu={menuList} />
       <SidebarInset>
@@ -42,11 +45,13 @@ const DashboardMainLayout = ({ children }: {
             <Breadcrumb>
               <BreadcrumbList>
                 {segments.map((segment, index) => {
-                  const href = "/" + segments.slice(0, index + 1).join("/");
-                  const isLast = index === segments.length - 1;
-                  const label = breadcrumbMap[segment] || segment
-                    .replace(/-/g, " ")
-                    .replace(/\b\w/g, (l) => l.toUpperCase()); // Capitalize
+                  const href = '/' + segments.slice(0, index + 1).join('/')
+                  const isLast = index === segments.length - 1
+                  const label =
+                    breadcrumbMap[segment] ||
+                    segment
+                      .replace(/-/g, ' ')
+                      .replace(/\b\w/g, (l) => l.toUpperCase()) // Capitalize
 
                   return (
                     <BreadcrumbItem key={href}>
@@ -61,18 +66,16 @@ const DashboardMainLayout = ({ children }: {
                         </>
                       )}
                     </BreadcrumbItem>
-                  );
+                  )
                 })}
               </BreadcrumbList>
             </Breadcrumb>
           </div>
         </header>
-        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-          { children }
-        </div>
+        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">{children}</div>
       </SidebarInset>
     </SidebarProvider>
-  );
-};
+  )
+}
 
-export default DashboardMainLayout;
+export default DashboardMainLayout

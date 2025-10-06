@@ -1,25 +1,36 @@
-import React, {FC} from 'react';
+import React, { FC } from 'react'
 import {
-  Sidebar, SidebarContent, SidebarFooter,
-  SidebarGroup, SidebarGroupLabel,
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
-  SidebarMenuItem, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem, SidebarRail
-} from "@/components/shared/ui/sidebar";
-import {ChevronRight, Shapes} from "lucide-react";
-import {AppSidebarProps} from "@/type/MainLayout";
-import {Collapsible, CollapsibleContent, CollapsibleTrigger} from "@/components/shared/ui/collapsible";
-import Link from "next/link";
-import {usePathname} from "next/navigation";
-import {UserNav} from "@/components/shared/MainLayout/AppSidebar/Sections/UserNav";
+  SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
+  SidebarRail,
+} from '@/components/shared/ui/sidebar'
+import { ChevronRight, Shapes } from 'lucide-react'
+import { AppSidebarProps } from '@/type/MainLayout'
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from '@/components/shared/ui/collapsible'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { UserNav } from '@/components/shared/MainLayout/AppSidebar/Sections/UserNav'
 
-const AppSidebar: FC<AppSidebarProps> = ({ menu, ...props } ) => {
+const AppSidebar: FC<AppSidebarProps> = ({ menu, ...props }) => {
   const pathname = usePathname()
-  const segments = pathname.split("/").filter(Boolean)
+  const segments = pathname.split('/').filter(Boolean)
 
   return (
-    <Sidebar collapsible={'icon'} { ...props }>
+    <Sidebar collapsible={'icon'} {...props}>
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
@@ -29,78 +40,96 @@ const AppSidebar: FC<AppSidebarProps> = ({ menu, ...props } ) => {
             >
               <div>
                 <Shapes />
-                <span className="text-base font-semibold">Motomobil Logisys</span>
+                <span className="text-base font-semibold">
+                  Motomobil Logisys
+                </span>
               </div>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        { menu.map((m, menuIdx) => (
+        {menu.map((m, menuIdx) => (
           <SidebarGroup key={menuIdx}>
-            <SidebarGroupLabel className='capitalize'>{ m.title }</SidebarGroupLabel>
+            <SidebarGroupLabel className="capitalize">
+              {m.title}
+            </SidebarGroupLabel>
             <SidebarMenu>
-              { m.menuItems.map((parent, parentIdx) => {
-                return (
-                  parent.children?.length ? (
-                    <Collapsible
-                      key={parentIdx}
-                      asChild
-                      defaultOpen={!!parent?.children?.find(each => each.url.split('/')?.[2] === segments?.[1])}
-                      className="group/collapsible"
-                    >
-                      <SidebarMenuItem>
-                        <CollapsibleTrigger asChild>
-                          <SidebarMenuButton tooltip={parent.title}>
-                            { <parent.icon /> }
-                            <span>{parent.title}</span>
-                            <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
-                          </SidebarMenuButton>
-                        </CollapsibleTrigger>
-                        <CollapsibleContent>
-                          <SidebarMenuSub>
-                            { parent.children.map((child, childIdx) => (
-                              <SidebarMenuSubItem key={childIdx}>
-                                <SidebarMenuSubButton
-                                  asChild
-                                  isActive={segments?.[1] === child.url?.split('/')[2]}
-                                >
-                                  <Link href={child.url}>
-                                    <span>{child.title}</span>
-                                  </Link>
-                                </SidebarMenuSubButton>
-                              </SidebarMenuSubItem>
-                            )) }
-                          </SidebarMenuSub>
-                        </CollapsibleContent>
-                      </SidebarMenuItem>
-                    </Collapsible>
-                  ) : (
-                    <SidebarMenuItem key={parentIdx}>
-                      <SidebarMenuButton
-                        tooltip={parent.title}
-                        asChild
-                        isActive={(parent.url?.split('/')?.[2] && !segments?.[1]) ? segments?.[1] === parent.url?.split('/')[2] : segments?.[1] === parent.url?.split('/')[2]}
-                      >
-                        <Link href={parent.url || ''}>
-                          { <parent.icon /> }
+              {m.menuItems.map((parent, parentIdx) => {
+                return parent.children?.length ? (
+                  <Collapsible
+                    key={parentIdx}
+                    asChild
+                    defaultOpen={
+                      !!parent?.children?.find(
+                        (each) => each.url.split('/')?.[2] === segments?.[1]
+                      )
+                    }
+                    className="group/collapsible"
+                  >
+                    <SidebarMenuItem>
+                      <CollapsibleTrigger asChild>
+                        <SidebarMenuButton tooltip={parent.title}>
+                          {<parent.icon />}
                           <span>{parent.title}</span>
-                        </Link>
-                      </SidebarMenuButton>
+                          <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                        </SidebarMenuButton>
+                      </CollapsibleTrigger>
+                      <CollapsibleContent>
+                        <SidebarMenuSub>
+                          {parent.children.map((child, childIdx) => (
+                            <SidebarMenuSubItem key={childIdx}>
+                              <SidebarMenuSubButton
+                                asChild
+                                isActive={
+                                  segments?.[1] === child.url?.split('/')[2]
+                                }
+                              >
+                                <Link href={child.url}>
+                                  <span>{child.title}</span>
+                                </Link>
+                              </SidebarMenuSubButton>
+                            </SidebarMenuSubItem>
+                          ))}
+                        </SidebarMenuSub>
+                      </CollapsibleContent>
                     </SidebarMenuItem>
-                  )
+                  </Collapsible>
+                ) : (
+                  <SidebarMenuItem key={parentIdx}>
+                    <SidebarMenuButton
+                      tooltip={parent.title}
+                      asChild
+                      isActive={
+                        parent.url?.split('/')?.[2] && !segments?.[1]
+                          ? segments?.[1] === parent.url?.split('/')[2]
+                          : segments?.[1] === parent.url?.split('/')[2]
+                      }
+                    >
+                      <Link href={parent.url || ''}>
+                        {<parent.icon />}
+                        <span>{parent.title}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
                 )
               })}
             </SidebarMenu>
           </SidebarGroup>
-        )) }
+        ))}
       </SidebarContent>
       <SidebarFooter>
-        <UserNav user={{ name: 'Christian Leonard', email: 'thamrchris@gmail.com', avatar: '/common/user-placeholder.webp' }} />
+        <UserNav
+          user={{
+            name: 'Christian Leonard',
+            email: 'thamrchris@gmail.com',
+            avatar: '/common/user-placeholder.webp',
+          }}
+        />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
-  );
-};
+  )
+}
 
-export default AppSidebar;
+export default AppSidebar

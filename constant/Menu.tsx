@@ -1,5 +1,11 @@
-import {ArrowRightLeft, Boxes, HardDriveIcon, LayoutGrid, UsersRound} from "lucide-react";
-import {MenuListProps} from "@/type/MainLayout";
+import {
+  ArrowRightLeft,
+  Boxes,
+  HardDriveIcon,
+  LayoutGrid,
+  UsersRound,
+} from 'lucide-react'
+import { MenuListProps } from '@/type/MainLayout'
 
 export const menuList: MenuListProps[] = [
   {
@@ -9,9 +15,8 @@ export const menuList: MenuListProps[] = [
         title: 'Dashboard',
         url: '/dashboard',
         icon: LayoutGrid,
-
-      }
-    ]
+      },
+    ],
   },
   {
     title: 'app management',
@@ -33,9 +38,9 @@ export const menuList: MenuListProps[] = [
             title: 'Promo',
             url: '/dashboard/promo',
           },
-        ]
-      }
-    ]
+        ],
+      },
+    ],
   },
   {
     title: 'activity',
@@ -65,13 +70,13 @@ export const menuList: MenuListProps[] = [
             title: 'In & Out',
             url: '/dashboard/in-out',
           },
-        ]
-      }
-    ]
+        ],
+      },
+    ],
   },
 ]
 
 export const breadcrumbMap: Record<string, string> = {
   dashboard: 'Dashboard',
-  users: 'User Management'
+  users: 'User Management',
 }

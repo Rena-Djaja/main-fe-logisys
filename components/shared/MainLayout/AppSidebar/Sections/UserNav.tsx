@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import {
   EllipsisVertical,
@@ -6,13 +6,13 @@ import {
   RectangleEllipsis,
   SlidersHorizontal,
   UserPen,
-} from "lucide-react"
+} from 'lucide-react'
 
 import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-} from "@/components/shared/ui/avatar"
+} from '@/components/shared/ui/avatar'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,15 +21,17 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/shared/ui/dropdown-menu"
+} from '@/components/shared/ui/dropdown-menu'
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from "@/components/shared/ui/sidebar"
+} from '@/components/shared/ui/sidebar'
 
-export function UserNav({ user }: {
+export function UserNav({
+  user,
+}: {
   user: {
     name: string
     email: string
@@ -60,7 +62,7 @@ export function UserNav({ user }: {
           </DropdownMenuTrigger>
           <DropdownMenuContent
             className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
-            side={isMobile ? "bottom" : "right"}
+            side={isMobile ? 'bottom' : 'right'}
             align="end"
             sideOffset={4}
           >
