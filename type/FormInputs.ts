@@ -1,4 +1,4 @@
-import {Control, FieldError, FieldErrorsImpl, FieldValue, Merge} from "react-hook-form";
+import {Control, FieldValue, FieldValues} from "react-hook-form";
 import {ReactNode} from "react";
 
 export interface CustomInputProps {
@@ -7,7 +7,7 @@ export interface CustomInputProps {
     placeholder?: string;
     disabled?: boolean;
     helperText?: string;
-    control: Control<FieldValue<any>>;
+    control: Control<FieldValue<FieldValues>>;
     iconPlacement?: IconPlacementType;
     icon?: string;
     iconOnClick?: () => void;
@@ -18,7 +18,7 @@ export interface CustomInputProps {
 export interface CustomSelectProps extends CustomInputProps {
     isAsync?: boolean;
     defaultOptions?: OptionType[];
-    callbackOptions?: (inputValue: string, callback: (options: any[]) => void) => void;
+    // callbackOptions?: (inputValue: string, callback: (options: any[]) => void) => void;
     options?: OptionType[] | [];
     multiple?: boolean;
     isLoading?: boolean;
@@ -53,7 +53,9 @@ export enum ButtonType {
 export enum ButtonSize {
     SMALL = 'sm',
     LARGE = 'lg',
+    ICON_SMALL = 'icon-sm',
     ICON_DEFAULT = 'icon',
+    ICON_LARGE = 'icon-lg',
 }
 
 export enum ButtonVariant {

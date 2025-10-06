@@ -1,7 +1,6 @@
 "use client"
 
 import React, {FC} from 'react';
-import {Label} from "@/components/shared/ui/label";
 import {Input} from "@/components/shared/ui/input";
 import {CustomInputProps} from "@/type/FormInputs";
 import {FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from "@/components/shared/ui/form";

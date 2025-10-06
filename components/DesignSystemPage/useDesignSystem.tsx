@@ -1,6 +1,6 @@
 "use client"
 
-import React, {useState} from 'react';
+import {useState} from 'react';
 import {useForm} from "react-hook-form";
 import {OptionType} from "@/type/FormInputs";
 import {zodResolver} from "@hookform/resolvers/zod";
