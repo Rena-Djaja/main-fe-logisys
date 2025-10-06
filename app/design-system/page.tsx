@@ -1,10 +1,8 @@
-import React from 'react';
-import DesignSystemPage from "@/components/DesignSystemPage/DesignSystemPage";
+import React from 'react'
+import DesignSystemPage from '@/components/DesignSystemPage/DesignSystemPage'
 
 const DesignSystem = () => {
-  return (
-    <DesignSystemPage />
-  );
-};
+  return <DesignSystemPage />
+}
 
-export default DesignSystem;
+export default DesignSystem

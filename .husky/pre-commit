@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+pnpm tsc && pnpm lint && pnpm format || { echo "Linting or formatting failed. Please fix the issues before committing."; exit 1; }
+git add -A
