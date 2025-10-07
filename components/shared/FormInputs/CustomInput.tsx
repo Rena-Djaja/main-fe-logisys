@@ -2,7 +2,7 @@
 
 import React, { FC } from 'react'
 import { Input } from '@/components/shared/ui/input'
-import { CustomInputProps } from '@/type/FormInputs'
+import { CustomInputProps, InputType } from '@/type/FormInputs'
 import {
   FormControl,
   FormDescription,
@@ -13,7 +13,17 @@ import {
 } from '@/components/shared/ui/form'
 
 const CustomInput: FC<CustomInputProps> = (props) => {
-  const { label, placeholder, name, control, disabled, helperText } = props
+  const inputProps = props
+  const {
+    label,
+    placeholder,
+    name,
+    control,
+    disabled,
+    helperText,
+    iconOnClick,
+    type = InputType.TEXT,
+  } = props
 
   return (
     <FormField
@@ -24,7 +34,22 @@ const CustomInput: FC<CustomInputProps> = (props) => {
           <FormItem>
             {!!label && <FormLabel>{label}</FormLabel>}
             <FormControl>
-              <Input placeholder={placeholder} {...field} disabled={disabled} />
+              <div className="relative">
+                <Input
+                  placeholder={placeholder}
+                  {...field}
+                  disabled={disabled}
+                  type={type}
+                />
+                <div className="absolute right-4 top-2.5">
+                  {inputProps.icon && (
+                    <inputProps.icon
+                      className="size-4 cursor-pointer"
+                      onClick={iconOnClick}
+                    />
+                  )}
+                </div>
+              </div>
             </FormControl>
             {helperText && (
               <FormDescription className="text-[0.8rem]">

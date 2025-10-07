@@ -1,5 +1,6 @@
 import { Control, FieldValue, FieldValues } from 'react-hook-form'
-import { ReactNode } from 'react'
+import { ForwardRefExoticComponent, ReactNode, RefAttributes } from 'react'
+import { LucideProps } from 'lucide-react'
 
 export interface CustomInputProps {
   name: string
@@ -9,7 +10,9 @@ export interface CustomInputProps {
   helperText?: string
   control: Control<FieldValue<FieldValues>>
   iconPlacement?: IconPlacementType
-  icon?: string
+  icon?: ForwardRefExoticComponent<
+    Omit<LucideProps, 'ref'> & RefAttributes<SVGSVGElement>
+  >
   iconOnClick?: () => void
   type?: string
   defaultValue?: string
@@ -30,6 +33,7 @@ export interface OptionType {
 }
 
 export interface CustomButtonProps {
+  type?: ButtonType
   label?: string
   icon?: () => ReactNode
   disabled?: boolean
@@ -38,6 +42,11 @@ export interface CustomButtonProps {
   variant?: ButtonVariant
   link?: string
   className?: string
+}
+
+export enum InputType {
+  TEXT = 'text',
+  PASSWORD = 'password',
 }
 
 export enum IconPlacementType {
