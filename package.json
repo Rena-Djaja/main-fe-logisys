@@ -6,7 +6,7 @@
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
     "start": "next start",
-    "lint": "eslint \"app/**/*.{ts,tsx}\" \"components/**/*.{ts,tsx}\" \"constant/**/*.{ts,tsx}\" \"lib/**/*.{ts,tsx}\" \"validations/**/*.{ts,tsx}\"",
+    "lint": "eslint .",
     "format": "prettier --write .",
     "tsc": "tsc --noEmit"
   },
