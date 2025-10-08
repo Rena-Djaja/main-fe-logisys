@@ -1,23 +1,42 @@
 import React, { FC } from 'react'
 import { Button } from '@/components/shared/ui/button'
-import { CustomButtonProps } from '@/type/FormInputs'
+import { ButtonType, CustomButtonProps } from '@/type/FormInputs'
 import { Spinner } from '@/components/shared/ui/spinner'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
 
 const CustomButton: FC<CustomButtonProps> = (props) => {
-  const { label, size, variant, isLoading, disabled, link, className } = props
+  const {
+    label,
+    size,
+    variant,
+    isLoading,
+    disabled,
+    link,
+    className,
+    type = ButtonType.SUBMIT,
+  } = props
 
   return (
     <Button
+      type={type}
       size={size}
       variant={variant}
       disabled={disabled || isLoading}
       asChild={!!link}
-      className={cn(className, 'cursor-pointer disabled:!cursor-not-allowed')}
+      className={cn(
+        className,
+        'w-full cursor-pointer disabled:!cursor-not-allowed'
+      )}
     >
-      {isLoading ? <Spinner /> : props?.icon && <props.icon />}
-      {!!link ? <Link href={link}>{label}</Link> : !!label && label}
+      {!!link ? (
+        <Link href={link}>{label}</Link>
+      ) : (
+        <>
+          {isLoading ? <Spinner /> : props?.icon && <props.icon />}
+          {label}
+        </>
+      )}
     </Button>
   )
 }
