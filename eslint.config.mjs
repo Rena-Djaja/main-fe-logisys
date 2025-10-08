@@ -15,12 +15,11 @@ const eslintConfig = [
     ignores: [
       'node_modules/**',
       '.next/**',
-      '.next/*',
-      '.next/*/*',
       'out/**',
       'build/**',
       '.next-env.d.ts',
     ],
+    files: ['**/*.{ts,tsx,js,jsx}'],
     rules: {
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/triple-slash-reference': 'off',

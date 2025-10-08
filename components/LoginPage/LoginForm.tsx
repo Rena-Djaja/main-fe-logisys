@@ -8,14 +8,22 @@ import { FieldGroup } from '@/components/shared/ui/field'
 import CustomButton from '@/components/shared/FormInputs/CustomButton'
 import { ButtonType, ButtonVariant, InputType } from '@/type/FormInputs'
 import { Eye, EyeClosed } from 'lucide-react'
+import InlineAlert from '@/components/shared/Alert/InlineAlert'
 
 const LoginForm = () => {
-  const { form, showPassword, handleShowPassword, onSubmit } = useLoginForm()
+  const { form, showPassword, alert, handleShowPassword, onSubmit, isLoading } =
+    useLoginForm()
 
   return (
     <Form {...form}>
       <form className="mt-2" onSubmit={form.handleSubmit(onSubmit)}>
         <FieldGroup>
+          <InlineAlert
+            show={alert.show}
+            title={alert.title}
+            description={alert.message}
+            variant={'destructive'}
+          />
           <div>
             <CustomInput
               name={'email'}
@@ -45,7 +53,7 @@ const LoginForm = () => {
             />
           </div>
           <div>
-            <CustomButton label={'Sign in'} />
+            <CustomButton label={'Sign in'} isLoading={isLoading} />
           </div>
         </FieldGroup>
       </form>
