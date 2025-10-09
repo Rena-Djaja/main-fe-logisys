@@ -19,10 +19,7 @@ import {
   BreadcrumbSeparator,
 } from '@/components/shared/ui/breadcrumb'
 import Link from 'next/link'
-import {
-  AuthContext,
-  useAuthContext,
-} from '@/components/shared/context/AuthContext'
+import { AuthContext } from '@/components/shared/context/AuthContext'
 import { AuthContextProps } from '@/type/Auth'
 
 const MainLayout = ({
