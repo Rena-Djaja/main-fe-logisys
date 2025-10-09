@@ -24,10 +24,13 @@ import {
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { UserNav } from '@/components/shared/MainLayout/AppSidebar/Sections/UserNav'
+import { useAuthContext } from '@/components/shared/context/AuthContext'
 
 const AppSidebar: FC<AppSidebarProps> = ({ menu, ...props }) => {
   const pathname = usePathname()
   const segments = pathname.split('/').filter(Boolean)
+
+  const user = useAuthContext()
 
   return (
     <Sidebar collapsible={'icon'} {...props}>
@@ -121,8 +124,8 @@ const AppSidebar: FC<AppSidebarProps> = ({ menu, ...props }) => {
       <SidebarFooter>
         <UserNav
           user={{
-            name: 'Christian Leonard',
-            email: 'thamrchris@gmail.com',
+            name: user.name,
+            email: user.email,
             avatar: '/common/user-placeholder.webp',
           }}
         />
