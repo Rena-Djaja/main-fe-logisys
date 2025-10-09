@@ -9,3 +9,16 @@ export interface PostLoginResponse extends CommonApiResponse {
     access_token: string
   }
 }
+
+export interface PostAuthInfoResponse extends CommonApiResponse {
+  data: AuthContextProps
+}
+
+export interface AuthContextProps {
+  id: number
+  name: string
+  email: string
+  roleID: number
+  createdAt: string
+  updatedAt: string
+}
