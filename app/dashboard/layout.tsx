@@ -1,5 +1,3 @@
-export const dynamic = 'force-dynamic'
-
 import React from 'react'
 import MainLayout from '@/components/shared/MainLayout/MainLayout'
 import { AuthAPI } from '@/constant/APIUrls'
