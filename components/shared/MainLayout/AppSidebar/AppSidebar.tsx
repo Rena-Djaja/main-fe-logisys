@@ -30,7 +30,7 @@ const AppSidebar: FC<AppSidebarProps> = ({ menu, ...props }) => {
   const pathname = usePathname()
   const segments = pathname.split('/').filter(Boolean)
 
-  const user = useAuthContext()
+  const auth = useAuthContext()
 
   return (
     <Sidebar collapsible={'icon'} {...props}>
@@ -124,8 +124,8 @@ const AppSidebar: FC<AppSidebarProps> = ({ menu, ...props }) => {
       <SidebarFooter>
         <UserNav
           user={{
-            name: user.name,
-            email: user.email,
+            name: auth.authInfo.name,
+            email: auth.authInfo.email,
             avatar: '/common/user-placeholder.webp',
           }}
         />

@@ -8,19 +8,17 @@ import { PostAuthInfoResponse } from '@/type/Auth'
 const fetchAuthInfo = async () => {
   const accessToken = await getServerCookies('access_token')
 
-  const res = await fetch(AuthAPI.POST_AUTH_INFO, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/auth`, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },
-    cache: 'no-cache',
   })
 
-  if (!res.ok) {
-    redirect('/login')
+  const response = await res.json()
+  if (!response?.success) {
+    redirect(`/login`)
   }
-
-  const response: PostAuthInfoResponse = await res.json()
 
   return response
 }

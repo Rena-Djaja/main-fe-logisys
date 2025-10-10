@@ -6,6 +6,7 @@ import {
   UsersRound,
 } from 'lucide-react'
 import { MenuListProps } from '@/type/MainLayout'
+import { PermissionTypes } from '@/type/Auth'
 
 export const menuList: MenuListProps[] = [
   {
@@ -15,6 +16,7 @@ export const menuList: MenuListProps[] = [
         title: 'Dashboard',
         url: '/dashboard',
         icon: LayoutGrid,
+        resourceID: [PermissionTypes.PUBLIC],
       },
     ],
   },
@@ -25,6 +27,7 @@ export const menuList: MenuListProps[] = [
         title: 'Users',
         url: '/dashboard/users',
         icon: UsersRound,
+        resourceID: [PermissionTypes.READ_USER, PermissionTypes.WRITE_USER],
       },
       {
         title: 'Master Data',
@@ -33,12 +36,15 @@ export const menuList: MenuListProps[] = [
           {
             title: 'Products',
             url: '/dashboard/products',
+            resourceID: [PermissionTypes.PUBLIC],
           },
           {
             title: 'Promo',
             url: '/dashboard/promo',
+            resourceID: [PermissionTypes.PUBLIC],
           },
         ],
+        resourceID: [PermissionTypes.PUBLIC],
       },
     ],
   },
@@ -49,6 +55,7 @@ export const menuList: MenuListProps[] = [
         title: 'Inventory',
         url: '/dashboard/inventory',
         icon: Boxes,
+        resourceID: [PermissionTypes.PUBLIC],
       },
       {
         title: 'Transactions',
@@ -57,20 +64,25 @@ export const menuList: MenuListProps[] = [
           {
             title: 'Purchases',
             url: '/dashboard/purchase',
+            resourceID: [PermissionTypes.PUBLIC],
           },
           {
             title: 'Sales',
             url: '/dashboard/sales',
+            resourceID: [PermissionTypes.PUBLIC],
           },
           {
             title: 'Transfers',
             url: '/dashboard/transfer',
+            resourceID: [PermissionTypes.PUBLIC],
           },
           {
             title: 'In & Out',
             url: '/dashboard/in-out',
+            resourceID: [PermissionTypes.PUBLIC],
           },
         ],
+        resourceID: [PermissionTypes.PUBLIC],
       },
     ],
   },
