@@ -1,9 +1,7 @@
 import React from 'react'
 import MainLayout from '@/components/shared/MainLayout/MainLayout'
-import { AuthAPI } from '@/constant/APIUrls'
 import { redirect } from 'next/navigation'
 import { getServerCookies } from '@/lib/servers'
-import { PostAuthInfoResponse } from '@/type/Auth'
 
 const fetchAuthInfo = async () => {
   const accessToken = await getServerCookies('access_token')
