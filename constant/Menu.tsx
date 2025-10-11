@@ -55,7 +55,7 @@ export const menuList: MenuListProps[] = [
         title: 'Inventory',
         url: '/dashboard/inventory',
         icon: Boxes,
-        resourceID: [PermissionTypes.PUBLIC],
+        resourceID: [PermissionTypes.READ_INVENTORY],
       },
       {
         title: 'Transactions',
@@ -64,7 +64,7 @@ export const menuList: MenuListProps[] = [
           {
             title: 'Purchases',
             url: '/dashboard/purchase',
-            resourceID: [PermissionTypes.PUBLIC],
+            resourceID: [PermissionTypes.READ_INVENTORY],
           },
           {
             title: 'Sales',
@@ -79,7 +79,7 @@ export const menuList: MenuListProps[] = [
           {
             title: 'In & Out',
             url: '/dashboard/in-out',
-            resourceID: [PermissionTypes.PUBLIC],
+            resourceID: [PermissionTypes.READ_INVENTORY],
           },
         ],
         resourceID: [PermissionTypes.PUBLIC],

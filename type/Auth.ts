@@ -41,4 +41,5 @@ export enum PermissionTypes {
   PUBLIC = 0,
   READ_USER = 1,
   WRITE_USER = 2,
+  READ_INVENTORY = 3,
 }
