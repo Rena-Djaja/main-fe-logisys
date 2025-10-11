@@ -25,6 +25,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { UserNav } from '@/components/shared/MainLayout/AppSidebar/Sections/UserNav'
 import { useAuthContext } from '@/components/shared/context/AuthContext'
+import { PermissionTypes } from '@/type/Auth'
 
 const AppSidebar: FC<AppSidebarProps> = ({ menu, ...props }) => {
   const pathname = usePathname()
@@ -52,74 +53,98 @@ const AppSidebar: FC<AppSidebarProps> = ({ menu, ...props }) => {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        {menu.map((m, menuIdx) => (
-          <SidebarGroup key={menuIdx}>
-            <SidebarGroupLabel className="capitalize">
-              {m.title}
-            </SidebarGroupLabel>
-            <SidebarMenu>
-              {m.menuItems.map((parent, parentIdx) => {
-                return parent.children?.length ? (
-                  <Collapsible
-                    key={parentIdx}
-                    asChild
-                    defaultOpen={
-                      !!parent?.children?.find(
-                        (each) => each.url.split('/')?.[2] === segments?.[1]
-                      )
-                    }
-                    className="group/collapsible"
-                  >
-                    <SidebarMenuItem>
-                      <CollapsibleTrigger asChild>
-                        <SidebarMenuButton tooltip={parent.title}>
+        {menu.map((m, menuIdx) => {
+          const authIDs = auth.permissions.map((each) => each.id)
+          const items = m.menuItems.filter((each) =>
+            each.resourceID.some(
+              (r) => authIDs.includes(r) || r === PermissionTypes.PUBLIC
+            )
+          )
+
+          if (!items.length) {
+            return null
+          }
+
+          return (
+            <SidebarGroup key={menuIdx}>
+              <SidebarGroupLabel className="capitalize">
+                {m.title}
+              </SidebarGroupLabel>
+              <SidebarMenu>
+                {items.map((parent, parentIdx) => {
+                  return parent.children?.length ? (
+                    <Collapsible
+                      key={parentIdx}
+                      asChild
+                      defaultOpen={
+                        !!parent?.children?.find(
+                          (each) => each.url.split('/')?.[2] === segments?.[1]
+                        )
+                      }
+                      className="group/collapsible"
+                    >
+                      <SidebarMenuItem>
+                        <CollapsibleTrigger asChild>
+                          <SidebarMenuButton tooltip={parent.title}>
+                            {<parent.icon />}
+                            <span>{parent.title}</span>
+                            <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                          </SidebarMenuButton>
+                        </CollapsibleTrigger>
+                        <CollapsibleContent>
+                          <SidebarMenuSub>
+                            {parent.children.map((child, childIdx) => {
+                              if (
+                                child.resourceID.some(
+                                  (r) =>
+                                    authIDs.includes(r) ||
+                                    r === PermissionTypes.PUBLIC
+                                )
+                              ) {
+                                return (
+                                  <SidebarMenuSubItem key={childIdx}>
+                                    <SidebarMenuSubButton
+                                      asChild
+                                      isActive={
+                                        segments?.[1] ===
+                                        child.url?.split('/')[2]
+                                      }
+                                    >
+                                      <Link href={child.url}>
+                                        <span>{child.title}</span>
+                                      </Link>
+                                    </SidebarMenuSubButton>
+                                  </SidebarMenuSubItem>
+                                )
+                              }
+                            })}
+                          </SidebarMenuSub>
+                        </CollapsibleContent>
+                      </SidebarMenuItem>
+                    </Collapsible>
+                  ) : (
+                    <SidebarMenuItem key={parentIdx}>
+                      <SidebarMenuButton
+                        tooltip={parent.title}
+                        asChild
+                        isActive={
+                          parent.url?.split('/')?.[2] && !segments?.[1]
+                            ? segments?.[1] === parent.url?.split('/')[2]
+                            : segments?.[1] === parent.url?.split('/')[2]
+                        }
+                      >
+                        <Link href={parent.url || ''}>
                           {<parent.icon />}
                           <span>{parent.title}</span>
-                          <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
-                        </SidebarMenuButton>
-                      </CollapsibleTrigger>
-                      <CollapsibleContent>
-                        <SidebarMenuSub>
-                          {parent.children.map((child, childIdx) => (
-                            <SidebarMenuSubItem key={childIdx}>
-                              <SidebarMenuSubButton
-                                asChild
-                                isActive={
-                                  segments?.[1] === child.url?.split('/')[2]
-                                }
-                              >
-                                <Link href={child.url}>
-                                  <span>{child.title}</span>
-                                </Link>
-                              </SidebarMenuSubButton>
-                            </SidebarMenuSubItem>
-                          ))}
-                        </SidebarMenuSub>
-                      </CollapsibleContent>
+                        </Link>
+                      </SidebarMenuButton>
                     </SidebarMenuItem>
-                  </Collapsible>
-                ) : (
-                  <SidebarMenuItem key={parentIdx}>
-                    <SidebarMenuButton
-                      tooltip={parent.title}
-                      asChild
-                      isActive={
-                        parent.url?.split('/')?.[2] && !segments?.[1]
-                          ? segments?.[1] === parent.url?.split('/')[2]
-                          : segments?.[1] === parent.url?.split('/')[2]
-                      }
-                    >
-                      <Link href={parent.url || ''}>
-                        {<parent.icon />}
-                        <span>{parent.title}</span>
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                )
-              })}
-            </SidebarMenu>
-          </SidebarGroup>
-        ))}
+                  )
+                })}
+              </SidebarMenu>
+            </SidebarGroup>
+          )
+        })}
       </SidebarContent>
       <SidebarFooter>
         <UserNav
