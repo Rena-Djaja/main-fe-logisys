@@ -1,5 +1,5 @@
 import { Control, FieldValue, FieldValues } from 'react-hook-form'
-import { ForwardRefExoticComponent, ReactNode, RefAttributes } from 'react'
+import { ForwardRefExoticComponent, RefAttributes } from 'react'
 import { LucideProps } from 'lucide-react'
 
 export interface CustomInputProps {
