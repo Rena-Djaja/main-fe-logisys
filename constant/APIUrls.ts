@@ -6,3 +6,7 @@ export const AuthAPI = {
   POST_AUTH_INFO: privateBaseURL + '/auth/info',
   GET_PERMISSION_LIST: privateBaseURL + '/auth/permission/list',
 }
+
+export const UserAPI = {
+  GET_USER_LIST: baseURL + '/user/list',
+}

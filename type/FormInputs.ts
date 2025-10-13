@@ -35,7 +35,9 @@ export interface OptionType {
 export interface CustomButtonProps {
   type?: ButtonType
   label?: string
-  icon?: () => ReactNode
+  icon?: ForwardRefExoticComponent<
+    Omit<LucideProps, 'ref'> & RefAttributes<SVGSVGElement>
+  >
   disabled?: boolean
   isLoading?: boolean
   size?: ButtonSize | null | undefined
