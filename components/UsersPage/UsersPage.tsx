@@ -9,7 +9,8 @@ import { userListHeaders } from '@/components/UsersPage/Resource'
 import useUsers from '@/components/UsersPage/useUsers'
 
 const UsersPage = () => {
-  const { userList, isValidating, filter, search } = useUsers()
+  const { userList, isValidating, filter, search, onUpdate, onDelete } =
+    useUsers()
 
   return (
     <div className="mt-8 w-full flex flex-col gap-10">
@@ -23,7 +24,9 @@ const UsersPage = () => {
         <div className="w-full flex justify-between">
           <div className="w-full flex gap-2 font-semibold text-[1.25rem]">
             <span>All users</span>
-            <span className="opacity-70">44</span>
+            <span className="opacity-70">
+              {userList?.pagination.total_data}
+            </span>
           </div>
           <div className="w-full flex gap-4 justify-end">
             <div className="w-full max-w-[15rem]">
@@ -42,6 +45,8 @@ const UsersPage = () => {
           perPage={filter.per_page}
           totalData={userList?.pagination.total_data || 0}
           onChange={(val) => search('page', val)}
+          onUpdate={onUpdate}
+          onDelete={onDelete}
         />
       </div>
     </div>

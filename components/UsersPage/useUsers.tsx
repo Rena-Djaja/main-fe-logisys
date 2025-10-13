@@ -27,11 +27,21 @@ const useUsers = () => {
     setFilter(newState)
   }
 
+  const onUpdate = (id: number | string) => {
+    console.log(id)
+  }
+
+  const onDelete = (id: number | string) => {
+    console.log(id)
+  }
+
   return {
     filter,
     userList,
     isValidating,
     search,
+    onUpdate,
+    onDelete,
   }
 }
 

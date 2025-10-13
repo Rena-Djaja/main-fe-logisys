@@ -11,9 +11,29 @@ import {
 } from '@/components/shared/ui/table'
 import CustomPagination from '@/components/shared/Pagination/Pagination'
 import { CustomTableProps } from '@/type/CustomTable'
+import { Skeleton } from '@/components/shared/ui/skeleton'
+import { MoreVertical } from 'lucide-react'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
+} from '@/components/shared/ui/dropdown-menu'
+import { Button } from '@/components/shared/ui/button'
 
 const CustomTable: FC<CustomTableProps> = (props) => {
-  const { headers, data, isLoading, onChange, totalData, page, perPage } = props
+  const {
+    headers,
+    data,
+    isLoading,
+    onChange,
+    totalData,
+    page,
+    perPage,
+    onUpdate,
+    onDelete,
+  } = props
 
   return (
     <div className="w-full flex flex-col gap-6">
@@ -24,6 +44,7 @@ const CustomTable: FC<CustomTableProps> = (props) => {
               {headers.map((each, idx) => (
                 <TableHead key={idx}>{each.title}</TableHead>
               ))}
+              <TableHead />
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -31,11 +52,8 @@ const CustomTable: FC<CustomTableProps> = (props) => {
               [...Array(4)].map((_, rowIdx) => (
                 <TableRow key={rowIdx} className="py-[8rem]">
                   {headers.map((_, cellIdx) => (
-                    <TableCell
-                      key={cellIdx}
-                      className="text-center animate-pulse"
-                    >
-                      <div className="w-full h-7 bg-accent/60 rounded-md" />
+                    <TableCell key={cellIdx} className="text-center">
+                      <Skeleton className="h-4 w-[80%]" />
                     </TableCell>
                   ))}
                 </TableRow>
@@ -45,9 +63,33 @@ const CustomTable: FC<CustomTableProps> = (props) => {
                 <TableRow key={rowIdx}>
                   {headers.map((h, headerIdx) => (
                     <TableCell key={`cell-${rowIdx}-${headerIdx}`}>
-                      <span>{each?.[h.key]}</span>
+                      {h?.customComponent ? (
+                        <h.customComponent data={each} />
+                      ) : (
+                        <span>{each?.[h.key]}</span>
+                      )}
                     </TableCell>
                   ))}
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" className="h-8 w-8 p-0">
+                        <span className="sr-only">Open menu</span>
+                        <MoreVertical />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                      <DropdownMenuItem onClick={() => onUpdate(each.id)}>
+                        Update data
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        variant={'destructive'}
+                        onClick={() => onDelete(each.id)}
+                      >
+                        Delete
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </TableRow>
               ))
             ) : (
