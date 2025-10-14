@@ -21,6 +21,7 @@ import {
 import Link from 'next/link'
 import { AuthContext } from '@/components/shared/context/AuthContext'
 import { AuthContextProps } from '@/type/Auth'
+import Confirmation from '@/components/shared/Alert/Confirmation'
 
 const MainLayout = ({
   children,
@@ -34,6 +35,7 @@ const MainLayout = ({
 
   return (
     <AuthContext.Provider value={authData}>
+      <Confirmation />
       <SidebarProvider
       // style={
       //   {

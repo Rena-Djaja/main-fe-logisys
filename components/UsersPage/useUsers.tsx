@@ -5,8 +5,12 @@ import useCommonApi from '@/components/shared/Hooks/CommonApi/useCommonApi'
 import { UserAPI } from '@/constant/APIUrls'
 import { CommonFilterRequest } from '@/type/Common'
 import { UserListResponse } from '@/type/User'
+import { useConfirmationStore } from '@/store'
+import { ButtonVariant } from '@/type/FormInputs'
 
 const useUsers = () => {
+  const { setConfirmation } = useConfirmationStore()
+
   const [filter, setFilter] = useState<CommonFilterRequest>({
     page: 1,
     per_page: 10,
@@ -32,7 +36,15 @@ const useUsers = () => {
   }
 
   const onDelete = (id: number | string) => {
-    console.log(id)
+    setConfirmation({
+      isOpen: true,
+      title: 'Are you absolutely sure?',
+      description:
+        'This action cannot be undone. This will permanently delete this account and remove the data.',
+      confirmButtonVariant: ButtonVariant.DESTRUCTIVES,
+      confirmButtonText: "Yes, I'm sure",
+      onConfirm: () => console.log(id),
+    })
   }
 
   return {

@@ -43,7 +43,7 @@ export interface CustomButtonProps {
   size?: ButtonSize | null | undefined
   variant?: ButtonVariant
   link?: string
-  className?: string
+  onClick?: any
 }
 
 export enum InputType {
@@ -70,6 +70,7 @@ export enum ButtonSize {
 }
 
 export enum ButtonVariant {
+  DEFAULT = 'default',
   OUTLINE = 'outline',
   SECONDARY = 'secondary',
   GHOST = 'ghost',

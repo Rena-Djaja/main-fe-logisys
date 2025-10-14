@@ -70,26 +70,28 @@ const CustomTable: FC<CustomTableProps> = (props) => {
                       )}
                     </TableCell>
                   ))}
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" className="h-8 w-8 p-0">
-                        <span className="sr-only">Open menu</span>
-                        <MoreVertical />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                      <DropdownMenuItem onClick={() => onUpdate(each.id)}>
-                        Update data
-                      </DropdownMenuItem>
-                      <DropdownMenuItem
-                        variant={'destructive'}
-                        onClick={() => onDelete(each.id)}
-                      >
-                        Delete
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+                  <TableCell>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" className="h-8 w-8 p-0">
+                          <span className="sr-only">Open menu</span>
+                          <MoreVertical />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                        <DropdownMenuItem onClick={() => onUpdate(each.id)}>
+                          Update data
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          variant={'destructive'}
+                          onClick={() => onDelete(each.id)}
+                        >
+                          Delete
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </TableCell>
                 </TableRow>
               ))
             ) : (

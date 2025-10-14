@@ -3,7 +3,6 @@ import { Button } from '@/components/shared/ui/button'
 import { ButtonType, CustomButtonProps } from '@/type/FormInputs'
 import { Spinner } from '@/components/shared/ui/spinner'
 import Link from 'next/link'
-import { cn } from '@/lib/utils'
 
 const CustomButton: FC<CustomButtonProps> = (props) => {
   const {
@@ -13,21 +12,20 @@ const CustomButton: FC<CustomButtonProps> = (props) => {
     isLoading,
     disabled,
     link,
-    className,
+    onClick,
     type = ButtonType.SUBMIT,
   } = props
 
   return (
     <Button
+      {...(onClick && {
+        onClick: onClick,
+      })}
       type={type}
       size={size}
       variant={variant}
       disabled={disabled || isLoading}
       asChild={!!link}
-      className={cn(
-        className,
-        'w-full cursor-pointer disabled:!cursor-not-allowed'
-      )}
     >
       {!!link ? (
         <Link href={link}>{label}</Link>
