@@ -1,4 +1,4 @@
-import { PaginationResponse } from '@/type/Common'
+import { CommonApiResponse, PaginationResponse } from '@/type/Common'
 
 export interface UserProps {
   id: number
@@ -15,4 +15,12 @@ export interface UserProps {
 export interface UserListResponse {
   data: UserProps[]
   pagination: PaginationResponse
+}
+
+export interface UserDetailsRequest {
+  id: number
+}
+
+export interface UserDetailsResponse extends CommonApiResponse {
+  data: UserProps
 }

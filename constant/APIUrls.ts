@@ -9,4 +9,5 @@ export const AuthAPI = {
 
 export const UserAPI = {
   GET_USER_LIST: baseURL + '/user/list',
+  GET_USER_DETAILS: baseURL + '/user/details',
 }

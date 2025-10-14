@@ -3,13 +3,18 @@
 import { useState } from 'react'
 import useCommonApi from '@/components/shared/Hooks/CommonApi/useCommonApi'
 import { UserAPI } from '@/constant/APIUrls'
-import { CommonFilterRequest } from '@/type/Common'
+import { CommonDetailsStateProps, CommonFilterRequest } from '@/type/Common'
 import { UserListResponse } from '@/type/User'
 import { useConfirmationStore } from '@/store'
 import { ButtonVariant } from '@/type/FormInputs'
 
 const useUsers = () => {
   const { setConfirmation } = useConfirmationStore()
+
+  const [detailsState, setDetailsState] = useState<CommonDetailsStateProps>({
+    id: null,
+    isOpen: false,
+  })
 
   const [filter, setFilter] = useState<CommonFilterRequest>({
     page: 1,
@@ -31,11 +36,22 @@ const useUsers = () => {
     setFilter(newState)
   }
 
-  const onUpdate = (id: number | string) => {
+  const handleDetails = (type: 'open' | 'close', id?: number) => {
+    setDetailsState({
+      isOpen: type === 'open',
+      id: type === 'open' ? id : null,
+    })
+  }
+
+  const onRowClick = (id: number) => {
+    handleDetails('open', id)
+  }
+
+  const onUpdate = (id: number) => {
     console.log(id)
   }
 
-  const onDelete = (id: number | string) => {
+  const onDelete = (id: number) => {
     setConfirmation({
       isOpen: true,
       title: 'Are you absolutely sure?',
@@ -51,9 +67,12 @@ const useUsers = () => {
     filter,
     userList,
     isValidating,
+    detailsState,
     search,
+    onRowClick,
     onUpdate,
     onDelete,
+    handleDetails,
   }
 }
 

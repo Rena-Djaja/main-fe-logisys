@@ -22,6 +22,7 @@ import Link from 'next/link'
 import { AuthContext } from '@/components/shared/context/AuthContext'
 import { AuthContextProps } from '@/type/Auth'
 import Confirmation from '@/components/shared/Alert/Confirmation'
+import { Toaster } from '@/components/shared/ui/sonner'
 
 const MainLayout = ({
   children,
@@ -35,6 +36,7 @@ const MainLayout = ({
 
   return (
     <AuthContext.Provider value={authData}>
+      <Toaster position={'top-right'} richColors className="!capitalize" />
       <Confirmation />
       <SidebarProvider
       // style={

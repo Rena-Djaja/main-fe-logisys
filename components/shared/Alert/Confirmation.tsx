@@ -30,7 +30,7 @@ const Confirmation = () => {
   } = useConfirmationStore()
 
   return (
-    <AlertDialog open={isOpen}>
+    <AlertDialog open={isOpen} onOpenChange={closeConfirmation}>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>{title}</AlertDialogTitle>

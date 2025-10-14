@@ -8,8 +8,9 @@ export interface CustomTableProps {
   page: number
   perPage: number
   totalData: number
-  onUpdate: (id: string | number) => void
-  onDelete: (id: string | number) => void
+  onRowClick: (id: any) => void
+  onUpdate: (id: any) => void
+  onDelete: (id: any) => void
 }
 
 export interface TableHeaderProps {

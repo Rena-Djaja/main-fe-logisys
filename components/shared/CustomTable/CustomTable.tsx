@@ -18,6 +18,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/shared/ui/dropdown-menu'
 import { Button } from '@/components/shared/ui/button'
@@ -31,6 +32,7 @@ const CustomTable: FC<CustomTableProps> = (props) => {
     totalData,
     page,
     perPage,
+    onRowClick,
     onUpdate,
     onDelete,
   } = props
@@ -62,7 +64,10 @@ const CustomTable: FC<CustomTableProps> = (props) => {
               data.map((each, rowIdx) => (
                 <TableRow key={rowIdx}>
                   {headers.map((h, headerIdx) => (
-                    <TableCell key={`cell-${rowIdx}-${headerIdx}`}>
+                    <TableCell
+                      key={`cell-${rowIdx}-${headerIdx}`}
+                      onClick={() => onRowClick(each.id)}
+                    >
                       {h?.customComponent ? (
                         <h.customComponent data={each} />
                       ) : (
@@ -81,8 +86,9 @@ const CustomTable: FC<CustomTableProps> = (props) => {
                       <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
                         <DropdownMenuItem onClick={() => onUpdate(each.id)}>
-                          Update data
+                          Edit
                         </DropdownMenuItem>
+                        <DropdownMenuSeparator />
                         <DropdownMenuItem
                           variant={'destructive'}
                           onClick={() => onDelete(each.id)}

@@ -16,3 +16,13 @@ export interface PaginationResponse {
   limit: number
   total_data: number
 }
+
+export interface CommonDetailsStateProps {
+  id: any | null
+  isOpen: boolean
+}
+
+export interface CommonDetailsComponentProps {
+  detailsState: CommonDetailsStateProps
+  handleDetails: (type: 'open' | 'close', id?: any) => void
+}
