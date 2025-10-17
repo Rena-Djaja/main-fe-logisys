@@ -8,6 +8,7 @@ import CustomButton from '@/components/shared/FormInputs/CustomButton'
 import { userListHeaders } from '@/components/UsersPage/Resource'
 import useUsers from '@/components/UsersPage/useUsers'
 import UserDetails from '@/components/UsersPage/Details/UserDetails'
+import { ButtonType } from '@/type/FormInputs'
 
 const UsersPage = () => {
   const {
@@ -17,6 +18,7 @@ const UsersPage = () => {
     detailsState,
     search,
     onRowClick,
+    onAdd,
     onUpdate,
     onDelete,
     handleDetails,
@@ -45,7 +47,12 @@ const UsersPage = () => {
                 <SearchInput onChange={(val) => search('search', val)} />
               </div>
               <div>
-                <CustomButton label={'Add New'} icon={Plus} />
+                <CustomButton
+                  label={'Add New'}
+                  icon={Plus}
+                  type={ButtonType.BUTTON}
+                  onClick={onAdd}
+                />
               </div>
             </div>
           </div>

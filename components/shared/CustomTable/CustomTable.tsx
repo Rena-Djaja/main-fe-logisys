@@ -85,6 +85,9 @@ const CustomTable: FC<CustomTableProps> = (props) => {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                        <DropdownMenuItem onClick={() => onRowClick(each.id)}>
+                          Details
+                        </DropdownMenuItem>
                         <DropdownMenuItem onClick={() => onUpdate(each.id)}>
                           Edit
                         </DropdownMenuItem>

@@ -10,4 +10,9 @@ export const AuthAPI = {
 export const UserAPI = {
   GET_USER_LIST: baseURL + '/user/list',
   GET_USER_DETAILS: baseURL + '/user/details',
+  POST_USER: baseURL + '/user',
+}
+
+export const RoleAPI = {
+  GET_ROLE_LIST: baseURL + '/role/list',
 }

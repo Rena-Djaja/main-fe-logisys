@@ -1,4 +1,6 @@
 import { CommonApiResponse, PaginationResponse } from '@/type/Common'
+import { z } from 'zod'
+import { userFormValidationSchema } from '@/validations/UserValidation'
 
 export interface UserProps {
   id: number
@@ -24,3 +26,5 @@ export interface UserDetailsRequest {
 export interface UserDetailsResponse extends CommonApiResponse {
   data: UserProps
 }
+
+export type PostUserRequest = z.infer<typeof userFormValidationSchema>

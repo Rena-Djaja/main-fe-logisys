@@ -151,6 +151,7 @@ const AppSidebar: FC<AppSidebarProps> = ({ menu, ...props }) => {
           user={{
             name: auth.authInfo.name,
             email: auth.authInfo.email,
+            role: auth.authInfo.role_name,
             avatar: '/common/user-placeholder.webp',
           }}
         />

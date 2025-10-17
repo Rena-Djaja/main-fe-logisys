@@ -36,7 +36,7 @@ const MainLayout = ({
 
   return (
     <AuthContext.Provider value={authData}>
-      <Toaster position={'top-right'} richColors className="!capitalize" />
+      <Toaster position={'top-right'} richColors />
       <Confirmation />
       <SidebarProvider
       // style={

@@ -26,3 +26,8 @@ export interface CommonDetailsComponentProps {
   detailsState: CommonDetailsStateProps
   handleDetails: (type: 'open' | 'close', id?: any) => void
 }
+
+export interface CommonOwnerProps {
+  id: number
+  name: string
+}

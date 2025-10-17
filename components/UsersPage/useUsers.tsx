@@ -7,6 +7,7 @@ import { CommonDetailsStateProps, CommonFilterRequest } from '@/type/Common'
 import { UserListResponse } from '@/type/User'
 import { useConfirmationStore } from '@/store'
 import { ButtonVariant } from '@/type/FormInputs'
+import { redirect } from 'next/navigation'
 
 const useUsers = () => {
   const { setConfirmation } = useConfirmationStore()
@@ -47,6 +48,10 @@ const useUsers = () => {
     handleDetails('open', id)
   }
 
+  const onAdd = () => {
+    redirect('/dashboard/users/form')
+  }
+
   const onUpdate = (id: number) => {
     console.log(id)
   }
@@ -70,6 +75,7 @@ const useUsers = () => {
     detailsState,
     search,
     onRowClick,
+    onAdd,
     onUpdate,
     onDelete,
     handleDetails,
