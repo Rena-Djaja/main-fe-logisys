@@ -21,6 +21,8 @@ import {
 import Link from 'next/link'
 import { AuthContext } from '@/components/shared/context/AuthContext'
 import { AuthContextProps } from '@/type/Auth'
+import Confirmation from '@/components/shared/Alert/Confirmation'
+import { Toaster } from '@/components/shared/ui/sonner'
 
 const MainLayout = ({
   children,
@@ -30,10 +32,13 @@ const MainLayout = ({
   authData: AuthContextProps
 }) => {
   const pathname = usePathname()
-  const segments = pathname.split('/').filter(Boolean)
+  const segmentedPathname = pathname.split('/').filter(Boolean)
+  const segments = segmentedPathname.filter((each) => isNaN(Number(each)))
 
   return (
     <AuthContext.Provider value={authData}>
+      <Toaster position={'top-right'} richColors />
+      <Confirmation />
       <SidebarProvider
       // style={
       //   {
@@ -81,7 +86,7 @@ const MainLayout = ({
               </Breadcrumb>
             </div>
           </header>
-          <div className="flex flex-1 flex-col gap-4 p-4 pt-0">{children}</div>
+          <div className="flex flex-1 flex-col gap-4 p-8 pt-0">{children}</div>
         </SidebarInset>
       </SidebarProvider>
     </AuthContext.Provider>

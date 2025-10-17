@@ -7,7 +7,8 @@ import axios, {
   AxiosResponse,
   Method,
 } from 'axios'
-import { getCookie } from '@/lib/cookies'
+import { getCookie, removeCookie } from '@/lib/cookies'
+import { toast } from 'sonner'
 
 export interface CallAPIOptions {
   checkToken: boolean
@@ -99,6 +100,13 @@ export const callAPI: CallAPI = async (url, requestData, options) => {
     })
     .catch((err: AxiosError) => {
       const { response } = err
+      if (response?.status === 401 && window.location.pathname != '/login') {
+        removeCookie('access_token')
+        toast.error('Your session has expired. Please log in again')
+        setTimeout(() => {
+          window.location.href = '/login'
+        }, 2000)
+      }
       return response || {}
     })
 }

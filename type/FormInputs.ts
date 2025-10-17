@@ -1,5 +1,5 @@
 import { Control, FieldValue, FieldValues } from 'react-hook-form'
-import { ForwardRefExoticComponent, ReactNode, RefAttributes } from 'react'
+import { ForwardRefExoticComponent, RefAttributes } from 'react'
 import { LucideProps } from 'lucide-react'
 
 export interface CustomInputProps {
@@ -35,13 +35,15 @@ export interface OptionType {
 export interface CustomButtonProps {
   type?: ButtonType
   label?: string
-  icon?: () => ReactNode
+  icon?: ForwardRefExoticComponent<
+    Omit<LucideProps, 'ref'> & RefAttributes<SVGSVGElement>
+  >
   disabled?: boolean
   isLoading?: boolean
   size?: ButtonSize | null | undefined
   variant?: ButtonVariant
   link?: string
-  className?: string
+  onClick?: any
 }
 
 export enum InputType {
@@ -68,6 +70,7 @@ export enum ButtonSize {
 }
 
 export enum ButtonVariant {
+  DEFAULT = 'default',
   OUTLINE = 'outline',
   SECONDARY = 'secondary',
   GHOST = 'ghost',

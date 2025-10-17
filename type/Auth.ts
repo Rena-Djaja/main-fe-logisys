@@ -22,9 +22,11 @@ export interface AuthInfoProps {
   id: number
   name: string
   email: string
-  roleID: number
-  createdAt: string
-  updatedAt: string
+  role_id: number
+  role_name: string
+  reset_password: boolean
+  created_at: string
+  updated_at: string
 }
 
 export interface PermissionItemProps {

@@ -4,7 +4,7 @@ import React from 'react'
 import useLoginForm from '@/components/LoginPage/useLoginForm'
 import { Form } from '@/components/shared/ui/form'
 import CustomInput from '@/components/shared/FormInputs/CustomInput'
-import { FieldGroup } from '@/components/shared/ui/field'
+import { Field, FieldGroup } from '@/components/shared/ui/field'
 import CustomButton from '@/components/shared/FormInputs/CustomButton'
 import { ButtonType, ButtonVariant, InputType } from '@/type/FormInputs'
 import { Eye, EyeClosed } from 'lucide-react'
@@ -47,14 +47,13 @@ const LoginForm = () => {
             <CustomButton
               label={'Forgot your password?'}
               variant={ButtonVariant.LINK}
-              className="!p-0"
               type={ButtonType.BUTTON}
               link={'/forgot-password'}
             />
           </div>
-          <div>
+          <Field>
             <CustomButton label={'Sign in'} isLoading={isLoading} />
-          </div>
+          </Field>
         </FieldGroup>
       </form>
     </Form>

@@ -25,7 +25,7 @@ import {
 } from '@/components/shared/ui/popover'
 import { FC, useEffect, useState } from 'react'
 import { ButtonType, CustomSelectProps, OptionType } from '@/type/FormInputs'
-import { Check, X } from 'lucide-react'
+import { Check, ChevronsUpDown, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { ScrollArea } from '@/components/shared/ui/scroll-area'
 import {
@@ -36,10 +36,19 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/shared/ui/form'
+import { Spinner } from '@/components/shared/ui/spinner'
 
 const CustomSelect: FC<CustomSelectProps> = (props) => {
-  const { label, placeholder, options, multiple, control, name, helperText } =
-    props
+  const {
+    isLoading,
+    label,
+    placeholder,
+    options,
+    multiple,
+    control,
+    name,
+    helperText,
+  } = props
   const [isMounted, setIsMounted] = useState(false)
   const [open, setOpen] = React.useState(false)
   const isDesktop = useMediaQuery('(min-width: 768px)')
@@ -89,6 +98,7 @@ const CustomSelect: FC<CustomSelectProps> = (props) => {
                         handleSelect={handleSelect}
                         multiple={!!multiple}
                         handleClear={handleClear}
+                        isLoading={isLoading}
                       />
                     </div>
                   </PopoverTrigger>
@@ -150,6 +160,7 @@ const CustomSelect: FC<CustomSelectProps> = (props) => {
                       handleSelect={handleSelect}
                       multiple={!!multiple}
                       handleClear={handleClear}
+                      isLoading={isLoading}
                     />
                   </div>
                 </DrawerTrigger>
@@ -187,12 +198,21 @@ const SelectionInput = (props: {
   handleSelect: (value: string | number) => void
   multiple: boolean
   handleClear: () => void
+  isLoading?: boolean
 }) => {
-  const { value, options, placeholder, handleSelect, handleClear, multiple } =
-    props
+  const {
+    value,
+    options,
+    placeholder,
+    handleSelect,
+    handleClear,
+    multiple,
+    isLoading,
+  } = props
 
   return (
     <Button
+      disabled={isLoading}
       type={ButtonType.BUTTON}
       variant="outline"
       className="w-full flex justify-between items-center font-normal h-full"
@@ -237,10 +257,16 @@ const SelectionInput = (props: {
       ) : (
         <>{placeholder}</>
       )}
-      {(multiple ? !!value?.length : !!value) && (
-        <div onClick={handleClear}>
-          <X />
-        </div>
+      {!isLoading ? (
+        (multiple ? !!value?.length : !!value) ? (
+          <div onClick={handleClear}>
+            <X />
+          </div>
+        ) : (
+          <ChevronsUpDown className="opacity-50" />
+        )
+      ) : (
+        <Spinner />
       )}
     </Button>
   )
