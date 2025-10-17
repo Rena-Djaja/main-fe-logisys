@@ -2,7 +2,7 @@
 
 import { TableHeaderProps } from '@/type/CustomTable'
 import { UserProps } from '@/type/User'
-import { cn, formattedDate } from '@/lib/utils'
+import { formattedDate } from '@/lib/utils'
 import { Badge } from '@/components/shared/ui/badge'
 import StatusBadge from '@/components/shared/StatusBadge/StatusBadge'
 
