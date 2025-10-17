@@ -36,3 +36,7 @@ export type UserFormInputs = z.infer<typeof userFormValidationSchema>
 export interface PostUserRequest extends UserFormInputs {
   id?: number
 }
+
+export interface DeleteUserRequest {
+  id: number
+}

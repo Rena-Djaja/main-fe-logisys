@@ -3,14 +3,22 @@
 import { useState } from 'react'
 import useCommonApi from '@/components/shared/Hooks/CommonApi/useCommonApi'
 import { UserAPI } from '@/constant/APIUrls'
-import { CommonDetailsStateProps, CommonFilterRequest } from '@/type/Common'
-import { UserListResponse } from '@/type/User'
+import {
+  CommonApiResponse,
+  CommonDetailsStateProps,
+  CommonFilterRequest,
+} from '@/type/Common'
+import { DeleteUserRequest, UserListResponse } from '@/type/User'
 import { useConfirmationStore } from '@/store'
 import { ButtonVariant } from '@/type/FormInputs'
 import { redirect } from 'next/navigation'
+import { callAPI } from '@/lib/fetchers'
+import { apiStatusChecker } from '@/lib/utils'
+import { toast } from 'sonner'
 
 const useUsers = () => {
-  const { setConfirmation } = useConfirmationStore()
+  const { setConfirmation, setLoading, closeConfirmation } =
+    useConfirmationStore()
 
   const [detailsState, setDetailsState] = useState<CommonDetailsStateProps>({
     id: null,
@@ -23,10 +31,15 @@ const useUsers = () => {
     search: '',
   })
 
-  const { data: userList, isValidating } = useCommonApi<
-    CommonFilterRequest,
-    UserListResponse
-  >(UserAPI.GET_USER_LIST, filter, { method: 'GET' })
+  const {
+    data: userList,
+    isValidating,
+    mutate,
+  } = useCommonApi<CommonFilterRequest, UserListResponse>(
+    UserAPI.GET_USER_LIST,
+    filter,
+    { method: 'GET' }
+  )
 
   const search = (key: keyof CommonFilterRequest, value: number | string) => {
     const newState = { ...filter, [key]: value }
@@ -64,8 +77,45 @@ const useUsers = () => {
         'This action cannot be undone. This will permanently delete this account and remove the data.',
       confirmButtonVariant: ButtonVariant.DESTRUCTIVES,
       confirmButtonText: "Yes, I'm sure",
-      onConfirm: () => console.log(id),
+      onConfirm: () => onConfirmDelete(id),
     })
+  }
+
+  const onConfirmDelete = async (id: number) => {
+    setLoading(true)
+
+    try {
+      const apiRes = await callAPI<DeleteUserRequest, CommonApiResponse>(
+        UserAPI.POST_USER,
+        { id },
+        { method: 'DELETE' }
+      )
+
+      const { status, data: deleteUserRes } = apiRes
+
+      if (apiStatusChecker(status) && deleteUserRes) {
+        handleSuccessDelete(deleteUserRes)
+      } else {
+        handleFailureDelete(deleteUserRes)
+      }
+    } catch (err) {
+      handleFailureDelete()
+      throw err
+    } finally {
+      setLoading(false)
+      closeConfirmation()
+    }
+  }
+
+  const handleSuccessDelete = (response: CommonApiResponse) => {
+    toast.success(response.message)
+    mutate()
+  }
+
+  const handleFailureDelete = (response?: CommonApiResponse) => {
+    toast.error(
+      response?.error || 'Something went wrong. Please try again later.'
+    )
   }
 
   return {
