@@ -1,22 +1,37 @@
 'use client'
 
-import React from 'react'
+import React, { FC } from 'react'
 import { Form } from '@/components/shared/ui/form'
 import useUserForm from '@/components/UsersPage/Form/useUserForm'
 import CustomInput from '@/components/shared/FormInputs/CustomInput'
 import CustomSelect from '@/components/shared/FormInputs/CustomSelect'
 import CustomButton from '@/components/shared/FormInputs/CustomButton'
 import { ButtonType, ButtonVariant } from '@/type/FormInputs'
+import { UserFormProps } from '@/type/User'
+import { Spinner } from '@/components/shared/ui/spinner'
 
-const UserForm = () => {
-  const { form, roleListData, isRoleLoading, isSubmitting, onSubmit } =
-    useUserForm()
+const UserForm: FC<UserFormProps> = (props) => {
+  const { id } = props
+  const { form, roleListData, isRoleLoading, isLoading, onSubmit } =
+    useUserForm(props)
+
+  if (isLoading.form) {
+    return (
+      <div className="w-full flex justify-center items-center py-[20rem]">
+        <Spinner className="size-14" />
+      </div>
+    )
+  }
 
   return (
     <div className="mt-8 w-full flex flex-col gap-10">
       <div className="w-full flex flex-col">
-        <h1 className="font-semibold text-[2rem]">Add User</h1>
-        <span className="font-medium text-[0.95rem]">Add new user record</span>
+        <h1 className="font-semibold text-[2rem]">
+          {!!id ? 'Edit' : 'Add'} User
+        </h1>
+        <span className="font-medium text-[0.95rem]">
+          {!!id ? 'Update' : 'Add new'} user record
+        </span>
       </div>
       <Form {...form}>
         <form
@@ -37,6 +52,7 @@ const UserForm = () => {
               name={'email'}
               control={form.control}
               placeholder={'Enter email address'}
+              disabled={!!id}
             />
           </div>
           <div>
@@ -60,9 +76,9 @@ const UserForm = () => {
               variant={ButtonVariant.OUTLINE}
               label={'Cancel'}
               link={'/dashboard/users'}
-              disabled={isSubmitting}
+              disabled={isLoading.submit}
             />
-            <CustomButton label={'Save'} isLoading={isSubmitting} />
+            <CustomButton label={'Save'} isLoading={isLoading.submit} />
           </div>
         </form>
       </Form>

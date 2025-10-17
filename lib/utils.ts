@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from 'clsx'
 import { twMerge } from 'tailwind-merge'
+import { removeCookie } from '@/lib/cookies'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -21,4 +22,9 @@ export const formattedDate = (dateString?: string, withTime = false) => {
       minute: 'numeric',
     }),
   })
+}
+
+export const handleLogout = () => {
+  removeCookie('access_token')
+  return (window.location.href = '/login')
 }

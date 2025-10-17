@@ -32,7 +32,8 @@ const MainLayout = ({
   authData: AuthContextProps
 }) => {
   const pathname = usePathname()
-  const segments = pathname.split('/').filter(Boolean)
+  const segmentedPathname = pathname.split('/').filter(Boolean)
+  const segments = segmentedPathname.filter((each) => isNaN(Number(each)))
 
   return (
     <AuthContext.Provider value={authData}>

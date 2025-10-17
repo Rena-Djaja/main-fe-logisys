@@ -1,10 +1,16 @@
 'use client'
 
 import { useForm } from 'react-hook-form'
-import { PostUserRequest } from '@/type/User'
+import {
+  PostUserRequest,
+  UserDetailsRequest,
+  UserDetailsResponse,
+  UserFormInputs,
+  UserFormProps,
+} from '@/type/User'
 import useCommonApi from '@/components/shared/Hooks/CommonApi/useCommonApi'
 import { RoleAPI, UserAPI } from '@/constant/APIUrls'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { CommonApiResponse, CommonFilterRequest } from '@/type/Common'
 import { RoleListResponse } from '@/type/Role'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -14,9 +20,10 @@ import { apiStatusChecker } from '@/lib/utils'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
 
-const useUserForm = () => {
+const useUserForm = (props: UserFormProps) => {
+  const { id } = props
   const { push } = useRouter()
-  const form = useForm<PostUserRequest>({
+  const form = useForm<UserFormInputs>({
     defaultValues: {
       name: '',
       email: '',
@@ -25,7 +32,10 @@ const useUserForm = () => {
     resolver: zodResolver(userFormValidationSchema),
   })
 
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isLoading, setIsLoading] = useState({
+    form: false,
+    submit: false,
+  })
   const [filter] = useState<CommonFilterRequest>({
     page: 1,
     per_page: 10,
@@ -36,6 +46,49 @@ const useUserForm = () => {
     CommonFilterRequest,
     RoleListResponse
   >(RoleAPI.GET_ROLE_LIST, filter, { method: 'GET' })
+
+  const handleSuccessFetchDetails = (response: UserDetailsResponse) => {
+    const { data } = response
+
+    ;['name', 'email', 'role_id'].forEach((each) => {
+      form.setValue(
+        each as keyof UserFormInputs,
+        data[each as keyof PostUserRequest]
+      )
+    })
+  }
+
+  const handleFailureFetchDetails = (response?: UserDetailsResponse) => {
+    toast.error(
+      response?.error || 'Something went wrong. Please try again later'
+    )
+    push('/dashboard/users')
+  }
+
+  const fetchDetails = async () => {
+    setIsLoading((prev) => ({ ...prev, form: true }))
+
+    try {
+      const apiRes = await callAPI<UserDetailsRequest, UserDetailsResponse>(
+        UserAPI.GET_USER_DETAILS,
+        { id: Number(id) },
+        { method: 'GET' }
+      )
+
+      const { data: userDetailsData, status } = apiRes
+
+      if (apiStatusChecker(status) && userDetailsData) {
+        handleSuccessFetchDetails(userDetailsData)
+      } else {
+        handleFailureFetchDetails(userDetailsData)
+      }
+    } catch {
+      handleFailureFetchDetails()
+      throw 'Failed to fetch user details'
+    } finally {
+      setIsLoading((prev) => ({ ...prev, form: false }))
+    }
+  }
 
   const handleSuccess = (response: CommonApiResponse) => {
     toast.success(response.message)
@@ -48,14 +101,17 @@ const useUserForm = () => {
     )
   }
 
-  const onSubmit = async (data: PostUserRequest) => {
-    setIsSubmitting(true)
+  const onSubmit = async (data: UserFormInputs) => {
+    setIsLoading((prev) => ({ ...prev, submit: true }))
 
     try {
       const apiRes = await callAPI<PostUserRequest, CommonApiResponse>(
         UserAPI.POST_USER,
-        data,
-        { method: 'POST' }
+        {
+          ...data,
+          ...(id && { id: Number(id) }),
+        },
+        { method: id ? 'PUT' : 'POST' }
       )
 
       const { status, data: postUserData } = apiRes
@@ -65,20 +121,25 @@ const useUserForm = () => {
       } else {
         handleFailure(postUserData)
       }
-    } catch (error) {
+    } catch (err) {
       handleFailure()
-      console.error(error)
-      throw error
+      throw err
     } finally {
-      setIsSubmitting(false)
+      setIsLoading((prev) => ({ ...prev, submit: false }))
     }
   }
+
+  useEffect(() => {
+    if (id) {
+      fetchDetails()
+    }
+  }, [id])
 
   return {
     form,
     roleListData,
     isRoleLoading,
-    isSubmitting,
+    isLoading,
     onSubmit,
   }
 }

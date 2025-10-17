@@ -53,7 +53,7 @@ const useUsers = () => {
   }
 
   const onUpdate = (id: number) => {
-    console.log(id)
+    redirect(`/dashboard/users/form/${id}`)
   }
 
   const onDelete = (id: number) => {

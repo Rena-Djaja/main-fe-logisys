@@ -29,6 +29,7 @@ import {
   useSidebar,
 } from '@/components/shared/ui/sidebar'
 import { Badge } from '@/components/shared/ui/badge'
+import { handleLogout } from '@/lib/utils'
 
 export function UserNav({
   user,
@@ -101,7 +102,7 @@ export function UserNav({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={handleLogout}>
               <LogOut />
               Log out
             </DropdownMenuItem>

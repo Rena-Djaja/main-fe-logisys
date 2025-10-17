@@ -27,4 +27,12 @@ export interface UserDetailsResponse extends CommonApiResponse {
   data: UserProps
 }
 
-export type PostUserRequest = z.infer<typeof userFormValidationSchema>
+export interface UserFormProps {
+  id?: string
+}
+
+export type UserFormInputs = z.infer<typeof userFormValidationSchema>
+
+export interface PostUserRequest extends UserFormInputs {
+  id?: number
+}

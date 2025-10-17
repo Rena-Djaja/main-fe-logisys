@@ -32,7 +32,7 @@ export const userListHeaders: TableHeaderProps[] = [
     key: 'updated_at',
     title: 'Last Updated',
     customComponent: ({ data }: { data: UserProps }) => (
-      <span>{formattedDate(data.created_at, true)}</span>
+      <span>{formattedDate(data.updated_at, true)}</span>
     ),
   },
 ]
