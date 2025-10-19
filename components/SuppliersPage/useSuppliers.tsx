@@ -7,6 +7,7 @@ import { ButtonVariant } from '@/type/FormInputs'
 import { useConfirmationStore } from '@/store'
 import useCommonApi from '@/components/shared/Hooks/CommonApi/useCommonApi'
 import { SupplierAPI } from '@/constant/APIUrls'
+import { SupplierListResponse } from '@/type/Supplier'
 
 const useSuppliers = () => {
   const { setConfirmation, setLoading, closeConfirmation } =
@@ -25,7 +26,7 @@ const useSuppliers = () => {
 
   const { data: supplierList, isValidating } = useCommonApi<
     CommonFilterRequest,
-    any
+    SupplierListResponse
   >(SupplierAPI.GET_SUPPLIER_LIST, filter, { method: 'GET' })
 
   const search = (key: keyof CommonFilterRequest, value: number | string) => {

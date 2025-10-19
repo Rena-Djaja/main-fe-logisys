@@ -31,3 +31,8 @@ export interface CommonOwnerProps {
   id: number
   name: string
 }
+
+export interface CommonOwnerProps {
+  id: number
+  name: string
+}
