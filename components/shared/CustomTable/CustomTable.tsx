@@ -28,6 +28,7 @@ const CustomTable: FC<CustomTableProps> = (props) => {
     headers,
     data,
     isLoading,
+    allowDetails = true,
     onChange,
     totalData,
     page,
@@ -66,7 +67,7 @@ const CustomTable: FC<CustomTableProps> = (props) => {
                   {headers.map((h, headerIdx) => (
                     <TableCell
                       key={`cell-${rowIdx}-${headerIdx}`}
-                      onClick={() => onRowClick(each.id)}
+                      onClick={() => allowDetails && onRowClick(each.id)}
                     >
                       {h?.customComponent ? (
                         <h.customComponent data={each} />
@@ -75,7 +76,7 @@ const CustomTable: FC<CustomTableProps> = (props) => {
                       )}
                     </TableCell>
                   ))}
-                  <TableCell>
+                  <TableCell className="!w-[4rem]">
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <Button variant="ghost" className="h-8 w-8 p-0">
@@ -85,9 +86,11 @@ const CustomTable: FC<CustomTableProps> = (props) => {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem onClick={() => onRowClick(each.id)}>
-                          Details
-                        </DropdownMenuItem>
+                        {allowDetails && (
+                          <DropdownMenuItem onClick={() => onRowClick(each.id)}>
+                            Details
+                          </DropdownMenuItem>
+                        )}
                         <DropdownMenuItem onClick={() => onUpdate(each.id)}>
                           Edit
                         </DropdownMenuItem>

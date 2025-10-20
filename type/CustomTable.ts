@@ -5,6 +5,7 @@ export interface CustomTableProps {
   data: { [key: string]: any }[] | []
   onChange: (val: number) => void
   isLoading?: boolean
+  allowDetails?: boolean
   page: number
   perPage: number
   totalData: number
