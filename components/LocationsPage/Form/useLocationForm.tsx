@@ -2,28 +2,25 @@
 
 import { useForm } from 'react-hook-form'
 import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { supplierFormValidationSchema } from '@/validations/SupplierValidation'
-import { callAPI } from '@/lib/fetchers'
-import { SupplierAPI } from '@/constant/APIUrls'
+import { locationFormValidationSchema } from '@/validations/LocationValidation'
 import {
-  SupplierDetailsRequest,
-  SupplierDetailsResponse,
-  SupplierFormInputs,
-} from '@/type/Supplier'
+  LocationDetailsRequest,
+  LocationDetailsResponse,
+  LocationFormInputs,
+} from '@/type/Location'
+import { callAPI } from '@/lib/fetchers'
 import { CommonApiResponse, CommonFormProps } from '@/type/Common'
+import { LocationAPI } from '@/constant/APIUrls'
 import { apiStatusChecker } from '@/lib/utils'
 import { toast } from 'sonner'
-import { useRouter } from 'next/navigation'
 
-const useSupplierForm = (props: CommonFormProps) => {
-  const { id } = props
-  const form = useForm<SupplierFormInputs>({
-    resolver: zodResolver(supplierFormValidationSchema),
+const useLocationForm = ({ id }: CommonFormProps) => {
+  const form = useForm<LocationFormInputs>({
+    resolver: zodResolver(locationFormValidationSchema),
     defaultValues: {
       name: '',
-      location: '',
-      phone_number: '',
     },
   })
 
@@ -34,22 +31,22 @@ const useSupplierForm = (props: CommonFormProps) => {
     submit: false,
   })
 
-  const handleSuccessFetchDetails = (response: SupplierDetailsResponse) => {
+  const handleSuccessFetchDetails = (response: LocationDetailsResponse) => {
     const { data } = response
 
-    ;['name', 'location', 'phone_number'].forEach((each) => {
+    ;['name'].forEach((each) => {
       form.setValue(
-        each as keyof SupplierFormInputs,
-        data[each as keyof SupplierFormInputs] || ''
+        each as keyof LocationFormInputs,
+        data[each as keyof LocationFormInputs]
       )
     })
   }
 
-  const handleFailureFetchDetails = (response?: SupplierDetailsResponse) => {
+  const handleFailureFetchDetails = (response?: LocationDetailsResponse) => {
     toast.error(
       response?.error || 'Something went wrong. Please try again later'
     )
-    push('/dashboard/suppliers')
+    push('/dashboard/locations')
   }
 
   const fetchDetails = async () => {
@@ -57,16 +54,16 @@ const useSupplierForm = (props: CommonFormProps) => {
 
     try {
       const apiRes = await callAPI<
-        SupplierDetailsRequest,
-        SupplierDetailsResponse
-      >(SupplierAPI.GET_SUPPLIER_DETAILS, { id: Number(id) }, { method: 'GET' })
+        LocationDetailsRequest,
+        LocationDetailsResponse
+      >(LocationAPI.GET_LOCATION_DETAILS, { id: Number(id) }, { method: 'GET' })
 
-      const { data: supplierDetailsData, status } = apiRes
+      const { data: locationDetailsRes, status } = apiRes
 
-      if (apiStatusChecker(status) && supplierDetailsData) {
-        handleSuccessFetchDetails(supplierDetailsData)
+      if (apiStatusChecker(status) && locationDetailsRes) {
+        handleSuccessFetchDetails(locationDetailsRes)
       } else {
-        handleFailureFetchDetails(supplierDetailsData)
+        handleFailureFetchDetails(locationDetailsRes)
       }
     } catch {
       handleFailureFetchDetails()
@@ -78,7 +75,7 @@ const useSupplierForm = (props: CommonFormProps) => {
 
   const handleSuccess = (response: CommonApiResponse) => {
     toast.success(response.message)
-    push('/dashboard/suppliers')
+    push('/dashboard/locations')
   }
 
   const handleFailure = (response?: CommonApiResponse) => {
@@ -87,26 +84,25 @@ const useSupplierForm = (props: CommonFormProps) => {
     )
   }
 
-  const onSubmit = async (data: SupplierFormInputs) => {
+  const onSubmit = async (data: LocationFormInputs) => {
     setIsLoading((prev) => ({ ...prev, submit: true }))
 
     try {
-      const apiRes = await callAPI<SupplierFormInputs, CommonApiResponse>(
-        SupplierAPI.POST_SUPPLIER,
+      const apiRes = await callAPI<LocationFormInputs, CommonApiResponse>(
+        LocationAPI.POST_LOCATION,
         {
           ...data,
           ...(id && { id: Number(id) }),
-          phone_number: data.phone_number || null,
         },
         { method: id ? 'PUT' : 'POST' }
       )
 
-      const { data: postSupplierRes, status } = apiRes
+      const { data: postLocationRes, status } = apiRes
 
-      if (apiStatusChecker(status) && postSupplierRes) {
-        handleSuccess(postSupplierRes)
+      if (apiStatusChecker(status) && postLocationRes) {
+        handleSuccess(postLocationRes)
       } else {
-        handleFailure(postSupplierRes)
+        handleFailure(postLocationRes)
       }
     } catch (err) {
       handleFailure()
@@ -129,4 +125,4 @@ const useSupplierForm = (props: CommonFormProps) => {
   }
 }
 
-export default useSupplierForm
+export default useLocationForm

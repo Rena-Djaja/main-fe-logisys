@@ -2,6 +2,7 @@ import {
   ArrowRightLeft,
   Boxes,
   LayoutGrid,
+  MapIcon,
   Network,
   UsersRound,
 } from 'lucide-react'
@@ -33,6 +34,15 @@ export const menuList: MenuListProps[] = [
         resourceID: [
           PermissionTypes.READ_SUPPLIER,
           PermissionTypes.WRITE_SUPPLIER,
+        ],
+      },
+      {
+        title: 'Market Locations',
+        url: '/dashboard/locations',
+        icon: MapIcon,
+        resourceID: [
+          PermissionTypes.READ_LOCATION,
+          PermissionTypes.WRITE_LOCATION,
         ],
       },
       {
@@ -78,7 +88,7 @@ export const menuList: MenuListProps[] = [
         title: 'Inventory',
         url: '/dashboard/inventory',
         icon: Boxes,
-        resourceID: [PermissionTypes.READ_INVENTORY],
+        resourceID: [PermissionTypes.PUBLIC],
       },
       {
         title: 'Transactions',
@@ -87,7 +97,7 @@ export const menuList: MenuListProps[] = [
           {
             title: 'Purchases',
             url: '/dashboard/purchase',
-            resourceID: [PermissionTypes.READ_INVENTORY],
+            resourceID: [PermissionTypes.PUBLIC],
           },
           {
             title: 'Sales',
@@ -102,7 +112,7 @@ export const menuList: MenuListProps[] = [
           {
             title: 'In & Out',
             url: '/dashboard/in-out',
-            resourceID: [PermissionTypes.READ_INVENTORY],
+            resourceID: [PermissionTypes.PUBLIC],
           },
         ],
         resourceID: [PermissionTypes.PUBLIC],
@@ -113,4 +123,5 @@ export const menuList: MenuListProps[] = [
 
 export const breadcrumbMap: Record<string, string> = {
   users: 'User Management',
+  locations: 'Market Locations',
 }

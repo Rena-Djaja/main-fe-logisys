@@ -7,6 +7,12 @@ export const AuthAPI = {
   GET_PERMISSION_LIST: privateBaseURL + '/auth/permission/list',
 }
 
+export const LocationAPI = {
+  GET_LOCATION_LIST: baseURL + '/location/list',
+  GET_LOCATION_DETAILS: baseURL + '/location/details',
+  POST_LOCATION: baseURL + '/location',
+}
+
 export const UserAPI = {
   GET_USER_LIST: baseURL + '/user/list',
   GET_USER_DETAILS: baseURL + '/user/details',
