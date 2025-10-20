@@ -3,7 +3,6 @@ import {
   CommonOwnerProps,
   PaginationResponse,
 } from '@/type/Common'
-import { UserProps } from '@/type/User'
 import { z } from 'zod'
 import { supplierFormValidationSchema } from '@/validations/SupplierValidation'
 

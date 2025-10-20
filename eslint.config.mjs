@@ -23,10 +23,12 @@ export default [
   {
     files: ['**/*.{ts,tsx}'],
     rules: {
+      '@typescript-eslint/no-unused-vars': 'error',
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/triple-slash-reference': 'off',
       'react-hooks/set-state-in-effect': 'off',
       'react-hooks/purity': 'off',
+      'react-hooks/exhaustive-deps': 'off',
     },
   },
 ]
