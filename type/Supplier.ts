@@ -4,6 +4,8 @@ import {
   PaginationResponse,
 } from '@/type/Common'
 import { UserProps } from '@/type/User'
+import { z } from 'zod'
+import { supplierFormValidationSchema } from '@/validations/SupplierValidation'
 
 export interface SupplierProps {
   id: number
@@ -28,3 +30,5 @@ export interface SupplierDetailsRequest {
 export interface SupplierDetailsResponse extends CommonApiResponse {
   data: SupplierProps
 }
+
+export type SupplierFormInputs = z.infer<typeof supplierFormValidationSchema>

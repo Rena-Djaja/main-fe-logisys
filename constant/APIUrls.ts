@@ -16,6 +16,7 @@ export const UserAPI = {
 export const SupplierAPI = {
   GET_SUPPLIER_LIST: baseURL + '/supplier/list',
   GET_SUPPLIER_DETAILS: baseURL + '/supplier/details',
+  POST_SUPPLIER: baseURL + '/supplier',
 }
 
 export const RoleAPI = {

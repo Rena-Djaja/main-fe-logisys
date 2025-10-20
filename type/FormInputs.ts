@@ -49,6 +49,7 @@ export interface CustomButtonProps {
 export enum InputType {
   TEXT = 'text',
   PASSWORD = 'password',
+  TEXTAREA = 'textarea',
 }
 
 export enum IconPlacementType {

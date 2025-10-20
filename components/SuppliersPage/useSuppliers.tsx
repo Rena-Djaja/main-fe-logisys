@@ -50,11 +50,11 @@ const useSuppliers = () => {
   }
 
   const onAdd = () => {
-    redirect('/dashboard/users/form')
+    redirect('/dashboard/suppliers/form')
   }
 
   const onUpdate = (id: number) => {
-    redirect(`/dashboard/users/form/${id}`)
+    redirect(`/dashboard/suppliers/form/${id}`)
   }
 
   const onDelete = (id: number) => {
