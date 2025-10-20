@@ -23,7 +23,7 @@ const LocationsPage = () => {
   return (
     <div className="mt-8 w-full flex flex-col gap-10">
       <div className="w-full flex flex-col">
-        <h1 className="font-semibold text-[2rem]">Location List</h1>
+        <h1 className="font-semibold text-[2rem]">Market Location List</h1>
         <span className="font-medium text-[0.95rem]">
           Manage all the location listed below
         </span>
@@ -31,7 +31,7 @@ const LocationsPage = () => {
       <div className="w-full flex flex-col gap-6">
         <div className="w-full flex justify-between">
           <div className="w-full flex gap-2 font-semibold text-[1.25rem]">
-            <span>All suppliers</span>
+            <span>All locations</span>
             <span className="opacity-70">
               {locationList?.pagination.total_data}
             </span>

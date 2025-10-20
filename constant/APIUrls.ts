@@ -9,6 +9,7 @@ export const AuthAPI = {
 
 export const LocationAPI = {
   GET_LOCATION_LIST: baseURL + '/location/list',
+  POST_LOCATION: baseURL + '/location',
 }
 
 export const UserAPI = {
