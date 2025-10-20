@@ -1,13 +1,20 @@
 'use client'
 
 import { useState } from 'react'
-import { CommonDetailsStateProps, CommonFilterRequest } from '@/type/Common'
+import {
+  CommonApiResponse,
+  CommonDetailsStateProps,
+  CommonFilterRequest,
+} from '@/type/Common'
 import { redirect } from 'next/navigation'
 import { ButtonVariant } from '@/type/FormInputs'
 import { useConfirmationStore } from '@/store'
 import useCommonApi from '@/components/shared/Hooks/CommonApi/useCommonApi'
 import { SupplierAPI } from '@/constant/APIUrls'
-import { SupplierListResponse } from '@/type/Supplier'
+import { DeleteSupplierRequest, SupplierListResponse } from '@/type/Supplier'
+import { callAPI } from '@/lib/fetchers'
+import { apiStatusChecker } from '@/lib/utils'
+import { toast } from 'sonner'
 
 const useSuppliers = () => {
   const { setConfirmation, setLoading, closeConfirmation } =
@@ -24,10 +31,15 @@ const useSuppliers = () => {
     search: '',
   })
 
-  const { data: supplierList, isValidating } = useCommonApi<
-    CommonFilterRequest,
-    SupplierListResponse
-  >(SupplierAPI.GET_SUPPLIER_LIST, filter, { method: 'GET' })
+  const {
+    data: supplierList,
+    isValidating,
+    mutate,
+  } = useCommonApi<CommonFilterRequest, SupplierListResponse>(
+    SupplierAPI.GET_SUPPLIER_LIST,
+    filter,
+    { method: 'GET' }
+  )
 
   const search = (key: keyof CommonFilterRequest, value: number | string) => {
     const newState = { ...filter, [key]: value }
@@ -65,8 +77,45 @@ const useSuppliers = () => {
         'This action cannot be undone. This will permanently delete this account and remove the data.',
       confirmButtonVariant: ButtonVariant.DESTRUCTIVES,
       confirmButtonText: "Yes, I'm sure",
-      onConfirm: () => console.log(id),
+      onConfirm: () => onConfirmDelete(id),
     })
+  }
+
+  const onConfirmDelete = async (id: number) => {
+    setLoading(true)
+
+    try {
+      const apiRes = await callAPI<DeleteSupplierRequest, CommonApiResponse>(
+        SupplierAPI.POST_SUPPLIER,
+        { id },
+        { method: 'DELETE' }
+      )
+
+      const { status, data: deleteSupplierRes } = apiRes
+
+      if (apiStatusChecker(status) && deleteSupplierRes) {
+        handleSuccessDelete(deleteSupplierRes)
+      } else {
+        handleFailureDelete(deleteSupplierRes)
+      }
+    } catch (err) {
+      handleFailureDelete()
+      throw err
+    } finally {
+      setLoading(false)
+      closeConfirmation()
+    }
+  }
+
+  const handleSuccessDelete = (response: CommonApiResponse) => {
+    toast.success(response.message)
+    mutate()
+  }
+
+  const handleFailureDelete = (response?: CommonApiResponse) => {
+    toast.error(
+      response?.error || 'Something went wrong. Please try again later.'
+    )
   }
 
   return {
