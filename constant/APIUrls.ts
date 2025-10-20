@@ -13,6 +13,12 @@ export const UserAPI = {
   POST_USER: baseURL + '/user',
 }
 
+export const SupplierAPI = {
+  GET_SUPPLIER_LIST: baseURL + '/supplier/list',
+  GET_SUPPLIER_DETAILS: baseURL + '/supplier/details',
+  POST_SUPPLIER: baseURL + '/supplier',
+}
+
 export const RoleAPI = {
   GET_ROLE_LIST: baseURL + '/role/list',
 }

@@ -71,7 +71,7 @@ const CustomTable: FC<CustomTableProps> = (props) => {
                       {h?.customComponent ? (
                         <h.customComponent data={each} />
                       ) : (
-                        <span>{each?.[h.key]}</span>
+                        <span>{each?.[h.key] || '-'}</span>
                       )}
                     </TableCell>
                   ))}

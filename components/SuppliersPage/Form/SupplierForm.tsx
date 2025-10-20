@@ -1,19 +1,16 @@
 'use client'
 
 import React, { FC } from 'react'
-import { Form } from '@/components/shared/ui/form'
-import useUserForm from '@/components/UsersPage/Form/useUserForm'
-import CustomInput from '@/components/shared/FormInputs/CustomInput'
-import CustomSelect from '@/components/shared/FormInputs/CustomSelect'
-import CustomButton from '@/components/shared/FormInputs/CustomButton'
-import { ButtonType, ButtonVariant } from '@/type/FormInputs'
-import { Spinner } from '@/components/shared/ui/spinner'
 import { CommonFormProps } from '@/type/Common'
+import { Form } from '@/components/shared/ui/form'
+import CustomInput from '@/components/shared/FormInputs/CustomInput'
+import CustomButton from '@/components/shared/FormInputs/CustomButton'
+import { ButtonType, ButtonVariant, InputType } from '@/type/FormInputs'
+import useSupplierForm from '@/components/SuppliersPage/Form/useSupplierForm'
+import { Spinner } from '@/components/shared/ui/spinner'
 
-const UserForm: FC<CommonFormProps> = (props) => {
-  const { id } = props
-  const { form, roleListData, isRoleLoading, isLoading, onSubmit } =
-    useUserForm(props)
+const SupplierForm: FC<CommonFormProps> = ({ id }) => {
+  const { form, isLoading, onSubmit } = useSupplierForm({ id })
 
   if (isLoading.form) {
     return (
@@ -27,10 +24,10 @@ const UserForm: FC<CommonFormProps> = (props) => {
     <div className="mt-8 w-full flex flex-col gap-10">
       <div className="w-full flex flex-col">
         <h1 className="font-semibold text-[2rem]">
-          {!!id ? 'Edit' : 'Add'} User
+          {!!id ? 'Edit' : 'Add'} Supplier
         </h1>
         <span className="font-medium text-[0.95rem]">
-          {!!id ? 'Update' : 'Add new'} user record
+          {!!id ? 'Update' : 'Add new'} supplier record
         </span>
       </div>
       <Form {...form}>
@@ -38,36 +35,29 @@ const UserForm: FC<CommonFormProps> = (props) => {
           onSubmit={form.handleSubmit(onSubmit)}
           className="w-full max-w-2xl grid lg:grid-cols-2 gap-x-6 gap-y-10"
         >
-          <div className="lg:col-span-2">
+          <div>
             <CustomInput
-              label={'Full Name'}
+              label={'Company Name'}
               name={'name'}
               control={form.control}
-              placeholder={"Enter user's name"}
+              placeholder={'Enter company name'}
             />
           </div>
           <div>
             <CustomInput
-              label={'Email'}
-              name={'email'}
+              label={'Phone'}
+              name={'phone_number'}
               control={form.control}
-              placeholder={'Enter email address'}
-              disabled={!!id}
+              placeholder={'Enter company phone number'}
             />
           </div>
-          <div>
-            <CustomSelect
-              label={'Role'}
-              name={'role_id'}
+          <div className="lg:col-span-2">
+            <CustomInput
+              type={InputType.TEXTAREA}
+              label={'Address'}
+              name={'location'}
               control={form.control}
-              placeholder={'Select a role'}
-              isLoading={isRoleLoading}
-              options={
-                roleListData?.data.map((each) => ({
-                  label: each.name,
-                  value: each.id,
-                })) || []
-              }
+              placeholder={'Enter company address'}
             />
           </div>
           <div className="lg:col-span-2 mt-4 flex gap-2">
@@ -75,7 +65,7 @@ const UserForm: FC<CommonFormProps> = (props) => {
               type={ButtonType.BUTTON}
               variant={ButtonVariant.OUTLINE}
               label={'Cancel'}
-              link={'/dashboard/users'}
+              link={'/dashboard/suppliers'}
               disabled={isLoading.submit}
             />
             <CustomButton label={'Save'} isLoading={isLoading.submit} />
@@ -86,4 +76,4 @@ const UserForm: FC<CommonFormProps> = (props) => {
   )
 }
 
-export default UserForm
+export default SupplierForm

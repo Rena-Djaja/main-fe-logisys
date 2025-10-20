@@ -1,12 +1,15 @@
 import {
   ArrowRightLeft,
   Boxes,
-  HardDriveIcon,
   LayoutGrid,
+  Network,
   UsersRound,
 } from 'lucide-react'
 import { MenuListProps } from '@/type/MainLayout'
 import { PermissionTypes } from '@/type/Auth'
+
+// TODO: Change password menu
+// TODO: Role management menu
 
 export const menuList: MenuListProps[] = [
   {
@@ -21,17 +24,20 @@ export const menuList: MenuListProps[] = [
     ],
   },
   {
-    title: 'app management',
+    title: 'master data',
     menuItems: [
       {
-        title: 'Users',
-        url: '/dashboard/users',
-        icon: UsersRound,
-        resourceID: [PermissionTypes.READ_USER, PermissionTypes.WRITE_USER],
+        title: 'Suppliers',
+        url: '/dashboard/suppliers',
+        icon: Network,
+        resourceID: [
+          PermissionTypes.READ_SUPPLIER,
+          PermissionTypes.WRITE_SUPPLIER,
+        ],
       },
       {
-        title: 'Master Data',
-        icon: HardDriveIcon,
+        title: 'Product Management',
+        icon: Boxes,
         children: [
           {
             title: 'Products',
@@ -42,6 +48,23 @@ export const menuList: MenuListProps[] = [
             title: 'Promo',
             url: '/dashboard/promo',
             resourceID: [PermissionTypes.PUBLIC],
+          },
+        ],
+        resourceID: [PermissionTypes.PUBLIC],
+      },
+      {
+        title: 'User Management',
+        icon: UsersRound,
+        children: [
+          {
+            title: 'Users',
+            url: '/dashboard/users',
+            resourceID: [PermissionTypes.READ_USER, PermissionTypes.WRITE_USER],
+          },
+          {
+            title: 'Roles',
+            url: '/dashboard/roles',
+            resourceID: [PermissionTypes.READ_ROLE, PermissionTypes.WRITE_ROLE],
           },
         ],
         resourceID: [PermissionTypes.PUBLIC],
@@ -89,6 +112,5 @@ export const menuList: MenuListProps[] = [
 ]
 
 export const breadcrumbMap: Record<string, string> = {
-  dashboard: 'Dashboard',
   users: 'User Management',
 }

@@ -1,7 +1,6 @@
 'use client'
 
 import React, { FC } from 'react'
-import { Input } from '@/components/shared/ui/input'
 import { CustomInputProps, InputType } from '@/type/FormInputs'
 import {
   FormControl,
@@ -11,6 +10,8 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/shared/ui/form'
+import { Input } from '@/components/shared/ui/input'
+import { Textarea } from '@/components/shared/ui/textarea'
 
 const CustomInput: FC<CustomInputProps> = (props) => {
   const inputProps = props
@@ -34,22 +35,30 @@ const CustomInput: FC<CustomInputProps> = (props) => {
           <FormItem>
             {!!label && <FormLabel>{label}</FormLabel>}
             <FormControl>
-              <div className="relative">
-                <Input
+              {type === InputType.TEXTAREA ? (
+                <Textarea
                   placeholder={placeholder}
                   {...field}
                   disabled={disabled}
-                  type={type}
                 />
-                <div className="absolute right-4 top-2.5">
-                  {inputProps.icon && (
-                    <inputProps.icon
-                      className="size-4 cursor-pointer"
-                      onClick={iconOnClick}
-                    />
-                  )}
+              ) : (
+                <div className="relative">
+                  <Input
+                    placeholder={placeholder}
+                    {...field}
+                    disabled={disabled}
+                    type={type}
+                  />
+                  <div className="absolute right-4 top-2.5">
+                    {inputProps.icon && (
+                      <inputProps.icon
+                        className="size-4 cursor-pointer"
+                        onClick={iconOnClick}
+                      />
+                    )}
+                  </div>
                 </div>
-              </div>
+              )}
             </FormControl>
             {helperText && (
               <FormDescription className="text-[0.8rem]">

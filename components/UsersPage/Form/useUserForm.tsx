@@ -6,12 +6,15 @@ import {
   UserDetailsRequest,
   UserDetailsResponse,
   UserFormInputs,
-  UserFormProps,
 } from '@/type/User'
 import useCommonApi from '@/components/shared/Hooks/CommonApi/useCommonApi'
 import { RoleAPI, UserAPI } from '@/constant/APIUrls'
 import { useEffect, useState } from 'react'
-import { CommonApiResponse, CommonFilterRequest } from '@/type/Common'
+import {
+  CommonApiResponse,
+  CommonFilterRequest,
+  CommonFormProps,
+} from '@/type/Common'
 import { RoleListResponse } from '@/type/Role'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { userFormValidationSchema } from '@/validations/UserValidation'
@@ -20,7 +23,7 @@ import { apiStatusChecker } from '@/lib/utils'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
 
-const useUserForm = (props: UserFormProps) => {
+const useUserForm = (props: CommonFormProps) => {
   const { id } = props
   const { push } = useRouter()
   const form = useForm<UserFormInputs>({
