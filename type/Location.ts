@@ -21,3 +21,7 @@ export interface LocationDetailsResponse extends CommonApiResponse {
 }
 
 export type LocationFormInputs = z.infer<typeof locationFormValidationSchema>
+
+export interface DeleteLocationRequest {
+  id: number
+}
