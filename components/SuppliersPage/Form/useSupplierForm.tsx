@@ -49,7 +49,7 @@ const useSupplierForm = (props: CommonFormProps) => {
     toast.error(
       response?.error || 'Something went wrong. Please try again later'
     )
-    push('/dashboard/users')
+    push('/dashboard/suppliers')
   }
 
   const fetchDetails = async () => {

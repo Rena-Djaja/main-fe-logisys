@@ -7,9 +7,18 @@ import { ButtonType, ButtonVariant } from '@/type/FormInputs'
 import CustomButton from '@/components/shared/FormInputs/CustomButton'
 import useLocationForm from '@/components/LocationsPage/Form/useLocationForm'
 import { CommonFormProps } from '@/type/Common'
+import { Spinner } from '@/components/shared/ui/spinner'
 
 const LocationForm: FC<CommonFormProps> = ({ id }) => {
-  const { form, isLoading, onSubmit } = useLocationForm()
+  const { form, isLoading, onSubmit } = useLocationForm({ id })
+
+  if (isLoading.form) {
+    return (
+      <div className="w-full flex justify-center items-center py-[20rem]">
+        <Spinner className="size-14" />
+      </div>
+    )
+  }
 
   return (
     <div className="mt-8 w-full flex flex-col gap-10">

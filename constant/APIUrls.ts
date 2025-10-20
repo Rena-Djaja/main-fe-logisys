@@ -9,6 +9,7 @@ export const AuthAPI = {
 
 export const LocationAPI = {
   GET_LOCATION_LIST: baseURL + '/location/list',
+  GET_LOCATION_DETAILS: baseURL + '/location/details',
   POST_LOCATION: baseURL + '/location',
 }
 

@@ -1,18 +1,22 @@
 'use client'
 
 import { useForm } from 'react-hook-form'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { locationFormValidationSchema } from '@/validations/LocationValidation'
-import { LocationFormInputs } from '@/type/Location'
+import {
+  LocationDetailsRequest,
+  LocationDetailsResponse,
+  LocationFormInputs,
+} from '@/type/Location'
 import { callAPI } from '@/lib/fetchers'
-import { CommonApiResponse } from '@/type/Common'
+import { CommonApiResponse, CommonFormProps } from '@/type/Common'
 import { LocationAPI } from '@/constant/APIUrls'
 import { apiStatusChecker } from '@/lib/utils'
 import { toast } from 'sonner'
 
-const useLocationForm = () => {
+const useLocationForm = ({ id }: CommonFormProps) => {
   const form = useForm<LocationFormInputs>({
     resolver: zodResolver(locationFormValidationSchema),
     defaultValues: {
@@ -26,6 +30,48 @@ const useLocationForm = () => {
     form: false,
     submit: false,
   })
+
+  const handleSuccessFetchDetails = (response: LocationDetailsResponse) => {
+    const { data } = response
+
+    ;['name'].forEach((each) => {
+      form.setValue(
+        each as keyof LocationFormInputs,
+        data[each as keyof LocationFormInputs]
+      )
+    })
+  }
+
+  const handleFailureFetchDetails = (response?: LocationDetailsResponse) => {
+    toast.error(
+      response?.error || 'Something went wrong. Please try again later'
+    )
+    push('/dashboard/locations')
+  }
+
+  const fetchDetails = async () => {
+    setIsLoading((prev) => ({ ...prev, form: true }))
+
+    try {
+      const apiRes = await callAPI<
+        LocationDetailsRequest,
+        LocationDetailsResponse
+      >(LocationAPI.GET_LOCATION_DETAILS, { id: Number(id) }, { method: 'GET' })
+
+      const { data: locationDetailsRes, status } = apiRes
+
+      if (apiStatusChecker(status) && locationDetailsRes) {
+        handleSuccessFetchDetails(locationDetailsRes)
+      } else {
+        handleFailureFetchDetails(locationDetailsRes)
+      }
+    } catch {
+      handleFailureFetchDetails()
+      throw 'Failed to fetch supplier details'
+    } finally {
+      setIsLoading((prev) => ({ ...prev, form: false }))
+    }
+  }
 
   const handleSuccess = (response: CommonApiResponse) => {
     toast.success(response.message)
@@ -46,8 +92,9 @@ const useLocationForm = () => {
         LocationAPI.POST_LOCATION,
         {
           ...data,
+          ...(id && { id: Number(id) }),
         },
-        { method: 'POST' }
+        { method: id ? 'PUT' : 'POST' }
       )
 
       const { data: postLocationRes, status } = apiRes
@@ -64,6 +111,12 @@ const useLocationForm = () => {
       setIsLoading((prev) => ({ ...prev, submit: false }))
     }
   }
+
+  useEffect(() => {
+    if (id) {
+      fetchDetails()
+    }
+  }, [id])
 
   return {
     form,

@@ -1,4 +1,4 @@
-import { PaginationResponse } from '@/type/Common'
+import { CommonApiResponse, PaginationResponse } from '@/type/Common'
 import { z } from 'zod'
 import { locationFormValidationSchema } from '@/validations/LocationValidation'
 
@@ -10,6 +10,14 @@ export interface LocationProps {
 export interface LocationListResponse {
   data: LocationProps[]
   pagination: PaginationResponse
+}
+
+export interface LocationDetailsRequest {
+  id: number
+}
+
+export interface LocationDetailsResponse extends CommonApiResponse {
+  data: LocationProps
 }
 
 export type LocationFormInputs = z.infer<typeof locationFormValidationSchema>
