@@ -7,9 +7,18 @@ import CustomInput from '@/components/shared/FormInputs/CustomInput'
 import CustomButton from '@/components/shared/FormInputs/CustomButton'
 import { ButtonType, ButtonVariant, InputType } from '@/type/FormInputs'
 import useSupplierForm from '@/components/SuppliersPage/Form/useSupplierForm'
+import { Spinner } from '@/components/shared/ui/spinner'
 
 const SupplierForm: FC<CommonFormProps> = ({ id }) => {
-  const { form, isLoading, onSubmit } = useSupplierForm()
+  const { form, isLoading, onSubmit } = useSupplierForm({ id })
+
+  if (isLoading.form) {
+    return (
+      <div className="w-full flex justify-center items-center py-[20rem]">
+        <Spinner className="size-14" />
+      </div>
+    )
+  }
 
   return (
     <div className="mt-8 w-full flex flex-col gap-10">
@@ -40,7 +49,6 @@ const SupplierForm: FC<CommonFormProps> = ({ id }) => {
               name={'phone_number'}
               control={form.control}
               placeholder={'Enter company phone number'}
-              disabled={!!id}
             />
           </div>
           <div className="lg:col-span-2">
@@ -50,7 +58,6 @@ const SupplierForm: FC<CommonFormProps> = ({ id }) => {
               name={'location'}
               control={form.control}
               placeholder={'Enter company address'}
-              disabled={!!id}
             />
           </div>
           <div className="lg:col-span-2 mt-4 flex gap-2">
@@ -58,7 +65,7 @@ const SupplierForm: FC<CommonFormProps> = ({ id }) => {
               type={ButtonType.BUTTON}
               variant={ButtonVariant.OUTLINE}
               label={'Cancel'}
-              link={'/dashboard/users'}
+              link={'/dashboard/suppliers'}
               disabled={isLoading.submit}
             />
             <CustomButton label={'Save'} isLoading={isLoading.submit} />

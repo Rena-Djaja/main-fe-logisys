@@ -1,24 +1,29 @@
 'use client'
 
 import { useForm } from 'react-hook-form'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { supplierFormValidationSchema } from '@/validations/SupplierValidation'
 import { callAPI } from '@/lib/fetchers'
 import { SupplierAPI } from '@/constant/APIUrls'
-import { SupplierFormInputs } from '@/type/Supplier'
-import { CommonApiResponse } from '@/type/Common'
+import {
+  SupplierDetailsRequest,
+  SupplierDetailsResponse,
+  SupplierFormInputs,
+} from '@/type/Supplier'
+import { CommonApiResponse, CommonFormProps } from '@/type/Common'
 import { apiStatusChecker } from '@/lib/utils'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
 
-const useSupplierForm = () => {
+const useSupplierForm = (props: CommonFormProps) => {
+  const { id } = props
   const form = useForm<SupplierFormInputs>({
     resolver: zodResolver(supplierFormValidationSchema),
     defaultValues: {
       name: '',
       location: '',
-      phone_number: null,
+      phone_number: '',
     },
   })
 
@@ -28,6 +33,48 @@ const useSupplierForm = () => {
     form: false,
     submit: false,
   })
+
+  const handleSuccessFetchDetails = (response: SupplierDetailsResponse) => {
+    const { data } = response
+
+    ;['name', 'location', 'phone_number'].forEach((each) => {
+      form.setValue(
+        each as keyof SupplierFormInputs,
+        data[each as keyof SupplierFormInputs] || ''
+      )
+    })
+  }
+
+  const handleFailureFetchDetails = (response?: SupplierDetailsResponse) => {
+    toast.error(
+      response?.error || 'Something went wrong. Please try again later'
+    )
+    push('/dashboard/users')
+  }
+
+  const fetchDetails = async () => {
+    setIsLoading((prev) => ({ ...prev, form: true }))
+
+    try {
+      const apiRes = await callAPI<
+        SupplierDetailsRequest,
+        SupplierDetailsResponse
+      >(SupplierAPI.GET_SUPPLIER_DETAILS, { id: Number(id) }, { method: 'GET' })
+
+      const { data: supplierDetailsData, status } = apiRes
+
+      if (apiStatusChecker(status) && supplierDetailsData) {
+        handleSuccessFetchDetails(supplierDetailsData)
+      } else {
+        handleFailureFetchDetails(supplierDetailsData)
+      }
+    } catch {
+      handleFailureFetchDetails()
+      throw 'Failed to fetch supplier details'
+    } finally {
+      setIsLoading((prev) => ({ ...prev, form: false }))
+    }
+  }
 
   const handleSuccess = (response: CommonApiResponse) => {
     toast.success(response.message)
@@ -48,9 +95,10 @@ const useSupplierForm = () => {
         SupplierAPI.POST_SUPPLIER,
         {
           ...data,
+          ...(id && { id: Number(id) }),
           phone_number: data.phone_number || null,
         },
-        { method: 'POST' }
+        { method: id ? 'PUT' : 'POST' }
       )
 
       const { data: postSupplierRes, status } = apiRes
@@ -67,6 +115,12 @@ const useSupplierForm = () => {
       setIsLoading((prev) => ({ ...prev, submit: false }))
     }
   }
+
+  useEffect(() => {
+    if (id) {
+      fetchDetails()
+    }
+  }, [id])
 
   return {
     form,
