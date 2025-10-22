@@ -1,6 +1,6 @@
 'use client'
 
-import { TableHeaderProps } from '@/type/CustomTable'
+import { CustomActionProps, TableHeaderProps } from '@/type/CustomTable'
 import { UserProps } from '@/type/User'
 import { formattedDate } from '@/lib/utils'
 import { Badge } from '@/components/shared/ui/badge'
@@ -42,5 +42,12 @@ export const userListHeaders: TableHeaderProps[] = [
     customComponent: ({ data }: { data: UserProps }) => (
       <StatusBadge isActive={!data.is_deleted} />
     ),
+  },
+]
+
+export const userCustomActions: CustomActionProps[] = [
+  {
+    title: 'Assign Area',
+    link: '/users/assign-area',
   },
 ]
