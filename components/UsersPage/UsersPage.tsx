@@ -5,7 +5,10 @@ import CustomTable from '@/components/shared/CustomTable/CustomTable'
 import { Plus } from 'lucide-react'
 import SearchInput from '@/components/shared/SearchInput/SearchInput'
 import CustomButton from '@/components/shared/FormInputs/CustomButton'
-import { userListHeaders } from '@/components/UsersPage/Resource'
+import {
+  userCustomActions,
+  userListHeaders,
+} from '@/components/UsersPage/Resource'
 import useUsers from '@/components/UsersPage/useUsers'
 import UserDetails from '@/components/UsersPage/Details/UserDetails'
 import { ButtonType } from '@/type/FormInputs'
@@ -67,6 +70,9 @@ const UsersPage = () => {
             onRowClick={onRowClick}
             onUpdate={onUpdate}
             onDelete={onDelete}
+            customActions={userCustomActions}
+            customActionParam={'role_id'}
+            allowedCustomAction={(roleID) => [1, 3].includes(roleID)}
           />
         </div>
       </div>

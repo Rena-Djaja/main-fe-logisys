@@ -12,10 +12,19 @@ export interface CustomTableProps {
   onRowClick: (id: any) => void
   onUpdate: (id: any) => void
   onDelete: (id: any) => void
+  customActions?: CustomActionProps[]
+  customActionParam?: any
+  allowedCustomAction?: (id: any) => void
 }
 
 export interface TableHeaderProps {
   key: string
   title: string
   customComponent?: FC<any>
+}
+
+export interface CustomActionProps {
+  title: string
+  link?: string
+  onClick?: () => void
 }

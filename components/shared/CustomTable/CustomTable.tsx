@@ -22,6 +22,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/shared/ui/dropdown-menu'
 import { Button } from '@/components/shared/ui/button'
+import Link from 'next/link'
 
 const CustomTable: FC<CustomTableProps> = (props) => {
   const {
@@ -36,6 +37,9 @@ const CustomTable: FC<CustomTableProps> = (props) => {
     onRowClick,
     onUpdate,
     onDelete,
+    customActions = [],
+    customActionParam,
+    allowedCustomAction,
   } = props
 
   return (
@@ -94,6 +98,30 @@ const CustomTable: FC<CustomTableProps> = (props) => {
                         <DropdownMenuItem onClick={() => onUpdate(each.id)}>
                           Edit
                         </DropdownMenuItem>
+                        {customActionParam &&
+                          allowedCustomAction &&
+                          allowedCustomAction(each?.[customActionParam]) &&
+                          customActions.length && (
+                            <>
+                              <DropdownMenuSeparator />
+                              {customActions.map((act, actIdx) =>
+                                act.link ? (
+                                  <DropdownMenuItem key={actIdx} asChild>
+                                    <Link href={act.link + `/${each.id}`}>
+                                      {act.title}
+                                    </Link>
+                                  </DropdownMenuItem>
+                                ) : (
+                                  <DropdownMenuItem
+                                    key={actIdx}
+                                    onClick={act.onClick}
+                                  >
+                                    {act.title}
+                                  </DropdownMenuItem>
+                                )
+                              )}
+                            </>
+                          )}
                         <DropdownMenuSeparator />
                         <DropdownMenuItem
                           variant={'destructive'}
