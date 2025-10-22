@@ -1,6 +1,9 @@
 import { CommonApiResponse, PaginationResponse } from '@/type/Common'
 import { z } from 'zod'
-import { userFormValidationSchema } from '@/validations/UserValidation'
+import {
+  assignLocationValidationSchema,
+  userFormValidationSchema,
+} from '@/validations/UserValidation'
 
 export interface UserProps {
   id: number
@@ -35,4 +38,40 @@ export interface PostUserRequest extends UserFormInputs {
 
 export interface DeleteUserRequest {
   id: number
+}
+
+export interface AssignedAreaListRequest {
+  sales_id: string
+}
+
+export interface AssignAreaFormProps {
+  userID: string
+  isOpen: boolean
+  handleClose: () => void
+  mutate: () => void
+}
+
+export type AssignLocationFormInputs = z.infer<
+  typeof assignLocationValidationSchema
+>
+
+export interface AssignLocationRequest {
+  sales_id: number
+  locations: { location_id: number }[]
+}
+
+export interface AssignedLocationListRequest {
+  sales_id: number
+}
+
+export interface AssignedLocationProps {
+  id: number
+  sales_id: number
+  sales_name: string
+  location_id: number
+  location_name: string
+}
+
+export interface AssignedLocationListResponse {
+  data: AssignedLocationProps[]
 }

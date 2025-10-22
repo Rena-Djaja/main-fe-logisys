@@ -48,6 +48,6 @@ export const userListHeaders: TableHeaderProps[] = [
 export const userCustomActions: CustomActionProps[] = [
   {
     title: 'Assign Area',
-    link: '/users/assign-area',
+    link: '/dashboard/users/assign-area',
   },
 ]

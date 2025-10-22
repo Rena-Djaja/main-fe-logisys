@@ -40,3 +40,7 @@ export interface CommonOwnerProps {
 export interface CommonFormProps {
   id?: string
 }
+
+export interface CommonServerFormProps {
+  params: Promise<{ slug: string }>
+}
