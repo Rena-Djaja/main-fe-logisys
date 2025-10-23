@@ -80,3 +80,8 @@ export interface AssignedLocationListResponse {
   data: AssignedLocationProps[]
   pagination: PaginationResponse
 }
+
+export interface DeleteAssignedLocationRequest {
+  id: number
+  sales_id: number
+}

@@ -6,6 +6,7 @@ export interface CustomTableProps {
   onChange: (val: number) => void
   isLoading?: boolean
   allowDetails?: boolean
+  allowEdit?: boolean
   page: number
   perPage: number
   totalData: number

@@ -34,6 +34,7 @@ const AssignAreaPage: FC<CommonFormProps> = ({ id }) => {
     handleFormState,
     mutate,
     search,
+    onDelete,
   } = useAssignArea({ id })
 
   return (
@@ -115,13 +116,15 @@ const AssignAreaPage: FC<CommonFormProps> = ({ id }) => {
                 headers={[{ key: 'location_name', title: 'Location Name' }]}
                 data={assignedLocations?.data || []}
                 isLoading={isLocationLoading}
-                onChange={() => console.log('hi')}
+                onChange={(val) => search('page', val)}
                 page={assignedLocations?.pagination.page || filter.page}
                 perPage={assignedLocations?.pagination.limit || filter.per_page}
                 totalData={assignedLocations?.pagination.total_data || 0}
-                onRowClick={(id) => console.log(id)}
+                onRowClick={() => null}
+                allowDetails={false}
+                allowEdit={false}
                 onUpdate={() => null}
-                onDelete={() => null}
+                onDelete={onDelete}
               />
             </div>
           )}
