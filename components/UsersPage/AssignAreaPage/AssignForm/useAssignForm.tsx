@@ -176,6 +176,8 @@ const useAssignForm = (props: AssignAreaFormProps) => {
     } catch {
       handleFailure()
       throw 'Failed to assign location to this user'
+    } finally {
+      setIsLoading((prev) => ({ ...prev, submit: false }))
     }
   }
 

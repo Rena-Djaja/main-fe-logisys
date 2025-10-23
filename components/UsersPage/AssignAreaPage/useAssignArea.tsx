@@ -1,11 +1,11 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { CommonFormProps } from '@/type/Common'
+import { CommonFilterRequest, CommonFormProps } from '@/type/Common'
 import { callAPI } from '@/lib/fetchers'
 import {
   AssignedLocationListRequest,
-  AssignedLocationProps,
+  AssignedLocationListResponse,
   UserDetailsRequest,
   UserDetailsResponse,
   UserProps,
@@ -22,16 +22,31 @@ const useAssignArea = ({ id }: CommonFormProps) => {
   const [userDetails, setUserDetails] = useState<UserProps | null>(null)
   const [isFormOpen, setIsFormOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [filter, setFilter] = useState<AssignedLocationListRequest>({
+    page: 1,
+    per_page: 10,
+    search: '',
+    sales_id: Number(id),
+  })
 
   const {
     data: assignedLocations,
     isValidating: isLocationLoading,
     mutate,
-  } = useCommonApi<AssignedLocationListRequest, AssignedLocationProps[]>(
+  } = useCommonApi<AssignedLocationListRequest, AssignedLocationListResponse>(
     LocationAPI.GET_ASSIGNED_LOCATION,
-    { sales_id: Number(id) },
+    filter,
     { method: 'GET' }
   )
+
+  const search = (key: keyof CommonFilterRequest, value: number | string) => {
+    const newState = { ...filter, [key]: value }
+    if (key === 'search') {
+      newState.page = 1
+    }
+
+    setFilter(newState)
+  }
 
   const handleFormState = () => {
     setIsFormOpen((prev) => !prev)
@@ -83,8 +98,10 @@ const useAssignArea = ({ id }: CommonFormProps) => {
     assignedLocations,
     isLocationLoading,
     isFormOpen,
+    filter,
     handleFormState,
     mutate,
+    search,
   }
 }
 

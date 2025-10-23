@@ -1,4 +1,8 @@
-import { CommonApiResponse, PaginationResponse } from '@/type/Common'
+import {
+  CommonApiResponse,
+  CommonFilterRequest,
+  PaginationResponse,
+} from '@/type/Common'
 import { z } from 'zod'
 import {
   assignLocationValidationSchema,
@@ -60,7 +64,7 @@ export interface AssignLocationRequest {
   locations: { location_id: number }[]
 }
 
-export interface AssignedLocationListRequest {
+export interface AssignedLocationListRequest extends CommonFilterRequest {
   sales_id: number
 }
 
@@ -74,4 +78,5 @@ export interface AssignedLocationProps {
 
 export interface AssignedLocationListResponse {
   data: AssignedLocationProps[]
+  pagination: PaginationResponse
 }
