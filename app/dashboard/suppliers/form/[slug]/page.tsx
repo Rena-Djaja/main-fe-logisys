@@ -1,11 +1,8 @@
 import React from 'react'
 import SupplierForm from '@/components/SuppliersPage/Form/SupplierForm'
+import { CommonServerFormProps } from '@/type/Common'
 
-interface FormProps {
-  params: Promise<{ slug: string }>
-}
-
-const Form = async ({ params }: FormProps) => {
+const Form = async ({ params }: CommonServerFormProps) => {
   const { slug } = await params
   return <SupplierForm id={slug} />
 }

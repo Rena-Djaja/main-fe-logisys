@@ -25,3 +25,13 @@ export type LocationFormInputs = z.infer<typeof locationFormValidationSchema>
 export interface DeleteLocationRequest {
   id: number
 }
+
+export interface ValidateLocationRequest {
+  location_id: string
+}
+
+export interface ValidateLocationResponse extends CommonApiResponse {
+  data: {
+    is_available: boolean
+  }
+}

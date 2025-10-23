@@ -30,6 +30,7 @@ const CustomTable: FC<CustomTableProps> = (props) => {
     data,
     isLoading,
     allowDetails = true,
+    allowEdit = true,
     onChange,
     totalData,
     page,
@@ -95,9 +96,11 @@ const CustomTable: FC<CustomTableProps> = (props) => {
                             Details
                           </DropdownMenuItem>
                         )}
-                        <DropdownMenuItem onClick={() => onUpdate(each.id)}>
-                          Edit
-                        </DropdownMenuItem>
+                        {allowEdit && (
+                          <DropdownMenuItem onClick={() => onUpdate(each.id)}>
+                            Edit
+                          </DropdownMenuItem>
+                        )}
                         {customActionParam &&
                           allowedCustomAction &&
                           allowedCustomAction(each?.[customActionParam]) &&
@@ -122,7 +125,11 @@ const CustomTable: FC<CustomTableProps> = (props) => {
                               )}
                             </>
                           )}
-                        <DropdownMenuSeparator />
+                        {!!(
+                          allowEdit ||
+                          allowDetails ||
+                          customActions?.length
+                        ) && <DropdownMenuSeparator />}
                         <DropdownMenuItem
                           variant={'destructive'}
                           onClick={() => onDelete(each.id)}
