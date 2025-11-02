@@ -1,0 +1,93 @@
+'use client'
+
+import { useState } from 'react'
+import { CommonDetailsStateProps, CommonFilterRequest } from '@/type/Common'
+import useCommonApi from '@/components/shared/Hooks/CommonApi/useCommonApi'
+import { ProductAPI } from '@/constant/APIUrls'
+import { redirect } from 'next/navigation'
+import { ButtonVariant } from '@/type/FormInputs'
+import { useConfirmationStore } from '@/store'
+import { ProductListResponse } from '@/type/Product'
+
+const useProducts = () => {
+  const { setConfirmation } = useConfirmationStore()
+
+  const [detailsState, setDetailsState] = useState<CommonDetailsStateProps>({
+    id: null,
+    isOpen: false,
+  })
+
+  const [filter, setFilter] = useState<CommonFilterRequest>({
+    page: 1,
+    per_page: 10,
+    search: '',
+  })
+
+  const {
+    data: productList,
+    isValidating,
+    // mutate,
+  } = useCommonApi<CommonFilterRequest, ProductListResponse>(
+    ProductAPI.GET_PRODUCT_LIST,
+    filter,
+    { method: 'GET' }
+  )
+
+  const search = (key: keyof CommonFilterRequest, value: number | string) => {
+    const newState = { ...filter, [key]: value }
+    if (key === 'search') {
+      newState.page = 1
+    }
+
+    setFilter(newState)
+  }
+
+  const handleDetails = (type: 'open' | 'close', id?: number) => {
+    setDetailsState({
+      isOpen: type === 'open',
+      id: type === 'open' ? id : null,
+    })
+  }
+
+  const onRowClick = (id: number) => {
+    handleDetails('open', id)
+  }
+
+  const onAdd = () => {
+    redirect('/dashboard/users/form')
+  }
+
+  const onUpdate = (id: number) => {
+    redirect(`/dashboard/users/form/${id}`)
+  }
+
+  const onDelete = (id: number) => {
+    setConfirmation({
+      isOpen: true,
+      title: 'Are you absolutely sure?',
+      description:
+        'This action cannot be undone. This will permanently delete this account and remove the data.',
+      confirmButtonVariant: ButtonVariant.DESTRUCTIVES,
+      confirmButtonText: "Yes, I'm sure",
+      onConfirm: () => onConfirmDelete(id),
+    })
+  }
+
+  const onConfirmDelete = (id: number) => {
+    console.log(id)
+  }
+
+  return {
+    productList,
+    isValidating,
+    detailsState,
+    filter,
+    search,
+    onRowClick,
+    onAdd,
+    onUpdate,
+    onDelete,
+  }
+}
+
+export default useProducts

@@ -52,7 +52,7 @@ export const menuList: MenuListProps[] = [
           {
             title: 'Products',
             url: '/dashboard/products',
-            resourceID: [PermissionTypes.PUBLIC],
+            resourceID: [PermissionTypes.READ_PRODUCT],
           },
           {
             title: 'Promo',
@@ -60,7 +60,10 @@ export const menuList: MenuListProps[] = [
             resourceID: [PermissionTypes.PUBLIC],
           },
         ],
-        resourceID: [PermissionTypes.PUBLIC],
+        resourceID: [
+          PermissionTypes.READ_PRODUCT,
+          PermissionTypes.WRITE_PRODUCT,
+        ],
       },
       {
         title: 'User Management',
