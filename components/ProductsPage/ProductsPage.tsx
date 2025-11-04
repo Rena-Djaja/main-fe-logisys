@@ -34,9 +34,9 @@ const ProductsPage = () => {
         <div className="w-full flex flex-col gap-6">
           <div className="w-full flex justify-between">
             <div className="w-full flex gap-2 font-semibold text-[1.25rem]">
-              <span>All users</span>
+              <span>All products</span>
               <span className="opacity-70">
-                {/*{userList?.pagination.total_data}*/}
+                {productList?.pagination.total_data}
               </span>
             </div>
             <div className="w-full flex gap-4 justify-end">

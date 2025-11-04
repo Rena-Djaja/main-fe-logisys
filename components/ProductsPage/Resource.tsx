@@ -13,7 +13,7 @@ export const productListHeaders: TableHeaderProps[] = [
     title: 'Short Name',
   },
   {
-    key: 'supplier_id',
+    key: 'supplier_name',
     title: 'Supplier',
   },
   {
