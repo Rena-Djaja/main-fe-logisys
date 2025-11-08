@@ -53,6 +53,7 @@ export interface ComplimentaryItemProps {
   product_name: string
   variant_name: string
   amount: number
+  unit: string
 }
 
 export interface ProductListResponse {

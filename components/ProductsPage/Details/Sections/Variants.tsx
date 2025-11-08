@@ -281,7 +281,7 @@ const Complimentary = ({
                         Quantity
                       </span>
                       <span className="capitalize font-medium">
-                        {item.amount}
+                        {item.amount} {item.unit}
                       </span>
                     </div>
                     {itemIdx + 1 < each.items.length && (
