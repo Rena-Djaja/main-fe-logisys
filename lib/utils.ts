@@ -10,7 +10,7 @@ export function apiStatusChecker(status: number | undefined) {
   return [200, 201].includes(Number(status))
 }
 
-export const formattedDate = (dateString?: string, withTime = false) => {
+export const formattedDate = (dateString?: string | null, withTime = false) => {
   if (!dateString) return '-'
   const date = new Date(dateString)
   return date.toLocaleDateString('en-GB', {

@@ -10,6 +10,9 @@ import {
   ProductDetailsRequest,
   ProductDetailsResponse,
   ProductProps,
+  ProductVariantProps,
+  ProductVariantsRequest,
+  ProductVariantsResponse,
 } from '@/type/Product'
 
 const useProductDetails = (props: CommonDetailsComponentProps) => {
@@ -21,7 +24,12 @@ const useProductDetails = (props: CommonDetailsComponentProps) => {
   const [productDetails, setProductDetails] = useState<
     ProductProps | undefined
   >()
-  const [isLoading, setIsLoading] = useState(false)
+  const [variants, setVariants] = useState<ProductVariantProps[] | undefined>()
+  const [activeVariantIdx, setActiveVariantIdx] = useState<number | null>()
+  const [isLoading, setIsLoading] = useState({
+    details: false,
+    variants: false,
+  })
 
   const handleSuccess = (response: ProductDetailsResponse) => {
     const { data } = response
@@ -29,7 +37,15 @@ const useProductDetails = (props: CommonDetailsComponentProps) => {
     setProductDetails(data)
   }
 
-  const handleFailure = (response?: ProductDetailsResponse) => {
+  const handleVariantSuccess = (response: ProductVariantsResponse) => {
+    const { data } = response
+
+    setVariants(data)
+  }
+
+  const handleFailure = (
+    response?: ProductDetailsResponse | ProductVariantsResponse
+  ) => {
     setTimeout(() => {
       toast.error(response?.error)
       handleDetails('close')
@@ -37,7 +53,7 @@ const useProductDetails = (props: CommonDetailsComponentProps) => {
   }
 
   const fetchDetails = async () => {
-    setIsLoading(true)
+    setIsLoading((prev) => ({ ...prev, details: true }))
 
     try {
       const apiRes = await callAPI<
@@ -49,6 +65,7 @@ const useProductDetails = (props: CommonDetailsComponentProps) => {
 
       if (apiStatusChecker(status) && productDetailsData) {
         handleSuccess(productDetailsData)
+        fetchVariants()
       } else {
         handleFailure(productDetailsData)
       }
@@ -56,19 +73,66 @@ const useProductDetails = (props: CommonDetailsComponentProps) => {
       handleFailure()
       throw 'Failed to fetch details'
     } finally {
-      setTimeout(() => setIsLoading(false), 500)
+      setTimeout(
+        () => setIsLoading((prev) => ({ ...prev, details: false })),
+        500
+      )
+    }
+  }
+
+  const fetchVariants = async () => {
+    setIsLoading((prev) => ({ ...prev, variants: true }))
+
+    try {
+      const apiRes = await callAPI<
+        ProductVariantsRequest,
+        ProductVariantsResponse
+      >(
+        ProductAPI.GET_PRODUCT_VARIANTS,
+        { product_id: Number(id) },
+        { method: 'GET' }
+      )
+
+      const { data: productVariantsData, status } = apiRes
+
+      if (apiStatusChecker(status) && productVariantsData) {
+        handleVariantSuccess(productVariantsData)
+      } else {
+        handleFailure(productVariantsData)
+      }
+    } catch {
+      handleFailure()
+      throw 'Failed to fetch details'
+    } finally {
+      setTimeout(
+        () => setIsLoading((prev) => ({ ...prev, variants: false })),
+        500
+      )
+    }
+  }
+
+  const handleToggleVariant = (type: 'open' | 'close', idx?: number) => {
+    if (type === 'open' && typeof idx === 'number') {
+      setActiveVariantIdx(idx)
+    } else {
+      setActiveVariantIdx(null)
     }
   }
 
   useEffect(() => {
     if (isOpen && !!id) {
       fetchDetails()
+    } else {
+      setTimeout(() => setActiveVariantIdx(null), 200)
     }
   }, [id, isOpen])
 
   return {
     isLoading,
     productDetails,
+    variants,
+    activeVariantIdx,
+    handleToggleVariant,
   }
 }
 
