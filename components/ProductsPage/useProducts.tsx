@@ -87,6 +87,7 @@ const useProducts = () => {
     onAdd,
     onUpdate,
     onDelete,
+    handleDetails,
   }
 }
 

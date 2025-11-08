@@ -30,6 +30,7 @@ export const SupplierAPI = {
 
 export const ProductAPI = {
   GET_PRODUCT_LIST: baseURL + '/product/list',
+  GET_PRODUCT_DETAILS: baseURL + '/product/details',
 }
 
 export const RoleAPI = {

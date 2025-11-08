@@ -9,21 +9,28 @@ import CustomTable from '@/components/shared/CustomTable/CustomTable'
 import { userCustomActions } from '@/components/UsersPage/Resource'
 import useProducts from '@/components/ProductsPage/useProducts'
 import { productListHeaders } from '@/components/ProductsPage/Resource'
+import ProductDetails from '@/components/ProductsPage/Details/ProductDetails'
 
 const ProductsPage = () => {
   const {
     productList,
     isValidating,
     filter,
+    detailsState,
     search,
     onAdd,
     onRowClick,
     onUpdate,
     onDelete,
+    handleDetails,
   } = useProducts()
 
   return (
     <>
+      <ProductDetails
+        detailsState={detailsState}
+        handleDetails={handleDetails}
+      />
       <div className="mt-8 w-full flex flex-col gap-10">
         <div className="w-full flex flex-col">
           <h1 className="font-semibold text-[2rem]">Product List</h1>
