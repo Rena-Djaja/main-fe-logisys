@@ -9,13 +9,19 @@ import {
 import { Button } from '@/components/shared/ui/button'
 import { Calendar } from '@/components/shared/ui/calendar'
 import { CalendarIcon } from 'lucide-react'
-import { FormField, FormLabel } from '@/components/shared/ui/form'
+import {
+  FormDescription,
+  FormField,
+  FormLabel,
+  FormMessage,
+} from '@/components/shared/ui/form'
 import { CustomDateInputProps } from '@/type/FormInputs'
 import { formattedDate } from '@/lib/utils'
 import { Matcher } from 'react-day-picker'
 
 const DatePicker: FC<CustomDateInputProps> = (props) => {
-  const { name, control, label, placeholder, minDate, maxDate } = props
+  const { name, control, label, placeholder, minDate, maxDate, helperText } =
+    props
   const [open, setOpen] = React.useState(false)
 
   return (
@@ -60,6 +66,12 @@ const DatePicker: FC<CustomDateInputProps> = (props) => {
                 />
               </PopoverContent>
             </Popover>
+            {helperText && (
+              <FormDescription className="text-[0.8rem]">
+                {helperText}
+              </FormDescription>
+            )}
+            <FormMessage />
           </div>
         )
       }}

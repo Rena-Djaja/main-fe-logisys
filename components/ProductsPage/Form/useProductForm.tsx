@@ -17,6 +17,7 @@ import {
 } from '@/validations/ProductValidation'
 import { ProductFormInputs } from '@/type/Product'
 import Discount from '@/components/ProductsPage/Form/Steps/Discount/Discount'
+import Complimentary from '@/components/ProductsPage/Form/Steps/Complimentary/Complimentary'
 
 const useProductForm = () => {
   const form = useForm<ProductFormInputs>({
@@ -31,6 +32,7 @@ const useProductForm = () => {
       base_price: '',
       selling_price: '',
       discounts: [],
+      complimentary: [],
     },
   })
 
@@ -51,7 +53,7 @@ const useProductForm = () => {
       title: 'Complimentary',
       description: "Setup Product's Complimentary",
       icon: (props: LucideProps) => <ShoppingBag {...props} />,
-      component: () => <Details form={form} />,
+      component: () => <Complimentary form={form} />,
     },
     {
       title: 'Variants',
@@ -63,6 +65,8 @@ const useProductForm = () => {
 
   const [activeStepIdx, setActiveStepIdx] = useState(0)
   const [activeStep, setActiveStep] = useState(steps[activeStepIdx])
+
+  console.log(form.formState.errors)
 
   const onSubmit = async (data: any) => {
     console.log(data)

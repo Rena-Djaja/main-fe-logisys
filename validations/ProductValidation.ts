@@ -28,10 +28,49 @@ export const discountSchema = z.object({
     .optional(),
 })
 
+export const complimentarySchema = z.object({
+  complimentary: z
+    .array(
+      z.object({
+        quantity: z.string().min(1, 'Please insert product quantity'),
+        payment_type: z.string().min(1, 'Please insert payment type'),
+        name: z.string().min(1, 'Please insert promo name'),
+        description: z.string().nullable(),
+        start_date: z.string().min(1, "Please insert discount's start date"),
+        end_date: z.string().nullable(),
+        is_stacked: z.boolean(),
+        items: z
+          .array(
+            z.object({
+              product_id: z
+                .string()
+                .min(1, 'Please choose the complimentary product'),
+              variants: z
+                .array(
+                  z.object({
+                    complimentary_variant_id: z
+                      .string()
+                      .min(1, 'Please select the complimentary variant'),
+                    amount: z
+                      .string()
+                      .min(1, 'Please insert the complimentary amount'),
+                  })
+                )
+                .min(1, 'Please choose at least complimentary variant'),
+            })
+          )
+          .min(1, 'Please insert at least 1 complimentary item'),
+      })
+    )
+    .optional(),
+})
+
 export const productSchemaKeys = [
   Object.keys(productDetailsSchema.shape),
   Object.keys(discountSchema.shape),
+  Object.keys(complimentarySchema.shape),
 ]
 
-export const productFormValidationSchema =
-  productDetailsSchema.merge(discountSchema)
+export const productFormValidationSchema = productDetailsSchema
+  .merge(discountSchema)
+  .merge(complimentarySchema)

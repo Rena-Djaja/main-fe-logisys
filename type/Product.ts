@@ -1,7 +1,15 @@
-import { CommonApiResponse, PaginationResponse } from '@/type/Common'
+import {
+  CommonApiResponse,
+  CommonFilterRequest,
+  PaginationResponse,
+} from '@/type/Common'
 import { z } from 'zod'
 import { productFormValidationSchema } from '@/validations/ProductValidation'
 import { UseFormReturn } from 'react-hook-form'
+
+export interface ProductListFilterProps extends CommonFilterRequest {
+  product_type?: 'selling_item' | 'complimentary'
+}
 
 export interface ProductProps {
   id: number
