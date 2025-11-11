@@ -289,7 +289,7 @@ function OptionList({
         <CommandGroup>
           <ScrollArea>
             <div>
-              {options?.length &&
+              {!!options?.length &&
                 options.map((opt) => {
                   const isSelected =
                     Array.isArray(value) && value.includes(opt.value)
@@ -298,7 +298,7 @@ function OptionList({
                     <CommandItem
                       key={opt.value}
                       value={opt.label}
-                      onSelect={() => handleSelect(opt.value)}
+                      onSelect={() => handleSelect(String(opt.value))}
                     >
                       {opt.label}
                       <Check

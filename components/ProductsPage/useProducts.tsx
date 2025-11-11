@@ -54,11 +54,11 @@ const useProducts = () => {
   }
 
   const onAdd = () => {
-    redirect('/dashboard/users/form')
+    redirect('/dashboard/products/form')
   }
 
   const onUpdate = (id: number) => {
-    redirect(`/dashboard/users/form/${id}`)
+    redirect(`/dashboard/products/form/${id}`)
   }
 
   const onDelete = (id: number) => {

@@ -1,6 +1,10 @@
 import React, { FC } from 'react'
 import { Button } from '@/components/shared/ui/button'
-import { ButtonType, CustomButtonProps } from '@/type/FormInputs'
+import {
+  ButtonType,
+  CustomButtonProps,
+  IconPlacementType,
+} from '@/type/FormInputs'
 import { Spinner } from '@/components/shared/ui/spinner'
 import Link from 'next/link'
 
@@ -10,6 +14,7 @@ const CustomButton: FC<CustomButtonProps> = (props) => {
     size,
     variant,
     isLoading,
+    iconPlacement = IconPlacementType.LEFT,
     disabled,
     link,
     onClick,
@@ -31,8 +36,16 @@ const CustomButton: FC<CustomButtonProps> = (props) => {
         <Link href={link}>{label}</Link>
       ) : (
         <>
-          {isLoading ? <Spinner /> : props?.icon && <props.icon />}
+          {isLoading ? (
+            <Spinner />
+          ) : (
+            props?.icon &&
+            iconPlacement === IconPlacementType.LEFT && <props.icon />
+          )}
           {label}
+          {props.icon && iconPlacement === IconPlacementType.RIGHT && (
+            <props.icon />
+          )}
         </>
       )}
     </Button>

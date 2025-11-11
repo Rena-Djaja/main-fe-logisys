@@ -104,9 +104,11 @@ const Variants: FC<VariantProps> = (props) => {
               </div>
             </div>
           </div>
-          <div className="mt-8 flex flex-col gap-4">
-            <CustomTabs tabs={tabs} activeTab={tabs[0].key} />
-          </div>
+          {productDetails?.category !== 'complimentary' && (
+            <div className="mt-8 flex flex-col gap-4">
+              <CustomTabs tabs={tabs} activeTab={tabs[0].key} />
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -136,12 +138,39 @@ const Discount = ({
         <div key={idx} className="text-[0.85rem]">
           <div className="w-full flex flex-col gap-2 px-8">
             <div className="flex justify-between items-center gap-3">
+              <span className="font-medium text-muted-foreground">
+                Discount Name
+              </span>
+              <span className="capitalize font-medium">{each.name}</span>
+            </div>
+            <div className="flex justify-between items-center gap-3">
+              <span className="font-medium text-muted-foreground">
+                Description
+              </span>
+              <span className="capitalize font-medium">
+                {each.description ?? '-'}
+              </span>
+            </div>
+            <div className="flex justify-between items-center gap-3">
+              <span className="font-medium text-muted-foreground">
+                Combined Promo
+              </span>
+              <span
+                className={cn(
+                  'capitalize font-medium',
+                  each.is_stacked ? 'text-chart-2' : 'text-destructive'
+                )}
+              >
+                {each.is_stacked ? 'Yes' : 'No'}
+              </span>
+            </div>
+            <div className="flex justify-between items-center gap-3">
               <span className="font-medium text-muted-foreground">Type</span>
               <span className="capitalize font-medium">{each.type}</span>
             </div>
             <div className="flex justify-between items-center gap-3">
               <span className="font-medium text-muted-foreground">
-                Quantity
+                Min. Quantity
               </span>
               <span className="capitalize font-medium">
                 {each.quantity} {productDetails?.unit}
@@ -204,6 +233,12 @@ const Complimentary = ({
       {complimentary.map((each, idx) => (
         <div key={idx} className="text-[0.85rem]">
           <div className="w-full flex flex-col gap-2 px-8">
+            <div className="flex justify-between items-center gap-3">
+              <span className="font-medium text-muted-foreground">
+                Complimentary Name
+              </span>
+              <span className="capitalize font-medium">{each.name}</span>
+            </div>
             <div className="flex justify-between items-center gap-3">
               <span className="font-medium text-muted-foreground">
                 Description

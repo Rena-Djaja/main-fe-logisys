@@ -18,6 +18,11 @@ export interface CustomInputProps {
   defaultValue?: string
 }
 
+export interface CustomDateInputProps extends CustomInputProps {
+  minDate?: Date
+  maxDate?: Date
+}
+
 export interface CustomSelectProps extends CustomInputProps {
   isAsync?: boolean
   defaultOptions?: OptionType[]
@@ -38,6 +43,7 @@ export interface CustomButtonProps {
   icon?: ForwardRefExoticComponent<
     Omit<LucideProps, 'ref'> & RefAttributes<SVGSVGElement>
   >
+  iconPlacement?: IconPlacementType
   disabled?: boolean
   isLoading?: boolean
   size?: ButtonSize | null | undefined

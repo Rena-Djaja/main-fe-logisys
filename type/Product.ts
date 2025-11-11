@@ -1,4 +1,7 @@
 import { CommonApiResponse, PaginationResponse } from '@/type/Common'
+import { z } from 'zod'
+import { productFormValidationSchema } from '@/validations/ProductValidation'
+import { UseFormReturn } from 'react-hook-form'
 
 export interface ProductProps {
   id: number
@@ -29,18 +32,22 @@ export interface ProductVariantProps {
 export interface DiscountProps {
   id: number
   product_variant_id: number
+  name: string
+  description: string | null
   type: string
   quantity: number
   amount: number
   payment_type: string
   start_date: string
   end_date: string | null
+  is_stacked: boolean
 }
 
 export interface ComplimentaryProps {
   rule_id: number
   quantity: number
   payment_type: string
+  name: string
   description: string
   start_date: string
   end_date: string | null
@@ -76,3 +83,9 @@ export interface ProductVariantsRequest {
 export interface ProductVariantsResponse extends CommonApiResponse {
   data: ProductVariantProps[]
 }
+
+export interface FormStepProps {
+  form: UseFormReturn<ProductFormInputs, any, ProductFormInputs>
+}
+
+export type ProductFormInputs = z.infer<typeof productFormValidationSchema>
