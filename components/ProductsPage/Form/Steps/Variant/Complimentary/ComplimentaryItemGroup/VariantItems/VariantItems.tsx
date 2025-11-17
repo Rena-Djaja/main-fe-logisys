@@ -2,19 +2,21 @@
 
 import React, { FC } from 'react'
 import { FormStepProps } from '@/type/Product'
-import useVariantItems from '@/components/ProductsPage/Form/Steps/Complimentary/ComplimentaryItemGroup/VariantItems/useVariantItems'
 import CustomNumberFormatInput from '@/components/shared/FormInputs/CustomNumberFormatInput'
+import useVariantItems from '@/components/ProductsPage/Form/Steps/Variant/Complimentary/ComplimentaryItemGroup/VariantItems/useVariantItems'
 import { Skeleton } from '@/components/shared/ui/skeleton'
 
 interface VariantItemProps extends FormStepProps {
   complimentaryIdx: number
   itemIdx: number
   productId: string
+  variantIdx: number
 }
 
 const VariantItems: FC<VariantItemProps> = (props) => {
   const { fields, variants, isLoading } = useVariantItems(props)
-  const { form, complimentaryIdx, itemIdx } = props
+  const { form, complimentaryIdx, itemIdx, variantIdx } = props
+  const isDisabled = !form.watch(`variants.${variantIdx}.custom_complimentary`)
 
   return (
     <div className="w-full flex flex-col gap-6">
@@ -35,7 +37,7 @@ const VariantItems: FC<VariantItemProps> = (props) => {
                       each.id ===
                       Number(
                         form.getValues(
-                          `complimentary.${complimentaryIdx}.items.${itemIdx}.variants.${idx}.complimentary_variant_id`
+                          `variants.${variantIdx}.complimentary.${complimentaryIdx}.items.${itemIdx}.variants.${idx}.complimentary_variant_id`
                         )
                       )
                   )?.name
@@ -43,8 +45,9 @@ const VariantItems: FC<VariantItemProps> = (props) => {
               </span>
               <div>
                 <CustomNumberFormatInput
-                  name={`complimentary.${complimentaryIdx}.items.${itemIdx}.variants.${idx}.amount`}
+                  name={`variants.${variantIdx}.complimentary.${complimentaryIdx}.items.${itemIdx}.variants.${idx}.amount`}
                   control={form.control}
+                  disabled={isDisabled}
                 />
               </div>
             </div>

@@ -32,6 +32,7 @@ export const ProductAPI = {
   GET_PRODUCT_LIST: baseURL + '/product/list',
   GET_PRODUCT_DETAILS: baseURL + '/product/details',
   GET_PRODUCT_VARIANTS: baseURL + '/product/variant/list',
+  POST_PRODUCT: baseURL + '/product',
 }
 
 export const RoleAPI = {

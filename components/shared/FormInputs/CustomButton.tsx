@@ -24,7 +24,10 @@ const CustomButton: FC<CustomButtonProps> = (props) => {
   return (
     <Button
       {...(onClick && {
-        onClick: onClick,
+        onClick: (e: React.MouseEvent<HTMLButtonElement>) => {
+          e.preventDefault()
+          onClick()
+        },
       })}
       type={type}
       size={size}

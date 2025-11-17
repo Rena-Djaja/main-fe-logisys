@@ -65,12 +65,33 @@ export const complimentarySchema = z.object({
     .optional(),
 })
 
+export const variantSchema = z.object({
+  variants: z.array(
+    z
+      .object({
+        name: z.string().min(1, 'Please insert variant name'),
+        extra_base_price: z
+          .string()
+          .min(1, 'Please insert varaiant extra base price'),
+        extra_selling_price: z
+          .string()
+          .min(1, 'Please insert varaiant extra selling price'),
+        custom_discount: z.boolean(),
+        custom_complimentary: z.boolean(),
+      })
+      .merge(discountSchema)
+      .merge(complimentarySchema)
+  ),
+})
+
 export const productSchemaKeys = [
   Object.keys(productDetailsSchema.shape),
   Object.keys(discountSchema.shape),
   Object.keys(complimentarySchema.shape),
+  Object.keys(variantSchema.shape),
 ]
 
 export const productFormValidationSchema = productDetailsSchema
   .merge(discountSchema)
   .merge(complimentarySchema)
+  .merge(variantSchema)

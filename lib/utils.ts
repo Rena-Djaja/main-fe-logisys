@@ -24,6 +24,12 @@ export const formattedDate = (dateString?: string | null, withTime = false) => {
   })
 }
 
+export const parseDate = (dateString: string) => {
+  const slicedDate = dateString.slice(0, 19)
+
+  return slicedDate + '+07:00'
+}
+
 export const thousandFormat = (number = 0) => {
   let thousand = ''
   const numberRev = number.toString().split('').reverse().join('')

@@ -29,6 +29,7 @@ import {
 const Discount: FC<FormStepProps> = (props) => {
   const { fields, handleAddRow, remove } = useDiscount(props)
   const { form } = props
+  const productUnit = form.getValues('unit')
 
   return (
     <div className="w-full lg:col-span-2 flex flex-col gap-8">
@@ -151,7 +152,7 @@ const Discount: FC<FormStepProps> = (props) => {
               <CustomNumberFormatInput
                 name={`discounts.${idx}.quantity`}
                 control={form.control}
-                label={'Quantity'}
+                label={`Quantity (${productUnit})`}
                 placeholder={"Insert product's minimum quantity"}
               />
             </div>

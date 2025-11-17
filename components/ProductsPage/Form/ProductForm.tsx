@@ -5,9 +5,9 @@ import { CommonFormProps } from '@/type/Common'
 import useProductForm from '@/components/ProductsPage/Form/useProductForm'
 import { Form } from '@/components/shared/ui/form'
 import { ChevronLeft, ChevronRight, Save } from 'lucide-react'
-import { cn } from '@/lib/utils'
 import CustomButton from '@/components/shared/FormInputs/CustomButton'
 import { ButtonType, ButtonVariant, IconPlacementType } from '@/type/FormInputs'
+import Stepper from '@/components/ProductsPage/Form/Stepper'
 
 const ProductForm: FC<CommonFormProps> = ({ id }) => {
   const {
@@ -15,6 +15,7 @@ const ProductForm: FC<CommonFormProps> = ({ id }) => {
     activeStepIdx,
     steps,
     form,
+    isLoading,
     onSubmit,
     handleActiveSteps,
   } = useProductForm()
@@ -29,30 +30,11 @@ const ProductForm: FC<CommonFormProps> = ({ id }) => {
           {!!id ? 'Update' : 'Add new'} product record
         </span>
       </div>
-      <div className="w-full flex items-center gap-6 mt-2 mb-8">
-        {steps.map((each, idx) => (
-          <div
-            key={idx}
-            className={cn(
-              'flex items-center gap-2',
-              idx > activeStepIdx && 'opacity-45'
-            )}
-          >
-            <div className="p-3 rounded-full bg-sidebar-border">
-              <each.icon className="size-4" />
-            </div>
-            <div className="flex flex-col gap-0.5">
-              <span className="font-semibold text-[0.925rem]">
-                {each.title}
-              </span>
-              <span className="font-medium text-[0.75rem]">
-                {each.description}
-              </span>
-            </div>
-            {idx + 1 < steps.length && <ChevronRight className="size-5 ml-6" />}
-          </div>
-        ))}
-      </div>
+      <Stepper
+        steps={steps}
+        activeStep={activeStep}
+        activeStepIdx={activeStepIdx}
+      />
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -66,21 +48,28 @@ const ProductForm: FC<CommonFormProps> = ({ id }) => {
               variant={ButtonVariant.SECONDARY}
               icon={ChevronLeft}
               onClick={() => handleActiveSteps('previous')}
-              disabled={!activeStepIdx}
+              disabled={!activeStepIdx || isLoading}
             />
-            <CustomButton
-              label={activeStepIdx + 1 === steps.length ? 'Save' : 'Next'}
-              type={
-                activeStepIdx + 1 === steps.length
-                  ? ButtonType.SUBMIT
-                  : ButtonType.BUTTON
-              }
-              icon={activeStepIdx + 1 === steps.length ? Save : ChevronRight}
-              iconPlacement={IconPlacementType.RIGHT}
-              {...(activeStepIdx + 1 !== steps.length && {
-                onClick: () => handleActiveSteps('next'),
-              })}
-            />
+            {activeStepIdx + 1 === steps.length ? (
+              <CustomButton
+                label={'Save'}
+                type={ButtonType.SUBMIT}
+                icon={Save}
+                iconPlacement={IconPlacementType.RIGHT}
+                isLoading={isLoading}
+              />
+            ) : (
+              <CustomButton
+                label={'Next'}
+                type={ButtonType.BUTTON}
+                icon={ChevronRight}
+                iconPlacement={IconPlacementType.RIGHT}
+                disabled={isLoading}
+                onClick={() => {
+                  handleActiveSteps('next')
+                }}
+              />
+            )}
           </div>
         </form>
       </Form>

@@ -24,24 +24,31 @@ import CustomInput from '@/components/shared/FormInputs/CustomInput'
 import CustomSelect from '@/components/shared/FormInputs/CustomSelect'
 import CustomNumberFormatInput from '@/components/shared/FormInputs/CustomNumberFormatInput'
 import DatePicker from '@/components/shared/DatePicker/DatePicker'
-import useComplimentary from '@/components/ProductsPage/Form/Steps/Complimentary/useComplimentary'
 import { Separator } from '@/components/shared/ui/separator'
-import ComplimentaryItemGroup from '@/components/ProductsPage/Form/Steps/Complimentary/ComplimentaryItemGroup/ComplimentaryItemGroup'
+import { cn } from '@/lib/utils'
+import useComplimentary from '@/components/ProductsPage/Form/Steps/Variant/Complimentary/useComplimentary'
+import ComplimentaryItemGroup from '@/components/ProductsPage/Form/Steps/Variant/Complimentary/ComplimentaryItemGroup/ComplimentaryItemGroup'
 
-const Complimentary: FC<FormStepProps> = (props) => {
+interface VariantComplimentaryProps extends FormStepProps {
+  variantIdx: number
+}
+
+const Complimentary: FC<VariantComplimentaryProps> = (props) => {
   const { fields, handleAddRow, remove } = useComplimentary(props)
-  const { form } = props
+  const { form, variantIdx } = props
   const productUnit = form.getValues('unit')
+  const isDisabled = !form.watch(`variants.${variantIdx}.custom_complimentary`)
 
   return (
-    <div className="w-full lg:col-span-2 flex flex-col gap-8">
+    <div
+      className={cn(
+        'w-full lg:col-span-2 flex flex-col gap-8',
+        isDisabled && 'opacity-40'
+      )}
+    >
       <div className="w-full flex justify-between items-center">
         <div className="w-full flex flex-col gap-2">
           <h2 className="font-semibold text-[1.25rem]">Complimentary</h2>
-          <span className="font-medium text-[0.85rem] text-muted-foreground">
-            You can add more than one complimentary schemas that apply to all
-            variants of this product.
-          </span>
         </div>
         <div>
           <CustomButton
@@ -50,6 +57,7 @@ const Complimentary: FC<FormStepProps> = (props) => {
             variant={ButtonVariant.OUTLINE}
             onClick={handleAddRow}
             type={ButtonType.BUTTON}
+            disabled={isDisabled}
           />
         </div>
       </div>
@@ -72,6 +80,7 @@ const Complimentary: FC<FormStepProps> = (props) => {
                 variant={ButtonVariant.OUTLINE}
                 onClick={handleAddRow}
                 type={ButtonType.BUTTON}
+                disabled={isDisabled}
               />
             </div>
           </EmptyContent>
@@ -86,6 +95,7 @@ const Complimentary: FC<FormStepProps> = (props) => {
               className="absolute right-4 -top-2.5 px-1 bg-background cursor-pointer"
               type={ButtonType.BUTTON}
               onClick={() => remove(idx)}
+              disabled={isDisabled}
             >
               <Trash className="size-4.5 text-destructive" />
             </button>
@@ -101,6 +111,7 @@ const Complimentary: FC<FormStepProps> = (props) => {
                           id={`${field.id}.is_stacked`}
                           defaultChecked={!!value}
                           onClick={() => onChange(!value)}
+                          disabled={isDisabled}
                         />
                       </FormControl>
                       <FormLabel>Combined Promo</FormLabel>
@@ -111,24 +122,26 @@ const Complimentary: FC<FormStepProps> = (props) => {
             </div>
             <div className="lg:col-span-2">
               <CustomInput
-                name={`complimentary.${idx}.name`}
+                name={`variants.${variantIdx}.complimentary.${idx}.name`}
                 control={form.control}
                 label={'Promo Name'}
                 placeholder={'Insert promo name'}
+                disabled={isDisabled}
               />
             </div>
             <div className="lg:col-span-2">
               <CustomInput
-                name={`complimentary.${idx}.description`}
+                name={`variants.${variantIdx}.complimentary.${idx}.description`}
                 control={form.control}
                 label={'Description'}
                 placeholder={'Insert description'}
                 type={InputType.TEXTAREA}
+                disabled={isDisabled}
               />
             </div>
             <div>
               <CustomSelect
-                name={`complimentary.${idx}.payment_type`}
+                name={`variants.${variantIdx}.complimentary.${idx}.payment_type`}
                 control={form.control}
                 label={'Payment Type'}
                 placeholder={'Select payment type'}
@@ -136,37 +149,45 @@ const Complimentary: FC<FormStepProps> = (props) => {
                   label: opt,
                   value: opt.toLowerCase(),
                 }))}
+                disabled={isDisabled}
               />
             </div>
             <div>
               <CustomNumberFormatInput
-                name={`complimentary.${idx}.quantity`}
+                name={`variants.${variantIdx}.complimentary.${idx}.quantity`}
                 control={form.control}
                 label={`Quantity (${productUnit})`}
                 placeholder={"Insert product's quantity"}
+                disabled={isDisabled}
               />
             </div>
             <div>
               <DatePicker
-                name={`complimentary.${idx}.start_date`}
+                name={`variants.${variantIdx}.complimentary.${idx}.start_date`}
                 control={form.control}
                 label={'Start Date'}
+                disabled={isDisabled}
               />
             </div>
             <div>
               <DatePicker
-                name={`complimentary.${idx}.end_date`}
+                name={`variants.${variantIdx}.complimentary.${idx}.end_date`}
                 control={form.control}
                 label={'End Date'}
                 minDate={
                   new Date(form.watch(`complimentary.${idx}.start_date`))
                 }
+                disabled={isDisabled}
               />
             </div>
             <div className="lg:col-span-2">
               <Separator />
             </div>
-            <ComplimentaryItemGroup complimentaryIdx={idx} form={form} />
+            <ComplimentaryItemGroup
+              variantIdx={variantIdx}
+              complimentaryIdx={idx}
+              form={form}
+            />
           </div>
         ))
       )}

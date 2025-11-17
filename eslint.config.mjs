@@ -29,6 +29,7 @@ export default [
       'react-hooks/set-state-in-effect': 'off',
       'react-hooks/purity': 'off',
       'react-hooks/exhaustive-deps': 'off',
+      '@typescript-eslint/no-unused-expressions': 'off',
     },
   },
 ]

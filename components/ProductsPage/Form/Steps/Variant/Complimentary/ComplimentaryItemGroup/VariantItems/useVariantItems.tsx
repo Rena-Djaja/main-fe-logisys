@@ -18,15 +18,17 @@ interface VariantItemProps extends FormStepProps {
   complimentaryIdx: number
   itemIdx: number
   productId: string
+  variantIdx: number
 }
 
 const useVariantItems = ({
   complimentaryIdx,
   itemIdx,
   productId,
+  variantIdx,
 }: VariantItemProps) => {
   const { fields, append, remove } = useFieldArray({
-    name: `complimentary.${complimentaryIdx}.items.${itemIdx}.variants`,
+    name: `variants.${variantIdx}.complimentary.${complimentaryIdx}.items.${itemIdx}.variants`,
   })
 
   const [isLoading, setIsLoading] = useState(false)

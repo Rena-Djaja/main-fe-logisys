@@ -30,6 +30,7 @@ export interface CustomSelectProps extends CustomInputProps {
   options?: OptionType[] | []
   multiple?: boolean
   isLoading?: boolean
+  customOnChange?: any
 }
 
 export interface OptionType {

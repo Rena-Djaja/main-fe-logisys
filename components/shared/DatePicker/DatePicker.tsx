@@ -20,8 +20,17 @@ import { formattedDate } from '@/lib/utils'
 import { Matcher } from 'react-day-picker'
 
 const DatePicker: FC<CustomDateInputProps> = (props) => {
-  const { name, control, label, placeholder, minDate, maxDate, helperText } =
-    props
+  const {
+    name,
+    control,
+    label,
+    placeholder,
+    minDate,
+    maxDate,
+    helperText,
+    disabled,
+  } = props
+  props
   const [open, setOpen] = React.useState(false)
 
   return (
@@ -33,7 +42,7 @@ const DatePicker: FC<CustomDateInputProps> = (props) => {
           <div className="w-full flex flex-col gap-3">
             {!!label && <FormLabel>{label}</FormLabel>}
             <Popover open={open} onOpenChange={setOpen}>
-              <PopoverTrigger asChild>
+              <PopoverTrigger asChild disabled={disabled}>
                 <Button
                   variant="outline"
                   id="date"
@@ -54,7 +63,7 @@ const DatePicker: FC<CustomDateInputProps> = (props) => {
                   selected={value}
                   captionLayout="dropdown"
                   onSelect={(date) => {
-                    onChange(date?.toISOString())
+                    onChange(date?.toISOString() || '')
                     setOpen(false)
                   }}
                   disabled={

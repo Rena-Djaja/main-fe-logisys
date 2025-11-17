@@ -46,8 +46,10 @@ const CustomSelect: FC<CustomSelectProps> = (props) => {
     options,
     multiple,
     control,
+    disabled,
     name,
     helperText,
+    customOnChange,
   } = props
   const [isMounted, setIsMounted] = useState(false)
   const [open, setOpen] = React.useState(false)
@@ -74,8 +76,10 @@ const CustomSelect: FC<CustomSelectProps> = (props) => {
                   ? value.filter((v) => v !== selectedValue)
                   : [...(value ?? []), selectedValue]
               onChange?.(newValue)
+              customOnChange && customOnChange(newValue)
             } else {
               onChange?.(selectedValue)
+              customOnChange && customOnChange(selectedValue)
               setOpen(false)
             }
           }
@@ -88,7 +92,10 @@ const CustomSelect: FC<CustomSelectProps> = (props) => {
             <FormItem>
               {!!label && <FormLabel>{label}</FormLabel>}
               <FormControl>
-                <Popover open={open} onOpenChange={setOpen}>
+                <Popover
+                  open={open}
+                  onOpenChange={!disabled ? setOpen : undefined}
+                >
                   <PopoverTrigger asChild>
                     <div>
                       <SelectionInput
