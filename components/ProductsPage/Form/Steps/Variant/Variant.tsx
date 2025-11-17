@@ -27,7 +27,7 @@ import Discount from '@/components/ProductsPage/Form/Steps/Variant/Discount/Disc
 import Complimentary from '@/components/ProductsPage/Form/Steps/Variant/Complimentary/Complimentary'
 
 const Variant: FC<FormStepProps> = (props) => {
-  const { fields, handleAddRow, remove } = useVariant(props)
+  const { fields, isComplimentary, handleAddRow, remove } = useVariant(props)
   const { form } = props
 
   return (
@@ -117,54 +117,61 @@ const Variant: FC<FormStepProps> = (props) => {
                 helperText={'Insert `0` if no extra price'}
               />
             </div>
-            <div className="lg:col-span-2 w-full flex flex-col gap-4">
-              <div>
-                <FormField
-                  name={`variants.${idx}.custom_discount`}
-                  control={form.control}
-                  render={({ field: { onChange, value } }) => {
-                    return (
-                      <FormItem className="lg:col-span-2 w-full flex items-center gap-2">
-                        <FormControl>
-                          <Switch
-                            className="!opacity-100"
-                            id={`${idx}.custom_discount`}
-                            defaultChecked={!!value}
-                            onClick={() => onChange(!value)}
-                          />
-                        </FormControl>
-                        <FormLabel>Use custom discount schema</FormLabel>
-                      </FormItem>
-                    )
-                  }}
-                />
-              </div>
-              <Discount form={form} variantIdx={idx} />
-            </div>
-            <div className="lg:col-span-2 w-full flex flex-col gap-4">
-              <div>
-                <FormField
-                  name={`variants.${idx}.custom_complimentary`}
-                  control={form.control}
-                  render={({ field: { onChange, value } }) => {
-                    return (
-                      <FormItem className="lg:col-span-2 w-full flex items-center gap-2">
-                        <FormControl>
-                          <Switch
-                            className="!opacity-100"
-                            id={`${idx}.custom_complimentary`}
-                            defaultChecked={!!value}
-                            onClick={() => onChange(!value)}
-                          />
-                        </FormControl>
-                        <FormLabel>Use custom complimentary schema</FormLabel>
-                      </FormItem>
-                    )
-                  }}
-                />
-              </div>
-              <Complimentary form={form} variantIdx={idx} />
-            </div>
+            {!isComplimentary && (
+              <>
+                <div className="lg:col-span-2 w-full flex flex-col gap-4">
+                  <div>
+                    <FormField
+                      name={`variants.${idx}.custom_discount`}
+                      control={form.control}
+                      render={({ field: { onChange, value } }) => {
+                        return (
+                          <FormItem className="lg:col-span-2 w-full flex items-center gap-2">
+                            <FormControl>
+                              <Switch
+                                className="!opacity-100"
+                                id={`${idx}.custom_discount`}
+                                defaultChecked={!!value}
+                                onClick={() => onChange(!value)}
+                                disabled={!isComplimentary}
+                              />
+                            </FormControl>
+                            <FormLabel>Use custom discount schema</FormLabel>
+                          </FormItem>
+                        )
+                      }}
+                    />
+                  </div>
+                  <Discount form={form} variantIdx={idx} />
+                </div>
+                <div className="lg:col-span-2 w-full flex flex-col gap-4">
+                  <div>
+                    <FormField
+                      name={`variants.${idx}.custom_complimentary`}
+                      control={form.control}
+                      render={({ field: { onChange, value } }) => {
+                        return (
+                          <FormItem className="lg:col-span-2 w-full flex items-center gap-2">
+                            <FormControl>
+                              <Switch
+                                className="!opacity-100"
+                                id={`${idx}.custom_complimentary`}
+                                defaultChecked={!!value}
+                                onClick={() => onChange(!value)}
+                              />
+                            </FormControl>
+                            <FormLabel>
+                              Use custom complimentary schema
+                            </FormLabel>
+                          </FormItem>
+                        )
+                      }}
+                    />
+                  </div>
+                  <Complimentary form={form} variantIdx={idx} />
+                </div>
+              </>
+            )}
           </div>
         ))
       )}

@@ -27,14 +27,21 @@ import DatePicker from '@/components/shared/DatePicker/DatePicker'
 import useComplimentary from '@/components/ProductsPage/Form/Steps/Complimentary/useComplimentary'
 import { Separator } from '@/components/shared/ui/separator'
 import ComplimentaryItemGroup from '@/components/ProductsPage/Form/Steps/Complimentary/ComplimentaryItemGroup/ComplimentaryItemGroup'
+import { cn } from '@/lib/utils'
 
 const Complimentary: FC<FormStepProps> = (props) => {
-  const { fields, handleAddRow, remove } = useComplimentary(props)
+  const { isComplimentary, fields, handleAddRow, remove } =
+    useComplimentary(props)
   const { form } = props
   const productUnit = form.getValues('unit')
 
   return (
-    <div className="w-full lg:col-span-2 flex flex-col gap-8">
+    <div
+      className={cn(
+        'w-full lg:col-span-2 flex flex-col gap-8',
+        isComplimentary && 'opacity-40'
+      )}
+    >
       <div className="w-full flex justify-between items-center">
         <div className="w-full flex flex-col gap-2">
           <h2 className="font-semibold text-[1.25rem]">Complimentary</h2>
@@ -50,6 +57,7 @@ const Complimentary: FC<FormStepProps> = (props) => {
             variant={ButtonVariant.OUTLINE}
             onClick={handleAddRow}
             type={ButtonType.BUTTON}
+            disabled={isComplimentary}
           />
         </div>
       </div>
@@ -72,6 +80,7 @@ const Complimentary: FC<FormStepProps> = (props) => {
                 variant={ButtonVariant.OUTLINE}
                 onClick={handleAddRow}
                 type={ButtonType.BUTTON}
+                disabled={isComplimentary}
               />
             </div>
           </EmptyContent>

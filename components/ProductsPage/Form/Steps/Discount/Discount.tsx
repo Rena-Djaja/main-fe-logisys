@@ -25,14 +25,20 @@ import {
   FormItem,
   FormLabel,
 } from '@/components/shared/ui/form'
+import { cn } from '@/lib/utils'
 
 const Discount: FC<FormStepProps> = (props) => {
-  const { fields, handleAddRow, remove } = useDiscount(props)
+  const { isComplimentary, fields, handleAddRow, remove } = useDiscount(props)
   const { form } = props
   const productUnit = form.getValues('unit')
 
   return (
-    <div className="w-full lg:col-span-2 flex flex-col gap-8">
+    <div
+      className={cn(
+        'w-full lg:col-span-2 flex flex-col gap-8',
+        isComplimentary && 'opacity-40'
+      )}
+    >
       <div className="w-full flex justify-between items-center">
         <div className="w-full flex flex-col gap-2">
           <h2 className="font-semibold text-[1.25rem]">Discount</h2>
@@ -48,6 +54,7 @@ const Discount: FC<FormStepProps> = (props) => {
             variant={ButtonVariant.OUTLINE}
             onClick={handleAddRow}
             type={ButtonType.BUTTON}
+            disabled={isComplimentary}
           />
         </div>
       </div>
@@ -70,6 +77,7 @@ const Discount: FC<FormStepProps> = (props) => {
                 variant={ButtonVariant.OUTLINE}
                 onClick={handleAddRow}
                 type={ButtonType.BUTTON}
+                disabled={isComplimentary}
               />
             </div>
           </EmptyContent>

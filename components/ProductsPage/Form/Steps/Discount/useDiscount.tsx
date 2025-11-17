@@ -2,8 +2,11 @@
 
 import { FormStepProps } from '@/type/Product'
 import { useFieldArray } from 'react-hook-form'
+import { useEffect } from 'react'
 
 const useDiscount = ({ form }: FormStepProps) => {
+  const isComplimentary = form.getValues('category') === 'complimentary'
+
   const { fields, append, remove } = useFieldArray({
     name: 'discounts',
     control: form.control,
@@ -23,11 +26,18 @@ const useDiscount = ({ form }: FormStepProps) => {
     })
   }
 
+  useEffect(() => {
+    if (isComplimentary) {
+      form.setValue('discounts', [])
+    }
+  }, [])
+
   return {
     fields,
     append,
     remove,
     handleAddRow,
+    isComplimentary,
   }
 }
 

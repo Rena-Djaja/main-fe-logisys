@@ -9,6 +9,8 @@ const useVariant = ({ form }: FormStepProps) => {
     control: form.control,
   })
 
+  const isComplimentary = form.getValues('category') === 'complimentary'
+
   const handleAddRow = () => {
     append({
       name: '',
@@ -23,6 +25,7 @@ const useVariant = ({ form }: FormStepProps) => {
 
   return {
     fields,
+    isComplimentary,
     handleAddRow,
     remove,
   }
