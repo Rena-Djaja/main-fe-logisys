@@ -86,12 +86,15 @@ const useProductForm = () => {
 
     cmpItem.forEach((item) => {
       item.variants.forEach((variant) => {
-        const row = {
-          complimentary_variant_id: Number(variant.complimentary_variant_id),
-          amount: Number(variant.amount.replaceAll(',', '')),
-        }
+        const amount = Number(variant.amount.replaceAll(',', ''))
 
-        items.push(row)
+        if (amount > 0) {
+          const row = {
+            complimentary_variant_id: Number(variant.complimentary_variant_id),
+            amount: Number(variant.amount.replaceAll(',', '')),
+          }
+          items.push(row)
+        }
       })
     })
 
