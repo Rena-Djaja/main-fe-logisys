@@ -7,22 +7,29 @@ import {
   ProductProps,
   ProductVariantProps,
 } from '@/type/Product'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, Pencil } from 'lucide-react'
 import { cn, formattedDate, thousandFormat } from '@/lib/utils'
 import StatusBadge from '@/components/shared/StatusBadge/StatusBadge'
 import CustomTabs from '@/components/shared/CustomTabs/CustomTabs'
 import { Separator } from '@/components/shared/ui/separator'
+import { ButtonType } from '@/type/FormInputs'
 
 export interface VariantProps {
   activeVariantIdx?: number
   productDetails?: ProductProps
   variants?: ProductVariantProps[]
   handleToggleVariant: (type: 'open' | 'close', idx?: number) => void
+  handleEdit: (type: 'details' | 'variant', id: number) => void
 }
 
 const Variants: FC<VariantProps> = (props) => {
-  const { activeVariantIdx, productDetails, variants, handleToggleVariant } =
-    props
+  const {
+    activeVariantIdx,
+    productDetails,
+    variants,
+    handleToggleVariant,
+    handleEdit,
+  } = props
 
   const activeVariant = variants?.[Number(activeVariantIdx)]
 
@@ -62,14 +69,23 @@ const Variants: FC<VariantProps> = (props) => {
       </button>
       <div className="w-full flex items-center space-x-4">
         <div className="w-full flex flex-col gap-9">
-          <div className="flex flex-col">
-            <span className="font-semibold text-muted-foreground text-[0.785rem]">
-              {productDetails?.name}
-            </span>
-            <span className="font-semibold text-[1.55rem] -mt-1">
-              {activeVariant?.name}
-            </span>
-            <StatusBadge isActive={Boolean(activeVariant?.is_active)} />
+          <div className="w-fullf flex justify-between">
+            <div className="flex flex-col">
+              <span className="font-semibold text-muted-foreground text-[0.785rem]">
+                {productDetails?.name}
+              </span>
+              <span className="font-semibold text-[1.55rem] -mt-1">
+                {activeVariant?.name}
+              </span>
+              <StatusBadge isActive={Boolean(activeVariant?.is_active)} />
+            </div>
+            <button
+              type={ButtonType.BUTTON}
+              className="cursor-pointer"
+              onClick={() => handleEdit('variant', Number(activeVariant?.id))}
+            >
+              <Pencil className="size-4.5" />
+            </button>
           </div>
           <div className="mt-8 flex flex-col gap-2">
             <span className="font-semibold">Price</span>

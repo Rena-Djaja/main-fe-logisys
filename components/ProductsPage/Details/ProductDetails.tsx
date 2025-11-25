@@ -22,6 +22,7 @@ const ProductDetails: FC<CommonDetailsComponentProps> = (props) => {
     isLoading,
     activeVariantIdx,
     handleToggleVariant,
+    handleEdit,
   } = useProductDetails(props)
 
   const { detailsState, handleDetails } = props
@@ -48,12 +49,14 @@ const ProductDetails: FC<CommonDetailsComponentProps> = (props) => {
                 productDetails={productDetails}
                 variants={variants}
                 handleToggleVariant={handleToggleVariant}
+                handleEdit={handleEdit}
               />
             ) : (
               <Details
                 productDetails={productDetails}
                 variants={variants}
                 handleToggleVariant={handleToggleVariant}
+                handleEdit={handleEdit}
               />
             )}
           </div>

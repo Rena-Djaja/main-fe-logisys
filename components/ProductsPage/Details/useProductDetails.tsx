@@ -14,12 +14,15 @@ import {
   ProductVariantsRequest,
   ProductVariantsResponse,
 } from '@/type/Product'
+import { useRouter } from 'next/navigation'
 
 const useProductDetails = (props: CommonDetailsComponentProps) => {
   const {
     detailsState: { id, isOpen },
     handleDetails,
   } = props
+
+  const { push } = useRouter()
 
   const [productDetails, setProductDetails] = useState<
     ProductProps | undefined
@@ -119,6 +122,19 @@ const useProductDetails = (props: CommonDetailsComponentProps) => {
     }
   }
 
+  const handleEdit = (type: 'details' | 'variant', id: number) => {
+    switch (type) {
+      case 'details':
+        push(`products/form/${id}`)
+        break
+      case 'variant':
+        push(`products/form/variant/${id}`)
+        break
+      default:
+        return null
+    }
+  }
+
   useEffect(() => {
     if (isOpen && !!id) {
       fetchDetails()
@@ -133,6 +149,7 @@ const useProductDetails = (props: CommonDetailsComponentProps) => {
     variants,
     activeVariantIdx,
     handleToggleVariant,
+    handleEdit,
   }
 }
 

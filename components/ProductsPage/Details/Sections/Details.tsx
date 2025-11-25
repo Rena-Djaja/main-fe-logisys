@@ -1,29 +1,46 @@
 'use client'
 
 import React, { FC } from 'react'
-import { ChevronRight, Factory, ScanBarcode, Weight } from 'lucide-react'
+import {
+  ChevronRight,
+  Factory,
+  Pencil,
+  ScanBarcode,
+  Weight,
+} from 'lucide-react'
 import { formattedDate, thousandFormat } from '@/lib/utils'
 import { ProductProps, ProductVariantProps } from '@/type/Product'
+import { ButtonType } from '@/type/FormInputs'
 
 interface DetailsProps {
   productDetails?: ProductProps
   variants?: ProductVariantProps[]
   handleToggleVariant: (type: 'open' | 'close', idx?: number) => void
+  handleEdit: (type: 'details' | 'variant', id: number) => void
 }
 
 const Details: FC<DetailsProps> = (props) => {
-  const { productDetails, variants, handleToggleVariant } = props
+  const { productDetails, variants, handleToggleVariant, handleEdit } = props
 
   return (
     <div className="w-full flex items-center space-x-4">
       <div className="w-full flex flex-col gap-9">
-        <div className="flex flex-col">
-          <span className="font-semibold text-muted-foreground text-[0.785rem]">
-            {productDetails?.sku}
-          </span>
-          <span className="font-semibold text-[1.55rem] -mt-1">
-            {productDetails?.name}
-          </span>
+        <div className="w-full flex justify-between">
+          <div className="flex flex-col">
+            <span className="font-semibold text-muted-foreground text-[0.785rem]">
+              {productDetails?.sku}
+            </span>
+            <span className="font-semibold text-[1.55rem] -mt-1">
+              {productDetails?.name}
+            </span>
+          </div>
+          <button
+            type={ButtonType.BUTTON}
+            className="cursor-pointer"
+            onClick={() => handleEdit('details', Number(productDetails?.id))}
+          >
+            <Pencil className="size-4.5" />
+          </button>
         </div>
         <div className="w-full flex flex-col gap-2">
           <div className="w-full flex items-center gap-2">

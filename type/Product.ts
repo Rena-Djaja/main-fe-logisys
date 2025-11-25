@@ -4,7 +4,10 @@ import {
   PaginationResponse,
 } from '@/type/Common'
 import { z } from 'zod'
-import { productFormValidationSchema } from '@/validations/ProductValidation'
+import {
+  productDetailsSchema,
+  productFormValidationSchema,
+} from '@/validations/ProductValidation'
 import { UseFormReturn } from 'react-hook-form'
 
 export interface ProductListFilterProps extends CommonFilterRequest {
@@ -145,4 +148,17 @@ export interface InsertProductRequest {
       items: ComplimentaryItemRequest[]
     }[]
   }[]
+}
+
+export type ProductDetailsFormInputs = z.infer<typeof productDetailsSchema>
+
+export interface UpdateProductDetailRequest {
+  id: number
+  product_name: string
+  sku: string
+  supplier_id: number
+  category: string
+  unit: string
+  base_price: number
+  selling_price: number
 }

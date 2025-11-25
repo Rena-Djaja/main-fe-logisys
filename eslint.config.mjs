@@ -30,6 +30,7 @@ export default [
       'react-hooks/purity': 'off',
       'react-hooks/exhaustive-deps': 'off',
       '@typescript-eslint/no-unused-expressions': 'off',
+      '@typescript-eslint/ban-ts-comment': 'off',
     },
   },
 ]

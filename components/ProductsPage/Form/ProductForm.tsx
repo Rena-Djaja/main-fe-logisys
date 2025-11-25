@@ -1,7 +1,6 @@
 'use client'
 
-import React, { FC } from 'react'
-import { CommonFormProps } from '@/type/Common'
+import React from 'react'
 import useProductForm from '@/components/ProductsPage/Form/useProductForm'
 import { Form } from '@/components/shared/ui/form'
 import { ChevronLeft, ChevronRight, Save } from 'lucide-react'
@@ -9,7 +8,7 @@ import CustomButton from '@/components/shared/FormInputs/CustomButton'
 import { ButtonType, ButtonVariant, IconPlacementType } from '@/type/FormInputs'
 import Stepper from '@/components/ProductsPage/Form/Stepper'
 
-const ProductForm: FC<CommonFormProps> = ({ id }) => {
+const ProductForm = () => {
   const {
     activeStep,
     activeStepIdx,
@@ -23,11 +22,9 @@ const ProductForm: FC<CommonFormProps> = ({ id }) => {
   return (
     <div className="mt-8 w-full flex flex-col gap-10">
       <div className="w-full flex flex-col">
-        <h1 className="font-semibold text-[2rem]">
-          {!!id ? 'Edit' : 'Add'} Product
-        </h1>
+        <h1 className="font-semibold text-[2rem]">Add Product</h1>
         <span className="font-medium text-[0.95rem]">
-          {!!id ? 'Update' : 'Add new'} product record
+          Add new product record
         </span>
       </div>
       <Stepper
