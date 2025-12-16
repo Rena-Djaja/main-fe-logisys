@@ -4,7 +4,7 @@ import { Method } from 'axios'
 import useSWR, { SWRConfiguration, SWRResponse } from 'swr'
 import { callAPI, CallAPIOptions } from '@/lib/fetchers'
 
-type DataType<T> = T | null
+export type DataType<T> = T | null
 type ResType<T> = {
   data: T
   status: any

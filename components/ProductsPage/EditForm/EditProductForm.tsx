@@ -103,7 +103,7 @@ const EditProductForm: FC<CommonFormProps> = (props) => {
               type={ButtonType.BUTTON}
               variant={ButtonVariant.OUTLINE}
               label={'Cancel'}
-              link={'/dashboard/suppliers'}
+              link={'/dashboard/products'}
               disabled={isLoading.submit}
             />
             <CustomButton label={'Save'} isLoading={isLoading.submit} />

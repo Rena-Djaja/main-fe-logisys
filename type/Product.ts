@@ -5,6 +5,7 @@ import {
 } from '@/type/Common'
 import { z } from 'zod'
 import {
+  editVariantSchema,
   productDetailsSchema,
   productFormValidationSchema,
 } from '@/validations/ProductValidation'
@@ -67,6 +68,7 @@ export interface ComplimentaryProps {
 }
 
 export interface ComplimentaryItemProps {
+  id: number
   complimentary_variant_id: number
   product_name: string
   variant_name: string
@@ -109,9 +111,63 @@ export interface ComplimentaryItemData {
   }[]
 }
 
+export interface EditComplimentaryItemData {
+  product_id: string
+  variants: {
+    id: number | null
+    complimentary_variant_id: string
+    amount: string
+  }[]
+}
+
 export interface ComplimentaryItemRequest {
   complimentary_variant_id: number
   amount: number
+}
+
+export interface EditComplimentaryItemRequest {
+  id: number | null
+  complimentary_variant_id: number
+  amount: number
+}
+
+export interface EditComplimentaryItemRequest extends ComplimentaryItemRequest {
+  id: number | null
+}
+
+export interface DiscountRequestProps {
+  id: number | null
+  is_stacked: boolean
+  name: string
+  description: string | null
+  type: string
+  quantity: number
+  amount: number
+  payment_type: string
+  start_date: string
+  end_date: string | null
+}
+
+export interface ComplimentaryRequestProps {
+  rule_id: number | null
+  quantity: number
+  payment_type: string
+  name: string
+  description: string | null
+  start_date: string
+  end_date: string | null
+  is_stacked: boolean
+  items: EditComplimentaryItemRequest[]
+}
+
+export interface EditVariantRequest {
+  id: number
+  product_id: number
+  name: string
+  extra_base_price: number
+  extra_selling_price: number
+  discount: DiscountRequestProps[]
+  complimentary: ComplimentaryRequestProps[]
 }
 
 export interface InsertProductRequest {
@@ -162,3 +218,5 @@ export interface UpdateProductDetailRequest {
   base_price: number
   selling_price: number
 }
+
+export type ProductVariantFormInputs = z.infer<typeof editVariantSchema>

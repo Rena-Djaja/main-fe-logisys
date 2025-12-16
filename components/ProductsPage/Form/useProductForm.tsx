@@ -139,14 +139,16 @@ const useProductForm = () => {
                     quantity: Number(customDsc.quantity.replaceAll(',', '')),
                     amount: Number(customDsc.amount.replaceAll(',', '')),
                     start_date: parseDate(customDsc.start_date),
-                    end_date: customDsc.end_date || null,
+                    end_date: customDsc.end_date
+                      ? parseDate(customDsc.end_date)
+                      : null,
                   })) || []
                 : data.discounts?.map((dsc) => ({
                     ...dsc,
                     quantity: Number(dsc.quantity.replaceAll(',', '')),
                     amount: Number(dsc.amount.replaceAll(',', '')),
                     start_date: parseDate(dsc.start_date),
-                    end_date: dsc.end_date || null,
+                    end_date: dsc.end_date ? parseDate(dsc.end_date) : null,
                   })) || [],
               complimentary: variant.custom_complimentary
                 ? variant.complimentary?.map((customCmp) => ({

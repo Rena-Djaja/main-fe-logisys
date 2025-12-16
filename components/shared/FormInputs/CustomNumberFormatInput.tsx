@@ -34,7 +34,7 @@ const CustomNumberFormatInput: FC<CustomInputProps> = (props) => {
                 value={field.value}
                 onValueChange={(values) => {
                   // Pass the float value back to the form
-                  field.onChange(values.floatValue)
+                  field.onChange(String(values.floatValue))
                 }}
                 onBlur={field.onBlur}
                 name={field.name}
