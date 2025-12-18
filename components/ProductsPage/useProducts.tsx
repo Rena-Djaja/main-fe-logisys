@@ -1,16 +1,24 @@
 'use client'
 
 import { useState } from 'react'
-import { CommonDetailsStateProps, CommonFilterRequest } from '@/type/Common'
+import {
+  CommonApiResponse,
+  CommonDetailsStateProps,
+  CommonFilterRequest,
+} from '@/type/Common'
 import useCommonApi from '@/components/shared/Hooks/CommonApi/useCommonApi'
 import { ProductAPI } from '@/constant/APIUrls'
 import { redirect } from 'next/navigation'
 import { ButtonVariant } from '@/type/FormInputs'
 import { useConfirmationStore } from '@/store'
-import { ProductListResponse } from '@/type/Product'
+import { DeleteProductRequest, ProductListResponse } from '@/type/Product'
+import { toast } from 'sonner'
+import { apiStatusChecker } from '@/lib/utils'
+import { callAPI } from '@/lib/fetchers'
 
 const useProducts = () => {
-  const { setConfirmation } = useConfirmationStore()
+  const { setConfirmation, setLoading, closeConfirmation } =
+    useConfirmationStore()
 
   const [detailsState, setDetailsState] = useState<CommonDetailsStateProps>({
     id: null,
@@ -26,7 +34,7 @@ const useProducts = () => {
   const {
     data: productList,
     isValidating,
-    // mutate,
+    mutate,
   } = useCommonApi<CommonFilterRequest, ProductListResponse>(
     ProductAPI.GET_PRODUCT_LIST,
     filter,
@@ -73,8 +81,41 @@ const useProducts = () => {
     })
   }
 
-  const onConfirmDelete = (id: number) => {
-    console.log(id)
+  const onConfirmDelete = async (id: number) => {
+    setLoading(true)
+
+    try {
+      const apiRes = await callAPI<DeleteProductRequest, CommonApiResponse>(
+        ProductAPI.POST_PRODUCT,
+        { id },
+        { method: 'DELETE' }
+      )
+
+      const { status, data: deleteUserRes } = apiRes
+
+      if (apiStatusChecker(status) && deleteUserRes) {
+        handleSuccessDelete(deleteUserRes)
+      } else {
+        handleFailureDelete(deleteUserRes)
+      }
+    } catch (err) {
+      handleFailureDelete()
+      throw err
+    } finally {
+      setLoading(false)
+      closeConfirmation()
+    }
+  }
+
+  const handleSuccessDelete = (response: CommonApiResponse) => {
+    toast.success(response.message)
+    mutate()
+  }
+
+  const handleFailureDelete = (response?: CommonApiResponse) => {
+    toast.error(
+      response?.error || 'Something went wrong. Please try again later.'
+    )
   }
 
   return {

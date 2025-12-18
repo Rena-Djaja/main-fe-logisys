@@ -226,3 +226,7 @@ export interface PostVariantStatusRequest {
   product_id: number
   is_active: boolean
 }
+
+export interface DeleteProductRequest {
+  id: number
+}
