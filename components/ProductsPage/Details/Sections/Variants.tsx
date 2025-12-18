@@ -7,7 +7,7 @@ import {
   ProductProps,
   ProductVariantProps,
 } from '@/type/Product'
-import { ArrowLeft, Pencil } from 'lucide-react'
+import { ArrowLeft, Pencil, Power } from 'lucide-react'
 import { cn, formattedDate, thousandFormat } from '@/lib/utils'
 import StatusBadge from '@/components/shared/StatusBadge/StatusBadge'
 import CustomTabs from '@/components/shared/CustomTabs/CustomTabs'
@@ -20,6 +20,7 @@ export interface VariantProps {
   variants?: ProductVariantProps[]
   handleToggleVariant: (type: 'open' | 'close', idx?: number) => void
   handleEdit: (type: 'details' | 'variant', id: number) => void
+  handleUpdateStatus: (id: number, productId: number) => void
 }
 
 const Variants: FC<VariantProps> = (props) => {
@@ -29,6 +30,7 @@ const Variants: FC<VariantProps> = (props) => {
     variants,
     handleToggleVariant,
     handleEdit,
+    handleUpdateStatus,
   } = props
 
   const activeVariant = variants?.[Number(activeVariantIdx)]
@@ -79,13 +81,34 @@ const Variants: FC<VariantProps> = (props) => {
               </span>
               <StatusBadge isActive={Boolean(activeVariant?.is_active)} />
             </div>
-            <button
-              type={ButtonType.BUTTON}
-              className="cursor-pointer"
-              onClick={() => handleEdit('variant', Number(activeVariant?.id))}
-            >
-              <Pencil className="size-4.5" />
-            </button>
+            <div className="flex gap-4 items-center">
+              <button
+                type={ButtonType.BUTTON}
+                className="cursor-pointer"
+                onClick={() =>
+                  handleUpdateStatus(
+                    Number(activeVariant?.id),
+                    Number(activeVariant?.product_id)
+                  )
+                }
+              >
+                <Power
+                  className={cn(
+                    'size-4.5',
+                    activeVariant?.is_active
+                      ? 'text-destructive'
+                      : 'text-green-500'
+                  )}
+                />
+              </button>
+              <button
+                type={ButtonType.BUTTON}
+                className="cursor-pointer"
+                onClick={() => handleEdit('variant', Number(activeVariant?.id))}
+              >
+                <Pencil className="size-4.5" />
+              </button>
+            </div>
           </div>
           <div className="mt-8 flex flex-col gap-2">
             <span className="font-semibold">Price</span>

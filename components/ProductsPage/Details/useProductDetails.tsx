@@ -1,12 +1,13 @@
 'use client'
 
-import { CommonDetailsComponentProps } from '@/type/Common'
+import { CommonApiResponse, CommonDetailsComponentProps } from '@/type/Common'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { callAPI } from '@/lib/fetchers'
 import { ProductAPI } from '@/constant/APIUrls'
 import { apiStatusChecker } from '@/lib/utils'
 import {
+  PostVariantStatusRequest,
   ProductDetailsRequest,
   ProductDetailsResponse,
   ProductProps,
@@ -15,6 +16,8 @@ import {
   ProductVariantsResponse,
 } from '@/type/Product'
 import { useRouter } from 'next/navigation'
+import { useConfirmationStore } from '@/store'
+import { ButtonVariant } from '@/type/FormInputs'
 
 const useProductDetails = (props: CommonDetailsComponentProps) => {
   const {
@@ -23,6 +26,8 @@ const useProductDetails = (props: CommonDetailsComponentProps) => {
   } = props
 
   const { push } = useRouter()
+  const { setConfirmation, setLoading, closeConfirmation } =
+    useConfirmationStore()
 
   const [productDetails, setProductDetails] = useState<
     ProductProps | undefined
@@ -135,6 +140,60 @@ const useProductDetails = (props: CommonDetailsComponentProps) => {
     }
   }
 
+  const onConfirmUpdateStatus = async (id: number, productId: number) => {
+    setLoading(true)
+
+    try {
+      const req: PostVariantStatusRequest = {
+        id,
+        product_id: productId,
+        is_active: !variants?.[Number(activeVariantIdx)].is_active,
+      }
+
+      const apiRes = await callAPI<PostVariantStatusRequest, CommonApiResponse>(
+        ProductAPI.POST_PRODUCT_VARIANT_STATUS,
+        req,
+        { method: 'PUT' }
+      )
+
+      const { status, data: updateStatusData } = apiRes
+
+      if (apiStatusChecker(status) && updateStatusData) {
+        handleSuccessUpdateStatus(updateStatusData)
+      } else {
+        handleFailureUpdateStatus(updateStatusData)
+      }
+    } catch {
+      handleFailureUpdateStatus()
+      throw 'Failed to update variant status'
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleSuccessUpdateStatus = (response: CommonApiResponse) => {
+    closeConfirmation()
+    handleDetails('close')
+    toast.success(response.message)
+  }
+
+  const handleFailureUpdateStatus = (response?: CommonApiResponse) => {
+    toast.error(
+      response?.error || 'Something went wrong. Please try again later'
+    )
+  }
+
+  const handleUpdateStatus = (id: number, productId: number) => {
+    setConfirmation({
+      isOpen: true,
+      title: 'Update status of this variant?',
+      description: `Are you sure want to ${variants?.[Number(activeVariantIdx)]?.is_active ? 'deactivate' : 'activate'} this variant`,
+      confirmButtonVariant: ButtonVariant.DEFAULT,
+      confirmButtonText: "Yes, I'm sure",
+      onConfirm: () => onConfirmUpdateStatus(id, productId),
+    })
+  }
+
   useEffect(() => {
     if (isOpen && !!id) {
       fetchDetails()
@@ -150,6 +209,7 @@ const useProductDetails = (props: CommonDetailsComponentProps) => {
     activeVariantIdx,
     handleToggleVariant,
     handleEdit,
+    handleUpdateStatus,
   }
 }
 

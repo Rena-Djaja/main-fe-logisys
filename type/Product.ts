@@ -220,3 +220,9 @@ export interface UpdateProductDetailRequest {
 }
 
 export type ProductVariantFormInputs = z.infer<typeof editVariantSchema>
+
+export interface PostVariantStatusRequest {
+  id: number
+  product_id: number
+  is_active: boolean
+}

@@ -74,9 +74,9 @@ const useEditVariant = ({ id }: CommonFormProps) => {
       const fieldsToUpdate = ['name', 'extra_base_price', 'extra_selling_price']
 
       fieldsToUpdate.forEach((field) => {
-        // @ts-ignore
         form.setValue(
           field as keyof ProductVariantFormInputs,
+          // @ts-ignore
           String(productVariantDetails[field])
         )
       })

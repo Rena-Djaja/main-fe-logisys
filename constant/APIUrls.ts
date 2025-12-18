@@ -35,6 +35,7 @@ export const ProductAPI = {
   GET_PRODUCT_VARIANT_DETAILS: baseURL + '/product/variant/details',
   POST_PRODUCT: baseURL + '/product',
   POST_PRODUCT_VARIANT: baseURL + '/product/variant',
+  POST_PRODUCT_VARIANT_STATUS: baseURL + '/product/variant/status',
 }
 
 export const RoleAPI = {
