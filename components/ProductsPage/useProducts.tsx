@@ -11,12 +11,49 @@ import { ProductAPI } from '@/constant/APIUrls'
 import { redirect } from 'next/navigation'
 import { ButtonVariant } from '@/type/FormInputs'
 import { useConfirmationStore } from '@/store'
-import { DeleteProductRequest, ProductListResponse } from '@/type/Product'
+import {
+  DeleteProductRequest,
+  ProductListRequest,
+  ProductListResponse,
+} from '@/type/Product'
 import { toast } from 'sonner'
 import { apiStatusChecker } from '@/lib/utils'
 import { callAPI } from '@/lib/fetchers'
 
 const useProducts = () => {
+  const filterMenu = {
+    product_type: {
+      category: 'Product Category',
+      items: [
+        {
+          title: 'All Items',
+          value: '',
+        },
+        {
+          title: 'Selling Item',
+          value: 'selling_item',
+        },
+        {
+          title: 'Complimentary',
+          value: 'complimentary',
+        },
+      ],
+    },
+    is_active: {
+      category: 'Status',
+      items: [
+        {
+          title: 'Active',
+          value: 1,
+        },
+        {
+          title: 'Inactive',
+          value: 0,
+        },
+      ],
+    },
+  }
+
   const { setConfirmation, setLoading, closeConfirmation } =
     useConfirmationStore()
 
@@ -25,10 +62,12 @@ const useProducts = () => {
     isOpen: false,
   })
 
-  const [filter, setFilter] = useState<CommonFilterRequest>({
+  const [filter, setFilter] = useState<ProductListRequest>({
     page: 1,
     per_page: 10,
     search: '',
+    product_type: '',
+    is_active: 1,
   })
 
   const {
@@ -41,7 +80,7 @@ const useProducts = () => {
     { method: 'GET' }
   )
 
-  const search = (key: keyof CommonFilterRequest, value: number | string) => {
+  const search = (key: keyof ProductListRequest, value: number | string) => {
     const newState = { ...filter, [key]: value }
     if (key === 'search') {
       newState.page = 1
@@ -123,6 +162,7 @@ const useProducts = () => {
     isValidating,
     detailsState,
     filter,
+    filterMenu,
     search,
     onRowClick,
     onAdd,

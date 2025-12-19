@@ -15,6 +15,11 @@ export interface ProductListFilterProps extends CommonFilterRequest {
   product_type?: 'selling_item' | 'complimentary'
 }
 
+export interface ProductListRequest extends CommonFilterRequest {
+  product_type?: string
+  is_active?: number
+}
+
 export interface ProductProps {
   id: number
   supplier_id: number

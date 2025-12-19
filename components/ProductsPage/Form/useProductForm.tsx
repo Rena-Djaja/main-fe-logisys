@@ -24,7 +24,7 @@ import {
 import Discount from '@/components/ProductsPage/Form/Steps/Discount/Discount'
 import Complimentary from '@/components/ProductsPage/Form/Steps/Complimentary/Complimentary'
 import Variant from '@/components/ProductsPage/Form/Steps/Variant/Variant'
-import { apiStatusChecker, parseDate } from '@/lib/utils'
+import { apiStatusChecker } from '@/lib/utils'
 import { callAPI } from '@/lib/fetchers'
 import { ProductAPI } from '@/constant/APIUrls'
 import { CommonApiResponse } from '@/type/Common'
@@ -138,33 +138,29 @@ const useProductForm = () => {
                     ...customDsc,
                     quantity: Number(customDsc.quantity.replaceAll(',', '')),
                     amount: Number(customDsc.amount.replaceAll(',', '')),
-                    start_date: parseDate(customDsc.start_date),
-                    end_date: customDsc.end_date
-                      ? parseDate(customDsc.end_date)
-                      : null,
+                    start_date: customDsc.start_date,
+                    end_date: customDsc.end_date || null,
                   })) || []
                 : data.discounts?.map((dsc) => ({
                     ...dsc,
                     quantity: Number(dsc.quantity.replaceAll(',', '')),
                     amount: Number(dsc.amount.replaceAll(',', '')),
-                    start_date: parseDate(dsc.start_date),
-                    end_date: dsc.end_date ? parseDate(dsc.end_date) : null,
+                    start_date: dsc.start_date,
+                    end_date: dsc.end_date || null,
                   })) || [],
               complimentary: variant.custom_complimentary
                 ? variant.complimentary?.map((customCmp) => ({
                     ...customCmp,
                     quantity: Number(customCmp.quantity.replaceAll(',', '')),
-                    start_date: parseDate(customCmp.start_date),
-                    end_date: customCmp.end_date
-                      ? parseDate(customCmp.end_date)
-                      : null,
+                    start_date: customCmp.start_date,
+                    end_date: customCmp.end_date || null,
                     items: handleComplimentaryItems(customCmp.items),
                   })) || []
                 : data.complimentary?.map((cmp) => ({
                     ...cmp,
                     quantity: Number(cmp.quantity.replaceAll(',', '')),
-                    start_date: parseDate(cmp.start_date),
-                    end_date: cmp.end_date ? parseDate(cmp.end_date) : null,
+                    start_date: cmp.start_date,
+                    end_date: cmp.end_date || null,
                     items: handleComplimentaryItems(cmp.items),
                   })) || [],
             }))
@@ -178,15 +174,15 @@ const useProductForm = () => {
                     ...dsc,
                     quantity: Number(dsc.quantity.replaceAll(',', '')),
                     amount: Number(dsc.amount.replaceAll(',', '')),
-                    start_date: parseDate(dsc.start_date),
+                    start_date: dsc.start_date,
                     end_date: dsc.end_date || null,
                   })) || [],
                 complimentary:
                   data.complimentary?.map((cmp) => ({
                     ...cmp,
                     quantity: Number(cmp.quantity.replaceAll(',', '')),
-                    start_date: parseDate(cmp.start_date),
-                    end_date: cmp.end_date ? parseDate(cmp.end_date) : null,
+                    start_date: cmp.start_date,
+                    end_date: cmp.end_date || null,
                     items: handleComplimentaryItems(cmp.items),
                   })) || [],
               },

@@ -20,7 +20,7 @@ import { editVariantSchema } from '@/validations/ProductValidation'
 import { useRouter } from 'next/navigation'
 import { callAPI } from '@/lib/fetchers'
 import { toast } from 'sonner'
-import { apiStatusChecker, parseDate } from '@/lib/utils'
+import { apiStatusChecker } from '@/lib/utils'
 
 const useEditVariant = ({ id }: CommonFormProps) => {
   const { push } = useRouter()
@@ -68,6 +68,8 @@ const useEditVariant = ({ id }: CommonFormProps) => {
 
     return result
   }
+
+  console.log(form.watch())
 
   const fetchFromInputs = () => {
     if (productVariantDetails) {
@@ -183,8 +185,8 @@ const useEditVariant = ({ id }: CommonFormProps) => {
             ...each,
             quantity: Number(each.quantity.replaceAll(',', '')),
             amount: Number(each.amount.replaceAll(',', '')),
-            start_date: parseDate(each.start_date),
-            end_date: each.end_date ? parseDate(each.end_date) : null,
+            start_date: each.start_date,
+            end_date: each.end_date || null,
           })) || [],
         complimentary:
           data.complimentary?.map((each) => ({
@@ -193,8 +195,8 @@ const useEditVariant = ({ id }: CommonFormProps) => {
             payment_type: each.payment_type,
             name: each.name,
             description: each.description,
-            start_date: parseDate(each.start_date),
-            end_date: each.end_date ? parseDate(each.end_date) : null,
+            start_date: each.start_date,
+            end_date: each.end_date || null,
             is_stacked: each.is_stacked,
             items: handleComplimentaryItems(each.items),
           })) || [],

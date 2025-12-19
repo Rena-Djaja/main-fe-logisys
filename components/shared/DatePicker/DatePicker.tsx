@@ -1,6 +1,7 @@
 'use client'
 
 import React, { FC } from 'react'
+import { toZonedTime } from 'date-fns-tz'
 import {
   Popover,
   PopoverContent,
@@ -18,6 +19,7 @@ import {
 import { CustomDateInputProps } from '@/type/FormInputs'
 import { formattedDate } from '@/lib/utils'
 import { Matcher } from 'react-day-picker'
+import { format } from 'date-fns'
 
 const DatePicker: FC<CustomDateInputProps> = (props) => {
   const {
@@ -63,7 +65,17 @@ const DatePicker: FC<CustomDateInputProps> = (props) => {
                   selected={value}
                   captionLayout="dropdown"
                   onSelect={(date) => {
-                    onChange(date?.toISOString() || '')
+                    let formattedDate
+                    if (date) {
+                      const timezone = 'Asia/Jakarta'
+
+                      const zonedDate = toZonedTime(new Date(date), timezone)
+                      formattedDate = format(
+                        zonedDate,
+                        "yyyy-MM-dd'T'HH:mm:ssXXX"
+                      )
+                    }
+                    onChange(formattedDate || '')
                     setOpen(false)
                   }}
                   disabled={
