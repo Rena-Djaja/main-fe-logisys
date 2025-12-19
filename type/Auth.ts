@@ -49,4 +49,6 @@ export enum PermissionTypes {
   WRITE_SUPPLIER = 6,
   READ_LOCATION = 7,
   WRITE_LOCATION = 8,
+  READ_PRODUCT = 9,
+  WRITE_PRODUCT = 10,
 }

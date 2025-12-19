@@ -28,6 +28,16 @@ export const SupplierAPI = {
   POST_SUPPLIER: baseURL + '/supplier',
 }
 
+export const ProductAPI = {
+  GET_PRODUCT_LIST: baseURL + '/product/list',
+  GET_PRODUCT_DETAILS: baseURL + '/product/details',
+  GET_PRODUCT_VARIANTS: baseURL + '/product/variant/list',
+  GET_PRODUCT_VARIANT_DETAILS: baseURL + '/product/variant/details',
+  POST_PRODUCT: baseURL + '/product',
+  POST_PRODUCT_VARIANT: baseURL + '/product/variant',
+  POST_PRODUCT_VARIANT_STATUS: baseURL + '/product/variant/status',
+}
+
 export const RoleAPI = {
   GET_ROLE_LIST: baseURL + '/role/list',
 }

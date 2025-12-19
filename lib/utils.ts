@@ -10,7 +10,7 @@ export function apiStatusChecker(status: number | undefined) {
   return [200, 201].includes(Number(status))
 }
 
-export const formattedDate = (dateString?: string, withTime = false) => {
+export const formattedDate = (dateString?: string | null, withTime = false) => {
   if (!dateString) return '-'
   const date = new Date(dateString)
   return date.toLocaleDateString('en-GB', {
@@ -22,6 +22,17 @@ export const formattedDate = (dateString?: string, withTime = false) => {
       minute: 'numeric',
     }),
   })
+}
+
+export const thousandFormat = (number = 0) => {
+  let thousand = ''
+  const numberRev = number.toString().split('').reverse().join('')
+  for (let i = 0; i < numberRev.length; i++)
+    if (i % 3 == 0) thousand += numberRev.substr(i, 3) + '.'
+  return thousand
+    .split('', thousand.length - 1)
+    .reverse()
+    .join('')
 }
 
 export const handleLogout = () => {
