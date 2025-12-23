@@ -30,7 +30,18 @@ const useUserForm = (props: CommonFormProps) => {
     defaultValues: {
       name: '',
       email: '',
-      role_id: 0,
+      role_id: '',
+      has_employee_data: false,
+      employee_data: {
+        title: '',
+        salary: '',
+        allowance: '',
+        premium: '',
+        daily_allowance: '',
+        meal_allowance: '',
+        overtime_pay: '',
+        joined_date: '',
+      },
     },
     resolver: zodResolver(userFormValidationSchema),
   })
@@ -56,6 +67,7 @@ const useUserForm = (props: CommonFormProps) => {
     ;['name', 'email', 'role_id'].forEach((each) => {
       form.setValue(
         each as keyof UserFormInputs,
+        // @ts-ignore
         data[each as keyof PostUserRequest]
       )
     })
@@ -108,12 +120,36 @@ const useUserForm = (props: CommonFormProps) => {
     setIsLoading((prev) => ({ ...prev, submit: true }))
 
     try {
+      const req: PostUserRequest = {
+        ...(id && { id: Number(id) }),
+        name: data.name,
+        email: data.email,
+        role_id: Number(data.role_id),
+        employee_data: data.has_employee_data
+          ? {
+              title: String(data.employee_data?.title),
+              salary: Number(data.employee_data?.salary?.replaceAll(',', '')),
+              allowance: Number(
+                data.employee_data?.allowance?.replaceAll(',', '')
+              ),
+              premium: Number(data.employee_data?.premium?.replaceAll(',', '')),
+              daily_allowance: Number(
+                data.employee_data?.daily_allowance?.replaceAll(',', '')
+              ),
+              meal_allowance: Number(
+                data.employee_data?.meal_allowance?.replaceAll(',', '')
+              ),
+              overtime_pay: Number(
+                data.employee_data?.overtime_pay?.replaceAll(',', '')
+              ),
+              joined_date: String(data.employee_data?.joined_date),
+            }
+          : null,
+      }
+
       const apiRes = await callAPI<PostUserRequest, CommonApiResponse>(
         UserAPI.POST_USER,
-        {
-          ...data,
-          ...(id && { id: Number(id) }),
-        },
+        req,
         { method: id ? 'PUT' : 'POST' }
       )
 
