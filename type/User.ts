@@ -36,8 +36,23 @@ export interface UserDetailsResponse extends CommonApiResponse {
 
 export type UserFormInputs = z.infer<typeof userFormValidationSchema>
 
-export interface PostUserRequest extends UserFormInputs {
+export interface EmployeeDataRequest {
+  title: string
+  salary: number
+  allowance: number
+  premium: number
+  daily_allowance: number
+  meal_allowance: number
+  overtime_pay: number
+  joined_date: string
+}
+
+export interface PostUserRequest {
   id?: number
+  name: string
+  email: string
+  role_id: number
+  employee_data: EmployeeDataRequest | null
 }
 
 export interface DeleteUserRequest {
