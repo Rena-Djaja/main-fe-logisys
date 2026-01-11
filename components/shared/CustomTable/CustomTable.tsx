@@ -144,7 +144,7 @@ const CustomTable: FC<CustomTableProps> = (props) => {
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={headers.length}
+                  colSpan={headers.length + 1}
                   className="h-32 text-center"
                 >
                   <span>No Data Available</span>
