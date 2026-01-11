@@ -1,4 +1,4 @@
-import { PaginationProps } from '@/type/Pagination'
+import { PaginationResponse } from '@/type/Common'
 
 export interface WarehouseProps {
   id: number
@@ -19,10 +19,10 @@ export interface TruckProps {
 
 export interface WarehouseListResponse {
   data: WarehouseProps[]
-  pagination: PaginationProps
+  pagination: PaginationResponse
 }
 
 export interface TruckListResponse {
   data: TruckProps[]
-  pagination: PaginationProps
+  pagination: PaginationResponse
 }

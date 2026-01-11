@@ -25,9 +25,9 @@ const Warehouse = () => {
         <div className="w-full flex justify-between">
           <div className="w-full flex gap-2 font-semibold text-[1.25rem]">
             <span>All warehouse</span>
-            {/*<span className="opacity-70">*/}
-            {/*  {locationList?.pagination.total_data}*/}
-            {/*</span>*/}
+            <span className="opacity-70">
+              {warehouseList?.pagination.total_data}
+            </span>
           </div>
           <div className="w-full flex gap-4 justify-end">
             <div className="w-full max-w-[15rem]">
