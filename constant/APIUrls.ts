@@ -38,6 +38,11 @@ export const ProductAPI = {
   POST_PRODUCT_VARIANT_STATUS: baseURL + '/product/variant/status',
 }
 
+export const InventoryAPI = {
+  GET_WAREHOUSE_LIST: baseURL + '/inventory/warehouse/list',
+  GET_TRUCK_LIST: baseURL + '/inventory/truck/list',
+}
+
 export const RoleAPI = {
   GET_ROLE_LIST: baseURL + '/role/list',
 }
