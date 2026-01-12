@@ -1,4 +1,6 @@
 import { PaginationResponse } from '@/type/Common'
+import { z } from 'zod'
+import { warehouseValidationSchema } from '@/validations/InventoryValidation'
 
 export interface WarehouseProps {
   id: number
@@ -26,3 +28,5 @@ export interface TruckListResponse {
   data: TruckProps[]
   pagination: PaginationResponse
 }
+
+export type WarehouseFormInputs = z.infer<typeof warehouseValidationSchema>
