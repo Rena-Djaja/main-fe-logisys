@@ -47,8 +47,8 @@ const Warehouse = () => {
           headers={warehouseListHeaders}
           data={warehouseList?.data || []}
           isLoading={isValidating}
-          allowDetails={false}
           page={filter.page}
+          allowDelete={false}
           perPage={filter.per_page}
           totalData={0}
           onChange={(val) => search('page', val)}

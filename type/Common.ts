@@ -44,3 +44,7 @@ export interface CommonFormProps {
 export interface CommonServerFormProps {
   params: Promise<{ slug: string }>
 }
+
+export interface CommonDetailsRequest {
+  id: number
+}
