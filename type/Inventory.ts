@@ -1,4 +1,4 @@
-import { PaginationResponse } from '@/type/Common'
+import { CommonApiResponse, PaginationResponse } from '@/type/Common'
 import { z } from 'zod'
 import { warehouseValidationSchema } from '@/validations/InventoryValidation'
 
@@ -29,4 +29,12 @@ export interface TruckListResponse {
   pagination: PaginationResponse
 }
 
+export interface WarehouseDetailsResponse extends CommonApiResponse {
+  data: WarehouseProps
+}
+
 export type WarehouseFormInputs = z.infer<typeof warehouseValidationSchema>
+
+export interface PostWarehouseRequest extends WarehouseFormInputs {
+  id?: number
+}

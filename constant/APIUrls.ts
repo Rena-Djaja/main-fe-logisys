@@ -41,6 +41,7 @@ export const ProductAPI = {
 export const InventoryAPI = {
   GET_WAREHOUSE_LIST: baseURL + '/inventory/warehouse/list',
   GET_TRUCK_LIST: baseURL + '/inventory/truck/list',
+  GET_WAREHOUSE_DETAILS: baseURL + '/inventory/warehouse/details',
   POST_WAREHOUSE: baseURL + '/inventory/warehouse',
 }
 

@@ -7,9 +7,18 @@ import { ButtonType, ButtonVariant, InputType } from '@/type/FormInputs'
 import CustomButton from '@/components/shared/FormInputs/CustomButton'
 import { CommonFormProps } from '@/type/Common'
 import useWarehouseForm from '@/components/InventoryPage/Tabs/Warehouse/Form/useWarehouseForm'
+import { Spinner } from '@/components/shared/ui/spinner'
 
 const WarehouseForm: FC<CommonFormProps> = ({ id }) => {
-  const { form, isLoading, onSubmit } = useWarehouseForm()
+  const { form, isLoading, onSubmit } = useWarehouseForm({ id })
+
+  if (isLoading.form) {
+    return (
+      <div className="w-full flex justify-center items-center py-[20rem]">
+        <Spinner className="size-14" />
+      </div>
+    )
+  }
 
   return (
     <div className="mt-8 w-full flex flex-col gap-10">

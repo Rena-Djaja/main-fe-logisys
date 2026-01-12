@@ -7,6 +7,7 @@ export interface CustomTableProps {
   isLoading?: boolean
   allowDetails?: boolean
   allowEdit?: boolean
+  allowDelete?: boolean
   page: number
   perPage: number
   totalData: number
