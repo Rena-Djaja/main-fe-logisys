@@ -19,7 +19,6 @@ import {
 import { apiStatusChecker } from '@/lib/utils'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
-import { LocationDetailsResponse } from '@/type/Location'
 
 const useWarehouseForm = ({ id }: CommonFormProps) => {
   const { push } = useRouter()
@@ -49,7 +48,7 @@ const useWarehouseForm = ({ id }: CommonFormProps) => {
     })
   }
 
-  const handleFailureFetchDetails = (response?: LocationDetailsResponse) => {
+  const handleFailureFetchDetails = (response?: WarehouseDetailsResponse) => {
     toast.error(
       response?.error || 'Something went wrong. Please try again later'
     )

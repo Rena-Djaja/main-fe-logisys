@@ -29,11 +29,11 @@ const useTrucks = () => {
   >(InventoryAPI.GET_TRUCK_LIST, filter, { method: 'GET' })
 
   const onAdd = () => {
-    redirect('/dashboard/inventory/warehouse/form')
+    redirect('/dashboard/inventory/trucks/form')
   }
 
   const onUpdate = (id: number) => {
-    redirect(`/dashboard/inventory/warehouse/form/${id}`)
+    redirect(`/dashboard/inventory/trucks/form/${id}`)
   }
 
   return {
