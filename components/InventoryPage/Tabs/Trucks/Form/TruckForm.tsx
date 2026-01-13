@@ -8,10 +8,19 @@ import { ButtonType, ButtonVariant } from '@/type/FormInputs'
 import CustomButton from '@/components/shared/FormInputs/CustomButton'
 import useTruckForm from '@/components/InventoryPage/Tabs/Trucks/Form/useTruckForm'
 import CustomSelect from '@/components/shared/FormInputs/CustomSelect'
+import { Spinner } from '@/components/shared/ui/spinner'
 
 const TruckForm: FC<CommonFormProps> = ({ id }) => {
   const { form, isLoading, salesmanList, isValidating, onSubmit } =
     useTruckForm({ id })
+
+  if (isLoading.form) {
+    return (
+      <div className="w-full flex justify-center items-center py-[20rem]">
+        <Spinner className="size-14" />
+      </div>
+    )
+  }
 
   return (
     <div className="mt-8 w-full flex flex-col gap-10">

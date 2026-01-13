@@ -40,6 +40,10 @@ export interface WarehouseDetailsResponse extends CommonApiResponse {
   data: WarehouseProps
 }
 
+export interface TruckDetailsResponse extends CommonApiResponse {
+  data: TruckProps
+}
+
 export type WarehouseFormInputs = z.infer<typeof warehouseValidationSchema>
 
 export type TruckFormInputs = z.infer<typeof truckValidationSchema>
