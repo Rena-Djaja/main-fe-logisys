@@ -4,3 +4,8 @@ export const warehouseValidationSchema = z.object({
   name: z.string().min(1, "Please insert the warehouse's name"),
   location: z.string().min(1, 'Please insert the location of the warehouse'),
 })
+
+export const truckValidationSchema = z.object({
+  plate_number: z.string().min(1, "Please insert the warehouse's name"),
+  salesman_id: z.string().min(1, 'Please insert the location of the warehouse'),
+})

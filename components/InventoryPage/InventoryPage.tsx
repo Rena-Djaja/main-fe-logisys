@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { FC } from 'react'
 import useInventoryPage from '@/components/InventoryPage/useInventoryPage'
 import {
   Tabs,
@@ -8,13 +8,18 @@ import {
   TabsList,
   TabsTrigger,
 } from '@/components/shared/ui/tabs'
+import { InventoryPageProps } from '@/type/Inventory'
 
-const InventoryPage = () => {
+const InventoryPage: FC<InventoryPageProps> = ({ tab }) => {
   const { tabs } = useInventoryPage()
+  const defaultTab =
+    tab && tabs.map((t) => t.value).indexOf(tab) ? tab : tabs[0].value
+
+  console.log(defaultTab)
 
   return (
     <div className="mt-8 w-full flex flex-col gap-10">
-      <Tabs defaultValue={tabs[0].value}>
+      <Tabs defaultValue={defaultTab}>
         <TabsList>
           {tabs.map((tab) => (
             <TabsTrigger key={tab.value} value={tab.value}>

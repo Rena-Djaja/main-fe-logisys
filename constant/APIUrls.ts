@@ -43,6 +43,7 @@ export const InventoryAPI = {
   GET_TRUCK_LIST: baseURL + '/inventory/truck/list',
   GET_WAREHOUSE_DETAILS: baseURL + '/inventory/warehouse/details',
   POST_WAREHOUSE: baseURL + '/inventory/warehouse',
+  POST_TRUCK: baseURL + '/inventory/truck',
 }
 
 export const RoleAPI = {

@@ -50,7 +50,7 @@ const Warehouse = () => {
           page={filter.page}
           allowDelete={false}
           perPage={filter.per_page}
-          totalData={0}
+          totalData={warehouseList?.pagination.total_data || 0}
           onChange={(val) => search('page', val)}
           onRowClick={() => null}
           onUpdate={onUpdate}

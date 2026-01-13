@@ -79,6 +79,11 @@ export interface AssignLocationRequest {
   locations: { location_id: number }[]
 }
 
+export interface UserListRequest extends CommonFilterRequest {
+  is_active?: boolean
+  role_id?: number
+}
+
 export interface AssignedLocationListRequest extends CommonFilterRequest {
   sales_id: number
 }
