@@ -55,7 +55,7 @@ const CustomTable: FC<CustomTableProps> = (props) => {
               {headers.map((each, idx) => (
                 <TableHead key={idx}>{each.title}</TableHead>
               ))}
-              <TableHead />
+              {withAction && <TableHead />}
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -154,7 +154,7 @@ const CustomTable: FC<CustomTableProps> = (props) => {
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={headers.length + 1}
+                  colSpan={withAction ? headers.length + 1 : headers.length}
                   className="h-32 text-center"
                 >
                   <span>No Data Available</span>

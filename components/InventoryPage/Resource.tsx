@@ -1,6 +1,6 @@
 import { TableHeaderProps } from '@/type/CustomTable'
 import { ProductStockProps, TruckProps, WarehouseProps } from '@/type/Inventory'
-import { formattedDate } from '@/lib/utils'
+import { cn, formattedDate } from '@/lib/utils'
 
 export const warehouseListHeaders: TableHeaderProps[] = [
   {
@@ -69,9 +69,17 @@ export const inventoryDetailsHeaders: TableHeaderProps[] = [
     key: 'quantity',
     title: 'Quantity',
     customComponent: ({ data }: { data: ProductStockProps }) => (
-      <span>
-        {data.quantity} {data.unit}
-      </span>
+      <div
+        className={cn(
+          'w-full max-w-[6rem] grid grid-cols-2',
+          data.quantity <= 0 && 'text-destructive'
+        )}
+      >
+        <div className="flex justify-end">
+          <span className="font-semibold">{data.quantity} &nbsp;</span>
+        </div>
+        <span className="font-semibold">{data.unit}</span>
+      </div>
     ),
   },
 ]

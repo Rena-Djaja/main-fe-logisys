@@ -1,13 +1,14 @@
 'use client'
 
 import { CommonFilterRequest } from '@/type/Common'
-import { redirect } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import useCommonApi from '@/components/shared/Hooks/CommonApi/useCommonApi'
 import { InventoryAPI } from '@/constant/APIUrls'
 import { WarehouseListResponse } from '@/type/Inventory'
 
 const useWarehouse = () => {
+  const { push } = useRouter()
   const [filter, setFilter] = useState<CommonFilterRequest>({
     page: 1,
     per_page: 10,
@@ -29,15 +30,15 @@ const useWarehouse = () => {
   >(InventoryAPI.GET_WAREHOUSE_LIST, filter, { method: 'GET' })
 
   const onAdd = () => {
-    redirect('/dashboard/inventory/warehouse/form')
+    push('/dashboard/inventory/warehouse/form')
   }
 
   const onUpdate = (id: number) => {
-    redirect(`/dashboard/inventory/warehouse/form/${id}`)
+    push(`/dashboard/inventory/warehouse/form/${id}`)
   }
 
   const onDetails = (id: number) => {
-    redirect(`/dashboard/inventory/warehouse/details/${id}`)
+    push(`/dashboard/inventory/warehouse/details/${id}`)
   }
 
   return {
