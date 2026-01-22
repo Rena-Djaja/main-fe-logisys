@@ -10,8 +10,15 @@ import useWarehouse from '@/components/InventoryPage/Tabs/Warehouse/useWarehouse
 import { warehouseListHeaders } from '@/components/InventoryPage/Resource'
 
 const Warehouse = () => {
-  const { filter, warehouseList, isValidating, search, onAdd, onUpdate } =
-    useWarehouse()
+  const {
+    filter,
+    warehouseList,
+    isValidating,
+    search,
+    onAdd,
+    onUpdate,
+    onDetails,
+  } = useWarehouse()
 
   return (
     <div className="mt-8 w-full flex flex-col gap-10">
@@ -52,7 +59,7 @@ const Warehouse = () => {
           perPage={filter.per_page}
           totalData={warehouseList?.pagination.total_data || 0}
           onChange={(val) => search('page', val)}
-          onRowClick={() => null}
+          onRowClick={onDetails}
           onUpdate={onUpdate}
           onDelete={() => null}
         />

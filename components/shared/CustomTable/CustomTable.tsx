@@ -32,6 +32,8 @@ const CustomTable: FC<CustomTableProps> = (props) => {
     allowDetails = true,
     allowEdit = true,
     allowDelete = true,
+    withPagination = true,
+    withAction = true,
     onChange,
     totalData,
     page,
@@ -82,67 +84,71 @@ const CustomTable: FC<CustomTableProps> = (props) => {
                       )}
                     </TableCell>
                   ))}
-                  <TableCell className="!w-[4rem]">
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-0">
-                          <span className="sr-only">Open menu</span>
-                          <MoreVertical />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        {allowDetails && (
-                          <DropdownMenuItem onClick={() => onRowClick(each.id)}>
-                            Details
-                          </DropdownMenuItem>
-                        )}
-                        {allowEdit && (
-                          <DropdownMenuItem onClick={() => onUpdate(each.id)}>
-                            Edit
-                          </DropdownMenuItem>
-                        )}
-                        {customActionParam &&
-                          allowedCustomAction &&
-                          allowedCustomAction(each?.[customActionParam]) &&
-                          customActions.length && (
-                            <>
-                              <DropdownMenuSeparator />
-                              {customActions.map((act, actIdx) =>
-                                act.link ? (
-                                  <DropdownMenuItem key={actIdx} asChild>
-                                    <Link href={act.link + `/${each.id}`}>
-                                      {act.title}
-                                    </Link>
-                                  </DropdownMenuItem>
-                                ) : (
-                                  <DropdownMenuItem
-                                    key={actIdx}
-                                    onClick={act.onClick}
-                                  >
-                                    {act.title}
-                                  </DropdownMenuItem>
-                                )
-                              )}
-                            </>
+                  {withAction && (
+                    <TableCell className="!w-[4rem]">
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" className="h-8 w-8 p-0">
+                            <span className="sr-only">Open menu</span>
+                            <MoreVertical />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                          {allowDetails && (
+                            <DropdownMenuItem
+                              onClick={() => onRowClick(each.id)}
+                            >
+                              Details
+                            </DropdownMenuItem>
                           )}
-                        {!!(
-                          (allowEdit ||
-                            allowDetails ||
-                            customActions?.length) &&
-                          allowDelete
-                        ) && <DropdownMenuSeparator />}
-                        {allowDelete && (
-                          <DropdownMenuItem
-                            variant={'destructive'}
-                            onClick={() => onDelete(each.id)}
-                          >
-                            Delete
-                          </DropdownMenuItem>
-                        )}
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </TableCell>
+                          {allowEdit && (
+                            <DropdownMenuItem onClick={() => onUpdate(each.id)}>
+                              Edit
+                            </DropdownMenuItem>
+                          )}
+                          {customActionParam &&
+                            allowedCustomAction &&
+                            allowedCustomAction(each?.[customActionParam]) &&
+                            customActions.length && (
+                              <>
+                                <DropdownMenuSeparator />
+                                {customActions.map((act, actIdx) =>
+                                  act.link ? (
+                                    <DropdownMenuItem key={actIdx} asChild>
+                                      <Link href={act.link + `/${each.id}`}>
+                                        {act.title}
+                                      </Link>
+                                    </DropdownMenuItem>
+                                  ) : (
+                                    <DropdownMenuItem
+                                      key={actIdx}
+                                      onClick={act.onClick}
+                                    >
+                                      {act.title}
+                                    </DropdownMenuItem>
+                                  )
+                                )}
+                              </>
+                            )}
+                          {!!(
+                            (allowEdit ||
+                              allowDetails ||
+                              customActions?.length) &&
+                            allowDelete
+                          ) && <DropdownMenuSeparator />}
+                          {allowDelete && (
+                            <DropdownMenuItem
+                              variant={'destructive'}
+                              onClick={() => onDelete(each.id)}
+                            >
+                              Delete
+                            </DropdownMenuItem>
+                          )}
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </TableCell>
+                  )}
                 </TableRow>
               ))
             ) : (
@@ -158,7 +164,7 @@ const CustomTable: FC<CustomTableProps> = (props) => {
           </TableBody>
         </Table>
       </div>
-      {!isLoading && (
+      {!isLoading && withPagination && (
         <CustomPagination
           onChange={onChange}
           totalData={totalData}

@@ -36,6 +36,10 @@ const useWarehouse = () => {
     redirect(`/dashboard/inventory/warehouse/form/${id}`)
   }
 
+  const onDetails = (id: number) => {
+    redirect(`/dashboard/inventory/warehouse/details/${id}`)
+  }
+
   return {
     filter,
     warehouseList,
@@ -43,6 +47,7 @@ const useWarehouse = () => {
     search,
     onAdd,
     onUpdate,
+    onDetails,
   }
 }
 

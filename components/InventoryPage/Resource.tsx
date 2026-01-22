@@ -1,5 +1,5 @@
 import { TableHeaderProps } from '@/type/CustomTable'
-import { TruckProps, WarehouseProps } from '@/type/Inventory'
+import { ProductStockProps, TruckProps, WarehouseProps } from '@/type/Inventory'
 import { formattedDate } from '@/lib/utils'
 
 export const warehouseListHeaders: TableHeaderProps[] = [
@@ -48,6 +48,30 @@ export const truckListHeaders: TableHeaderProps[] = [
     title: 'Last Updated',
     customComponent: ({ data }: { data: TruckProps }) => (
       <span>{formattedDate(data.updated_at, true)}</span>
+    ),
+  },
+]
+
+export const inventoryDetailsHeaders: TableHeaderProps[] = [
+  {
+    key: 'product_name',
+    title: 'Product Name',
+  },
+  {
+    key: 'sku',
+    title: 'SKU',
+  },
+  {
+    key: 'product_variant_name',
+    title: 'Variant Name',
+  },
+  {
+    key: 'quantity',
+    title: 'Quantity',
+    customComponent: ({ data }: { data: ProductStockProps }) => (
+      <span>
+        {data.quantity} {data.unit}
+      </span>
     ),
   },
 ]

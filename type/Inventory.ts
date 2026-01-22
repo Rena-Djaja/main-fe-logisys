@@ -1,4 +1,8 @@
-import { CommonApiResponse, PaginationResponse } from '@/type/Common'
+import {
+  CommonApiResponse,
+  CommonDetailsRequest,
+  PaginationResponse,
+} from '@/type/Common'
 import { z } from 'zod'
 import {
   truckValidationSchema,
@@ -56,4 +60,20 @@ export interface PostTruckRequest {
   id?: number
   plate_number: string
   salesman_id: number
+}
+
+export interface ProductStockRequest extends CommonDetailsRequest {
+  category?: 'selling_item' | 'complimentary'
+  product_id?: number
+}
+
+export interface ProductStockProps {
+  product_id: number
+  product_name: string
+  sku: string
+  category: string
+  unit: string
+  product_variant_id: number
+  product_variant_name: string
+  quantity: number
 }

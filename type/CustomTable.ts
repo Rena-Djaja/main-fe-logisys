@@ -8,6 +8,8 @@ export interface CustomTableProps {
   allowDetails?: boolean
   allowEdit?: boolean
   allowDelete?: boolean
+  withPagination?: boolean
+  withAction?: boolean
   page: number
   perPage: number
   totalData: number
