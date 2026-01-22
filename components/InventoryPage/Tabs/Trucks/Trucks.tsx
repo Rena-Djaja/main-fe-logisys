@@ -10,8 +10,15 @@ import useTrucks from '@/components/InventoryPage/Tabs/Trucks/useTrucks'
 import { truckListHeaders } from '@/components/InventoryPage/Resource'
 
 const Trucks = () => {
-  const { filter, truckList, isValidating, search, onAdd, onUpdate } =
-    useTrucks()
+  const {
+    filter,
+    truckList,
+    isValidating,
+    search,
+    onAdd,
+    onUpdate,
+    onDetails,
+  } = useTrucks()
 
   return (
     <div className="mt-8 w-full flex flex-col gap-10">
@@ -47,12 +54,12 @@ const Trucks = () => {
           headers={truckListHeaders}
           data={truckList?.data || []}
           isLoading={isValidating}
-          allowDetails={false}
+          allowDelete={false}
           page={filter.page}
           perPage={filter.per_page}
           totalData={0}
           onChange={(val) => search('page', val)}
-          onRowClick={() => null}
+          onRowClick={onDetails}
           onUpdate={onUpdate}
           onDelete={() => null}
         />

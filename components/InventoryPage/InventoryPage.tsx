@@ -15,8 +15,6 @@ const InventoryPage: FC<InventoryPageProps> = ({ tab }) => {
   const defaultTab =
     tab && tabs.map((t) => t.value).indexOf(tab) ? tab : tabs[0].value
 
-  console.log(defaultTab)
-
   return (
     <div className="mt-8 w-full flex flex-col gap-10">
       <Tabs defaultValue={defaultTab}>
