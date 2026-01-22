@@ -2,12 +2,13 @@
 
 import { useState } from 'react'
 import { CommonFilterRequest } from '@/type/Common'
-import { redirect } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import useCommonApi from '@/components/shared/Hooks/CommonApi/useCommonApi'
 import { InventoryAPI } from '@/constant/APIUrls'
 import { TruckListResponse } from '@/type/Inventory'
 
 const useTrucks = () => {
+  const { push } = useRouter()
   const [filter, setFilter] = useState<CommonFilterRequest>({
     page: 1,
     per_page: 10,
@@ -29,11 +30,15 @@ const useTrucks = () => {
   >(InventoryAPI.GET_TRUCK_LIST, filter, { method: 'GET' })
 
   const onAdd = () => {
-    redirect('/dashboard/inventory/trucks/form')
+    push('/dashboard/inventory/trucks/form')
   }
 
   const onUpdate = (id: number) => {
-    redirect(`/dashboard/inventory/trucks/form/${id}`)
+    push(`/dashboard/inventory/trucks/form/${id}`)
+  }
+
+  const onDetails = (id: number) => {
+    push(`/dashboard/inventory/trucks/details/${id}`)
   }
 
   return {
@@ -43,6 +48,7 @@ const useTrucks = () => {
     search,
     onAdd,
     onUpdate,
+    onDetails,
   }
 }
 
