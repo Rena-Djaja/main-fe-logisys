@@ -8,6 +8,8 @@ import {
   truckValidationSchema,
   warehouseValidationSchema,
 } from '@/validations/InventoryValidation'
+import { itemDialogValidationSchema } from '@/validations/ItemDialogValidation'
+import { UseFormReturn } from 'react-hook-form'
 
 export interface InventoryPageProps {
   tab: string
@@ -76,4 +78,38 @@ export interface ProductStockProps {
   product_variant_id: number
   product_variant_name: string
   quantity: number
+}
+
+export interface InventoryLocationProps {
+  id: number
+  location_type: LocationType
+  warehouse_name: string | null
+  salesman_name: string | null
+}
+
+export interface InventoryLocationListResponse {
+  data: InventoryLocationProps[]
+  pagination: PaginationResponse
+}
+
+export enum LocationType {
+  WAREHOUSE = 'warehouse',
+  TRUCK = 'truck',
+}
+
+export type ItemDialogFormInputs = z.infer<typeof itemDialogValidationSchema>
+
+export interface ItemDialogProps {
+  baseForm: UseFormReturn<any>
+  isOpen: boolean
+  handleDialog: () => void
+  fields: ItemRowProps[]
+  handleAdd: (data: ItemRowProps) => void
+}
+
+export interface ItemRowProps {
+  product_id: string
+  variant_id: string
+  quantity: string
+  unit: string
 }

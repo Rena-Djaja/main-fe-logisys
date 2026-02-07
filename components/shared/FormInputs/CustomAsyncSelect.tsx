@@ -1,33 +1,8 @@
 'use client'
 
-import * as React from 'react'
-
-import { useMediaQuery } from '@/hooks/use-media-query'
-import { Button } from '@/components/shared/ui/button'
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from '@/components/shared/ui/command'
-import {
-  Drawer,
-  DrawerContent,
-  DrawerTitle,
-  DrawerTrigger,
-} from '@/components/shared/ui/drawer'
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/shared/ui/popover'
-import { FC, useEffect, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { ButtonType, CustomSelectProps, OptionType } from '@/type/FormInputs'
-import { Check, ChevronsUpDown, X } from 'lucide-react'
-import { cn } from '@/lib/utils'
-import { ScrollArea } from '@/components/shared/ui/scroll-area'
+import { useMediaQuery } from '@/hooks/use-media-query'
 import {
   FormControl,
   FormDescription,
@@ -36,9 +11,32 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/shared/ui/form'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/shared/ui/popover'
+import {
+  Drawer,
+  DrawerContent,
+  DrawerTitle,
+  DrawerTrigger,
+} from '@/components/shared/ui/drawer'
+import { Button } from '@/components/shared/ui/button'
+import { Check, ChevronsUpDown, X } from 'lucide-react'
 import { Spinner } from '@/components/shared/ui/spinner'
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from '@/components/shared/ui/command'
+import { ScrollArea } from '@/components/shared/ui/scroll-area'
+import { cn } from '@/lib/utils'
 
-const CustomSelect: FC<CustomSelectProps> = (props) => {
+const CustomAsyncSelect: FC<CustomSelectProps> = (props) => {
   const {
     isLoading,
     label,
@@ -90,7 +88,7 @@ const CustomSelect: FC<CustomSelectProps> = (props) => {
           }
 
           return (
-            <FormItem className={cn(disabled && 'opacity-55')}>
+            <FormItem>
               {!!label && <FormLabel>{label}</FormLabel>}
               <FormControl>
                 <Popover
@@ -332,4 +330,4 @@ function OptionList({
   )
 }
 
-export default CustomSelect
+export default CustomAsyncSelect

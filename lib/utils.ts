@@ -28,7 +28,7 @@ export const thousandFormat = (number = 0) => {
   let thousand = ''
   const numberRev = number.toString().split('').reverse().join('')
   for (let i = 0; i < numberRev.length; i++)
-    if (i % 3 == 0) thousand += numberRev.substr(i, 3) + '.'
+    if (i % 3 == 0) thousand += numberRev.substr(i, 3) + ','
   return thousand
     .split('', thousand.length - 1)
     .reverse()

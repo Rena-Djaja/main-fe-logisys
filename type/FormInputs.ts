@@ -31,6 +31,7 @@ export interface CustomSelectProps extends CustomInputProps {
   multiple?: boolean
   isLoading?: boolean
   customOnChange?: any
+  onSearch?: (value: string) => void
 }
 
 export interface OptionType {
@@ -51,6 +52,7 @@ export interface CustomButtonProps {
   variant?: ButtonVariant
   link?: string
   onClick?: any
+  length?: ButtonLength
 }
 
 export enum InputType {
@@ -84,4 +86,9 @@ export enum ButtonVariant {
   GHOST = 'ghost',
   DESTRUCTIVES = 'destructive',
   LINK = 'link',
+}
+
+export enum ButtonLength {
+  DEFAULT = 'default',
+  FULL = 'full',
 }
