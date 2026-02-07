@@ -126,11 +126,9 @@ const useInOutForm = ({ id }: CommonFormProps) => {
       if (apiStatusChecker(status) && postInOutRes) {
         handleSuccess(postInOutRes)
       } else {
-        console.log('11111')
         handleFailure(postInOutRes)
       }
     } catch (error) {
-      console.log(error)
       handleFailure()
       throw error
     } finally {

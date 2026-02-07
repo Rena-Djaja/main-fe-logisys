@@ -69,8 +69,6 @@ const useEditVariant = ({ id }: CommonFormProps) => {
     return result
   }
 
-  console.log(form.watch())
-
   const fetchFromInputs = () => {
     if (productVariantDetails) {
       const fieldsToUpdate = ['name', 'extra_base_price', 'extra_selling_price']

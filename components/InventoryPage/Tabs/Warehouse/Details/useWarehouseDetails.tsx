@@ -127,8 +127,6 @@ const useWarehouseDetails = ({ id }: CommonFormProps) => {
     fetchProductItems()
   }, [filter])
 
-  console.log(filterMenu)
-
   return {
     warehouseDetails,
     isValidating,
