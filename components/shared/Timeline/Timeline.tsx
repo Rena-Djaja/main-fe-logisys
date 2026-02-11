@@ -27,7 +27,7 @@ const Timeline: FC<TimelineProps> = ({ logs }) => {
             <span className="font-medium text-[0.75rem] text-muted-foreground ml-2">
               Notes: {log.notes}
             </span>
-            <span className="font-medium text-[0.75rem] text-muted-foreground ml-2">
+            <span className="font-semibold text-[0.75rem] text-foreground/90 ml-2">
               By: {log.user_name}
             </span>
           </div>
