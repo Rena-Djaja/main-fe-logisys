@@ -13,7 +13,7 @@ import {
   PostInOutRequest,
   PostInOutResponse,
 } from '@/type/Transaction'
-import { MovementTransactionType } from '@/constant/Transaction'
+import { MovementTransactionType } from '@/type/Transaction'
 import { callAPI } from '@/lib/fetchers'
 import { apiStatusChecker } from '@/lib/utils'
 import { toast } from 'sonner'

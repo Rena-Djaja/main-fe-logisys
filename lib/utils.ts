@@ -35,6 +35,15 @@ export const thousandFormat = (number = 0) => {
     .join('')
 }
 
+export const handleLocationLink = (
+  isWarehouse: boolean,
+  locationId?: number
+) => {
+  if (!locationId) return '#'
+
+  return `/dashboard/inventory/${isWarehouse ? 'warehouse' : 'trucks'}/details/${locationId}`
+}
+
 export const handleLogout = () => {
   removeCookie('access_token')
   return (window.location.href = '/login')
