@@ -20,6 +20,7 @@ const CustomButton: FC<CustomButtonProps> = (props) => {
     disabled,
     link,
     onClick,
+    target = '_self',
     type = ButtonType.SUBMIT,
     length = ButtonLength.DEFAULT,
   } = props
@@ -42,7 +43,15 @@ const CustomButton: FC<CustomButtonProps> = (props) => {
       className={cn(length === ButtonLength.FULL && 'w-full')}
     >
       {!!link ? (
-        <Link href={link}>{label}</Link>
+        <Link href={link} target={target}>
+          {props?.icon && iconPlacement === IconPlacementType.LEFT && (
+            <props.icon />
+          )}
+          {label}
+          {props.icon && iconPlacement === IconPlacementType.RIGHT && (
+            <props.icon />
+          )}
+        </Link>
       ) : (
         <>
           {isLoading ? (

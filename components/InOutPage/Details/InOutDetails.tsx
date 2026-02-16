@@ -26,6 +26,8 @@ const InOutDetails: FC<CommonDetailsPageProps> = (props) => {
     isLogsValidating,
   } = useInOutDetails(props)
 
+  const { id } = props
+
   if (isDetailsValidating) {
     return <CommonPageLoading />
   }
@@ -52,7 +54,12 @@ const InOutDetails: FC<CommonDetailsPageProps> = (props) => {
               </div>
             </div>
             <div>
-              <CustomButton label={'Export'} icon={FileDown} />
+              <CustomButton
+                label={'Export'}
+                icon={FileDown}
+                link={`/download/in-out?id=${id}`}
+                target="_blank"
+              />
             </div>
           </div>
           <div className="w-full flex items-center gap-4">

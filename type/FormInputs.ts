@@ -1,5 +1,9 @@
 import { Control, FieldValue, FieldValues } from 'react-hook-form'
-import { ForwardRefExoticComponent, RefAttributes } from 'react'
+import {
+  ForwardRefExoticComponent,
+  HTMLAttributeAnchorTarget,
+  RefAttributes,
+} from 'react'
 import { LucideProps } from 'lucide-react'
 
 export interface CustomInputProps {
@@ -53,6 +57,7 @@ export interface CustomButtonProps {
   link?: string
   onClick?: any
   length?: ButtonLength
+  target?: HTMLAttributeAnchorTarget
 }
 
 export enum InputType {
