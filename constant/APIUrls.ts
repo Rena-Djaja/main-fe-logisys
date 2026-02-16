@@ -55,6 +55,7 @@ export const RoleAPI = {
 }
 
 export const InOutAPI = {
+  GET_IN_OUT_LIST: baseURL + '/movement/list',
   GET_IN_OUT_DETAILS: baseURL + '/movement/details',
   GET_IN_OUT_ITEMS: baseURL + '/movement/items',
   POST_IN_OUT: baseURL + '/movement',

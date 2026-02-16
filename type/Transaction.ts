@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { inOutValidationSchema } from '@/validations/InOutValidation'
-import { CommonApiResponse } from '@/type/Common'
+import { CommonApiResponse, PaginationResponse } from '@/type/Common'
 
 export type InOutFormInputs = z.infer<typeof inOutValidationSchema>
 
@@ -27,6 +27,11 @@ export interface InOutProps {
   movement_type: MovementTransactionType
   description: string
   status: number
+}
+
+export interface InOutListResponse {
+  data: InOutProps[]
+  pagination: PaginationResponse
 }
 
 export interface TransactionItemProps {

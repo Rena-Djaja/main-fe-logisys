@@ -5,7 +5,10 @@ import { CommonDetailsPageProps } from '@/type/Common'
 import useInOutDetails from '@/components/InOutPage/Details/useInOutDetails'
 import { formattedDate, handleLocationLink } from '@/lib/utils'
 import Link from 'next/link'
-import { handleMovementTransactionType } from '@/lib/statuses'
+import {
+  handleMovementTransactionType,
+  handleTransactionStatus,
+} from '@/lib/statuses'
 import CustomTable from '@/components/shared/CustomTable/CustomTable'
 import { inOutDetailsHeaders } from '@/components/InOutPage/Resource'
 import { TransactionItemProps } from '@/type/Transaction'
@@ -44,6 +47,9 @@ const InOutDetails: FC<CommonDetailsPageProps> = (props) => {
         <div className="w-full flex flex-col gap-5 border rounded-xl px-4 py-6">
           <div className="w-full flex justify-between gap-5">
             <div className="flex flex-col gap-2">
+              <div>
+                {handleTransactionStatus(Number(transactionDetails?.status))}
+              </div>
               <span className="text-[1.5rem] font-medium">
                 Order# {transactionDetails?.transaction_id}
               </span>
