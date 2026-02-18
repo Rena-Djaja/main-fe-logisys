@@ -23,7 +23,6 @@ import { useRouter } from 'next/navigation'
 import { apiStatusChecker } from '@/lib/utils'
 
 const useTruckForm = ({ id }: CommonFormProps) => {
-  console.log(id)
   const { push } = useRouter()
   const form = useForm<TruckFormInputs>({
     resolver: zodResolver(truckValidationSchema),

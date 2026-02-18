@@ -6,10 +6,11 @@ import { Input } from '@/components/shared/ui/input'
 
 interface SearchInputProps {
   onChange: (value: string) => void
+  placeholder?: string
 }
 
 const SearchInput: FC<SearchInputProps> = (props) => {
-  const { onChange } = props
+  const { placeholder, onChange } = props
   const debounce = useRef(0)
 
   const handleChange = (val: string) => {
@@ -27,7 +28,7 @@ const SearchInput: FC<SearchInputProps> = (props) => {
         <Search className="size-4 text-muted-foreground" />
       </div>
       <Input
-        placeholder={'Search...'}
+        placeholder={placeholder ?? 'Search...'}
         className="pl-10"
         onChange={(e) => handleChange(e?.target?.value)}
       />

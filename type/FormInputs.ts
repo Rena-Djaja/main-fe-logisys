@@ -1,5 +1,9 @@
 import { Control, FieldValue, FieldValues } from 'react-hook-form'
-import { ForwardRefExoticComponent, RefAttributes } from 'react'
+import {
+  ForwardRefExoticComponent,
+  HTMLAttributeAnchorTarget,
+  RefAttributes,
+} from 'react'
 import { LucideProps } from 'lucide-react'
 
 export interface CustomInputProps {
@@ -31,6 +35,7 @@ export interface CustomSelectProps extends CustomInputProps {
   multiple?: boolean
   isLoading?: boolean
   customOnChange?: any
+  onSearch?: (value: string) => void
 }
 
 export interface OptionType {
@@ -51,6 +56,8 @@ export interface CustomButtonProps {
   variant?: ButtonVariant
   link?: string
   onClick?: any
+  length?: ButtonLength
+  target?: HTMLAttributeAnchorTarget
 }
 
 export enum InputType {
@@ -84,4 +91,9 @@ export enum ButtonVariant {
   GHOST = 'ghost',
   DESTRUCTIVES = 'destructive',
   LINK = 'link',
+}
+
+export enum ButtonLength {
+  DEFAULT = 'default',
+  FULL = 'full',
 }

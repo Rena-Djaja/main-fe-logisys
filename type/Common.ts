@@ -41,10 +41,14 @@ export interface CommonFormProps {
   id?: string
 }
 
+export interface CommonDetailsPageProps {
+  id: string
+}
+
 export interface CommonServerFormProps {
   params: Promise<{ slug: string }>
 }
 
 export interface CommonDetailsRequest {
-  id: number
+  id: number | string
 }

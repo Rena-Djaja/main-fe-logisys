@@ -1,12 +1,14 @@
 import React, { FC } from 'react'
 import { Button } from '@/components/shared/ui/button'
 import {
+  ButtonLength,
   ButtonType,
   CustomButtonProps,
   IconPlacementType,
 } from '@/type/FormInputs'
 import { Spinner } from '@/components/shared/ui/spinner'
 import Link from 'next/link'
+import { cn } from '@/lib/utils'
 
 const CustomButton: FC<CustomButtonProps> = (props) => {
   const {
@@ -18,14 +20,18 @@ const CustomButton: FC<CustomButtonProps> = (props) => {
     disabled,
     link,
     onClick,
+    target = '_self',
     type = ButtonType.SUBMIT,
+    length = ButtonLength.DEFAULT,
   } = props
 
   return (
     <Button
       {...(onClick && {
         onClick: (e: React.MouseEvent<HTMLButtonElement>) => {
-          e.preventDefault()
+          if (type === ButtonType.BUTTON) {
+            e.preventDefault()
+          }
           onClick(e)
         },
       })}
@@ -34,9 +40,18 @@ const CustomButton: FC<CustomButtonProps> = (props) => {
       variant={variant}
       disabled={disabled || isLoading}
       asChild={!!link}
+      className={cn(length === ButtonLength.FULL && 'w-full')}
     >
       {!!link ? (
-        <Link href={link}>{label}</Link>
+        <Link href={link} target={target}>
+          {props?.icon && iconPlacement === IconPlacementType.LEFT && (
+            <props.icon />
+          )}
+          {label}
+          {props.icon && iconPlacement === IconPlacementType.RIGHT && (
+            <props.icon />
+          )}
+        </Link>
       ) : (
         <>
           {isLoading ? (

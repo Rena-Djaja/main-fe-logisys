@@ -45,11 +45,22 @@ export const InventoryAPI = {
   GET_WAREHOUSE_INVENTORY: baseURL + '/inventory/warehouse/stock',
   GET_TRUCK_INVENTORY: baseURL + '/inventory/truck/stock',
   GET_TRUCK_DETAILS: baseURL + '/inventory/truck/details',
-  GET_INVENTORY_PRODUCT_LIST: baseURL + '/inventory/product/list',
+  GET_INVENTORY_LOCATION_LIST: baseURL + '/inventory/location/list',
   POST_WAREHOUSE: baseURL + '/inventory/warehouse',
   POST_TRUCK: baseURL + '/inventory/truck',
 }
 
 export const RoleAPI = {
   GET_ROLE_LIST: baseURL + '/role/list',
+}
+
+export const InOutAPI = {
+  GET_IN_OUT_LIST: baseURL + '/movement/list',
+  GET_IN_OUT_DETAILS: baseURL + '/movement/details',
+  GET_IN_OUT_ITEMS: baseURL + '/movement/items',
+  POST_IN_OUT: baseURL + '/movement',
+}
+
+export const LogAPI = {
+  GET_TRANSACTION_LOG: baseURL + '/logs/transaction',
 }
