@@ -6,12 +6,15 @@ import { getServerCookies } from '@/lib/servers'
 const fetchAuthInfo = async () => {
   const accessToken = await getServerCookies('access_token')
 
-  const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/auth`, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  })
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_APP_URL}/api/authenticate`,
+    {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+  )
 
   const response = await res.json()
   if (!response?.success) {
