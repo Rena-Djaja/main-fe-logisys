@@ -24,8 +24,8 @@ export const setCookie = (
   Cookies.set(name, String(value), {
     ...options,
     path: '/',
-    sameSite: 'Lax',
-    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'None',
+    secure: false,
   })
 }
 
