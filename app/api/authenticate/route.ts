@@ -6,6 +6,8 @@ import { apiStatusChecker } from '@/lib/utils'
 export async function POST(req: Request) {
   const authHeader = req.headers.get('authorization')
 
+  console.log(authHeader, 'route token')
+
   if (!authHeader) {
     return NextResponse.json({
       success: false,

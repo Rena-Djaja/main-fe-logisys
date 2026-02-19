@@ -13,6 +13,7 @@ const fetchAuthInfo = async () => {
     },
   })
 
+  console.log(accessToken, 'layout token')
   console.log(`${process.env.APP_INTERNAL_URL}/api/authenticate`, 'FE URL')
 
   const response = await res.json()
