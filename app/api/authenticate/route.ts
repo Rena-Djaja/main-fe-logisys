@@ -35,6 +35,8 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: false, error: authInfoData.error })
     }
 
+    console.log(AuthAPI.GET_PERMISSION_LIST, 'BE URL')
+
     const permissionRes = await fetch(AuthAPI.GET_PERMISSION_LIST, {
       method: 'GET',
       headers: {
