@@ -50,6 +50,8 @@ export async function POST(req: Request) {
       })
     }
 
+    console.log(permissionRes, 'BE Response')
+
     const permissionListData = await permissionRes.json()
 
     if (

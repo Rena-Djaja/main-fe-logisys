@@ -13,7 +13,11 @@ const fetchAuthInfo = async () => {
     },
   })
 
+  console.log(`${process.env.APP_INTERNAL_URL}/api/authenticate`, 'FE URL')
+
   const response = await res.json()
+
+  console.log(response)
   if (!response?.success) {
     redirect(`/login`)
   }
