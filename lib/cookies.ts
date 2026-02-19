@@ -23,15 +23,15 @@ export const setCookie = (
 ) => {
   Cookies.set(name, String(value), {
     ...options,
-    sameSite: 'Lax',
-    secure: false,
+    sameSite: 'Strict',
+    secure: true,
   })
 }
 
 export const removeCookie = (name: CookieName, options: CookieOption = {}) => {
   Cookies.remove(name, {
     ...options,
-    sameSite: 'Lax',
-    secure: false,
+    sameSite: 'Strict',
+    secure: true,
   })
 }
