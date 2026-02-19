@@ -23,15 +23,15 @@ export const setCookie = (
 ) => {
   Cookies.set(name, String(value), {
     ...options,
-    sameSite: 'Strict',
-    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'None',
+    secure: false,
   })
 }
 
 export const removeCookie = (name: CookieName, options: CookieOption = {}) => {
   Cookies.remove(name, {
     ...options,
-    sameSite: 'Strict',
-    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'None',
+    secure: false,
   })
 }
