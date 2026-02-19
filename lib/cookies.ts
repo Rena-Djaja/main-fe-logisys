@@ -23,7 +23,7 @@ export const setCookie = (
 ) => {
   Cookies.set(name, String(value), {
     ...options,
-    sameSite: 'None',
+    sameSite: 'Lax',
     secure: false,
   })
 }
@@ -31,7 +31,7 @@ export const setCookie = (
 export const removeCookie = (name: CookieName, options: CookieOption = {}) => {
   Cookies.remove(name, {
     ...options,
-    sameSite: 'None',
+    sameSite: 'Lax',
     secure: false,
   })
 }
