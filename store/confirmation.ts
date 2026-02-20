@@ -7,8 +7,10 @@ type Confirmation = {
   title: string
   description: string
   confirmButtonText?: string
+  cancelButtonText?: string
   confirmButtonVariant?: ButtonVariant
   onConfirm?: (value: string | number) => void
+  onCancel?: () => void
 }
 
 type ConfirmationState = {
@@ -23,13 +25,15 @@ export const confirmationDefaultState = {
   isLoading: false,
   title: '',
   description: '',
+  cancelButtonText: 'Cancel',
   confirmButtonText: 'Yes',
   confirmButtonVariant: ButtonVariant.DEFAULT,
 }
 
 export const useConfirmationStore = create<ConfirmationState>((set) => ({
   confirmation: confirmationDefaultState,
-  setConfirmation: (value) => set({ confirmation: value }),
+  setConfirmation: (value) =>
+    set({ confirmation: { ...confirmationDefaultState, ...value } }),
   setLoading: (value) =>
     set((state) => ({
       confirmation: { ...state.confirmation, isLoading: value },

@@ -22,9 +22,11 @@ const Confirmation = () => {
       isLoading,
       title,
       description,
+      cancelButtonText,
       confirmButtonText,
       confirmButtonVariant,
       onConfirm,
+      onCancel,
     },
     closeConfirmation,
   } = useConfirmationStore()
@@ -39,10 +41,13 @@ const Confirmation = () => {
         <AlertDialogFooter>
           <AlertDialogCancel
             className="cursor-pointer"
-            onClick={closeConfirmation}
+            onClick={() => {
+              onCancel && onCancel()
+              closeConfirmation()
+            }}
             disabled={isLoading}
           >
-            Cancel
+            {cancelButtonText}
           </AlertDialogCancel>
           <AlertDialogAction asChild>
             <CustomButton
