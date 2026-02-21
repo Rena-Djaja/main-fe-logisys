@@ -1,0 +1,67 @@
+'use client'
+
+import React from 'react'
+import CustomInput from '@/components/shared/FormInputs/CustomInput'
+import { Form } from '@/components/shared/ui/form'
+import useChangePassword from '@/components/SettingsPage/Tabs/ChangePasswordPage/useChangePassword'
+import { Eye, EyeClosed } from 'lucide-react'
+import { InputType } from '@/type/FormInputs'
+import CustomButton from '@/components/shared/FormInputs/CustomButton'
+
+const ChangePasswordPage = () => {
+  const { form, showPassword, handleShowPassword, onSubmit } =
+    useChangePassword()
+
+  return (
+    <div className="w-full">
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="w-full max-w-lg flex flex-col gap-8"
+        >
+          <div>
+            <CustomInput
+              label={'Current Password'}
+              name={'current_password'}
+              control={form.control}
+              placeholder={'Enter your current password'}
+              icon={showPassword ? Eye : EyeClosed}
+              iconOnClick={() => handleShowPassword('current')}
+              type={showPassword.current ? InputType.TEXT : InputType.PASSWORD}
+            />
+          </div>
+          <div>
+            <CustomInput
+              label={'New Password'}
+              name={'new_password'}
+              control={form.control}
+              placeholder={'Enter new password'}
+              icon={showPassword ? Eye : EyeClosed}
+              iconOnClick={() => handleShowPassword('new')}
+              type={showPassword.new ? InputType.TEXT : InputType.PASSWORD}
+            />
+          </div>
+          <div>
+            <CustomInput
+              label={'Confirm Password'}
+              name={'confirm_password'}
+              control={form.control}
+              placeholder={'Confirm New Password'}
+              icon={showPassword ? Eye : EyeClosed}
+              iconOnClick={() => handleShowPassword('confirm')}
+              type={showPassword.confirm ? InputType.TEXT : InputType.PASSWORD}
+            />
+          </div>
+          <div className="mt-4 flex gap-2">
+            <CustomButton
+              label={'Save'}
+              // isLoading={isLoading.submit}
+            />
+          </div>
+        </form>
+      </Form>
+    </div>
+  )
+}
+
+export default ChangePasswordPage

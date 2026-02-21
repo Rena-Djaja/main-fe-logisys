@@ -4,19 +4,21 @@ import { useEffect } from 'react'
 import { useAuthContext } from '@/components/shared/context/AuthContext'
 import { ButtonVariant } from '@/type/FormInputs'
 import { useConfirmationStore } from '@/store'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { getCookie, setCookie } from '@/lib/cookies'
 
 const useResetPasswordDialog = () => {
   const { authInfo } = useAuthContext()
-  const { setConfirmation } = useConfirmationStore()
+  const { setConfirmation, closeConfirmation } = useConfirmationStore()
   const { push } = useRouter()
+  const pathname = usePathname()
 
   useEffect(() => {
     if (authInfo && !authInfo?.reset_password) {
       const skipAllowed = getCookie('skip_change_password')
+      const pathArr = pathname.split('/')
 
-      if (!Number(skipAllowed)) {
+      if (Number(skipAllowed) < 1 && !pathArr.includes('change-password')) {
         setConfirmation({
           isOpen: true,
           title: 'Protect your account',
@@ -25,7 +27,10 @@ const useResetPasswordDialog = () => {
           confirmButtonVariant: ButtonVariant.DEFAULT,
           confirmButtonText: 'Change Password',
           cancelButtonText: 'Skip for Today',
-          onConfirm: () => push('/dashboard/profile/change-password'),
+          onConfirm: () => {
+            push('/dashboard/settings/change-password?reset=1')
+            closeConfirmation()
+          },
           onCancel: () => setCookie('skip_change_password', 1, { expires: 1 }),
         })
       }
