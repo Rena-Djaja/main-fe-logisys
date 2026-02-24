@@ -1,6 +1,7 @@
 import { CommonApiResponse } from '@/type/Common'
 import { loginValidationSchema } from '@/validations/LoginValidation'
 import { z } from 'zod'
+import { changePasswordValidationSchema } from '@/validations/ChangePasswordValidation'
 
 export type PostLoginRequest = z.infer<typeof loginValidationSchema>
 
@@ -51,4 +52,13 @@ export enum PermissionTypes {
   WRITE_LOCATION = 8,
   READ_PRODUCT = 9,
   WRITE_PRODUCT = 10,
+}
+
+export type ChangePasswordFormInputs = z.infer<
+  typeof changePasswordValidationSchema
+>
+
+export interface ChangePasswordRequest {
+  old_password: string
+  new_password: string
 }

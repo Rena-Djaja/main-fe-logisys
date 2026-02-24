@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie'
 
-export type CookieName = 'access_token'
+export type CookieName = 'access_token' | 'skip_change_password'
 
 type CookieOption = Partial<{
   expires: number

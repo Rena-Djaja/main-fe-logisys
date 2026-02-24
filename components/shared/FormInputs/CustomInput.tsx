@@ -30,7 +30,7 @@ const CustomInput: FC<CustomInputProps> = (props) => {
     <FormField
       name={name}
       control={control}
-      render={({ field }) => {
+      render={({ field, fieldState: { error } }) => {
         return (
           <FormItem>
             {!!label && <FormLabel>{label}</FormLabel>}
@@ -48,6 +48,7 @@ const CustomInput: FC<CustomInputProps> = (props) => {
                     {...field}
                     disabled={disabled}
                     type={type}
+                    aria-invalid={!!error?.message}
                   />
                   <div className="absolute right-4 top-2.5">
                     {inputProps.icon && (

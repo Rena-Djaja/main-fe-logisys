@@ -1,12 +1,6 @@
 'use client'
 
-import {
-  EllipsisVertical,
-  LogOut,
-  RectangleEllipsis,
-  SlidersHorizontal,
-  UserPen,
-} from 'lucide-react'
+import { EllipsisVertical, LogOut } from 'lucide-react'
 
 import {
   Avatar,
@@ -30,6 +24,8 @@ import {
 } from '@/components/shared/ui/sidebar'
 import { Badge } from '@/components/shared/ui/badge'
 import { handleLogout } from '@/lib/utils'
+import { userMenuList } from '@/constant/Menu'
+import Link from 'next/link'
 
 export function UserNav({
   user,
@@ -88,18 +84,14 @@ export function UserNav({
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <UserPen />
-                Profile
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <RectangleEllipsis />
-                Change Password
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <SlidersHorizontal />
-                Preferences
-              </DropdownMenuItem>
+              {userMenuList.map((each, idx) => (
+                <Link href={each.href} key={idx}>
+                  <DropdownMenuItem>
+                    <each.icon />
+                    {each.name}
+                  </DropdownMenuItem>
+                </Link>
+              ))}
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleLogout}>

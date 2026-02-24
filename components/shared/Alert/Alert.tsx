@@ -4,58 +4,55 @@ import React from 'react'
 import {
   AlertDialog,
   AlertDialogAction,
-  AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/shared/ui/alert-dialog'
-import { useConfirmationStore } from '@/store'
 import CustomButton from '@/components/shared/FormInputs/CustomButton'
 import { ButtonType } from '@/type/FormInputs'
+import { useAlertStore } from '@/store/alert'
 
-const Confirmation = () => {
+const Alert = () => {
   const {
-    confirmation: {
-      isOpen,
-      isLoading,
+    alert: {
       title,
       description,
-      cancelButtonText,
+      isLoading,
+      isOpen,
       confirmButtonText,
       confirmButtonVariant,
+      disableClose,
       onConfirm,
-      onCancel,
     },
-    closeConfirmation,
-  } = useConfirmationStore()
+    closeAlert,
+  } = useAlertStore()
 
   return (
-    <AlertDialog open={isOpen} onOpenChange={closeConfirmation}>
+    <AlertDialog
+      open={isOpen}
+      onOpenChange={() => {
+        if (disableClose && onConfirm) {
+          onConfirm()
+        } else {
+          closeAlert()
+        }
+      }}
+    >
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>{title}</AlertDialogTitle>
           <AlertDialogDescription>{description}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel
-            className="cursor-pointer"
-            onClick={() => {
-              onCancel && onCancel()
-              closeConfirmation()
-            }}
-            disabled={isLoading}
-          >
-            {cancelButtonText}
-          </AlertDialogCancel>
           <AlertDialogAction asChild>
             <CustomButton
               type={ButtonType.BUTTON}
               label={confirmButtonText}
               variant={confirmButtonVariant}
               isLoading={isLoading}
-              onClick={onConfirm}
+              onClick={() => (onConfirm ? onConfirm() : closeAlert())}
             />
           </AlertDialogAction>
         </AlertDialogFooter>
@@ -64,4 +61,4 @@ const Confirmation = () => {
   )
 }
 
-export default Confirmation
+export default Alert
