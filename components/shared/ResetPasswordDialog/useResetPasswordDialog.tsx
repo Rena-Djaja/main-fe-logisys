@@ -28,7 +28,7 @@ const useResetPasswordDialog = () => {
           confirmButtonText: 'Change Password',
           cancelButtonText: 'Skip for Today',
           onConfirm: () => {
-            push('/dashboard/settings/change-password?reset=1')
+            push('/dashboard/settings/change-password')
             closeConfirmation()
           },
           onCancel: () => setCookie('skip_change_password', 1, { expires: 1 }),

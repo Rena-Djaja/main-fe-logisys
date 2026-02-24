@@ -4,6 +4,9 @@ import {
   LayoutGrid,
   MapIcon,
   Network,
+  RectangleEllipsis,
+  SlidersHorizontal,
+  UserPen,
   UsersRound,
 } from 'lucide-react'
 import { MenuListProps } from '@/type/MainLayout'
@@ -121,6 +124,24 @@ export const menuList: MenuListProps[] = [
         resourceID: [PermissionTypes.PUBLIC],
       },
     ],
+  },
+]
+
+export const userMenuList = [
+  {
+    name: 'Profile',
+    href: '/dashboard/settings/profile',
+    icon: UserPen,
+  },
+  {
+    name: 'Change Password',
+    href: '/dashboard/settings/change-password',
+    icon: RectangleEllipsis,
+  },
+  {
+    name: 'Preferences',
+    href: '/dashboard/settings/preferences',
+    icon: SlidersHorizontal,
   },
 ]
 
