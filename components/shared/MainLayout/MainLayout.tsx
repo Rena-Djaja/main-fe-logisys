@@ -24,6 +24,7 @@ import { AuthContextProps } from '@/type/Auth'
 import Confirmation from '@/components/shared/Alert/Confirmation'
 import { Toaster } from '@/components/shared/ui/sonner'
 import ResetPasswordDialog from '@/components/shared/ResetPasswordDialog/ResetPasswordDialog'
+import Alert from '@/components/shared/Alert/Alert'
 
 const MainLayout = ({
   children,
@@ -40,6 +41,7 @@ const MainLayout = ({
     <AuthContext.Provider value={authData}>
       <Toaster position={'top-right'} richColors />
       <Confirmation />
+      <Alert />
       <ResetPasswordDialog />
       <SidebarProvider
       // style={

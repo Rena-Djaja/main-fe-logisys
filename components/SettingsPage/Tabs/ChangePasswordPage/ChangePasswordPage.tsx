@@ -9,7 +9,7 @@ import { InputType } from '@/type/FormInputs'
 import CustomButton from '@/components/shared/FormInputs/CustomButton'
 
 const ChangePasswordPage = () => {
-  const { form, showPassword, handleShowPassword, onSubmit } =
+  const { form, showPassword, isLoading, handleShowPassword, onSubmit } =
     useChangePassword()
 
   return (
@@ -53,10 +53,7 @@ const ChangePasswordPage = () => {
             />
           </div>
           <div className="mt-4 flex gap-2">
-            <CustomButton
-              label={'Save'}
-              // isLoading={isLoading.submit}
-            />
+            <CustomButton label={'Save'} isLoading={isLoading} />
           </div>
         </form>
       </Form>

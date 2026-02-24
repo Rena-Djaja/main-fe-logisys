@@ -1,6 +1,6 @@
 import { clsx, type ClassValue } from 'clsx'
 import { twMerge } from 'tailwind-merge'
-import { removeCookie } from '@/lib/cookies'
+import { CookieName, removeCookie } from '@/lib/cookies'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -45,6 +45,9 @@ export const handleLocationLink = (
 }
 
 export const handleLogout = () => {
-  removeCookie('access_token')
+  ;(['access_token', 'skip_change_password'] as CookieName[]).forEach((key) => {
+    removeCookie(key)
+  })
+
   return (window.location.href = '/login')
 }
