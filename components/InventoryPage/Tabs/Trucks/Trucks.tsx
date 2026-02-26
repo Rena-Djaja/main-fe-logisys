@@ -54,7 +54,7 @@ const Trucks = () => {
           headers={truckListHeaders}
           data={truckList?.data || []}
           isLoading={isValidating}
-          allowDelete={false}
+          allowDelete={() => false}
           page={filter.page}
           perPage={filter.per_page}
           totalData={0}

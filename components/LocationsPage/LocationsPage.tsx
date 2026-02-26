@@ -54,7 +54,7 @@ const LocationsPage = () => {
           headers={locationListHeaders}
           data={locationList?.data || []}
           isLoading={isValidating}
-          allowDetails={false}
+          allowDetails={() => false}
           page={filter.page}
           perPage={filter.per_page}
           totalData={locationList?.pagination.total_data || 0}

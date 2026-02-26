@@ -55,7 +55,7 @@ const Warehouse = () => {
           data={warehouseList?.data || []}
           isLoading={isValidating}
           page={filter.page}
-          allowDelete={false}
+          allowDelete={() => false}
           perPage={filter.per_page}
           totalData={warehouseList?.pagination.total_data || 0}
           onChange={(val) => search('page', val)}

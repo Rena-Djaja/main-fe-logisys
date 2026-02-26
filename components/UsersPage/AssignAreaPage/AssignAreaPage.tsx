@@ -121,8 +121,8 @@ const AssignAreaPage: FC<CommonFormProps> = ({ id }) => {
                 perPage={assignedLocations?.pagination.limit || filter.per_page}
                 totalData={assignedLocations?.pagination.total_data || 0}
                 onRowClick={() => null}
-                allowDetails={false}
-                allowEdit={false}
+                allowDetails={() => false}
+                allowEdit={() => false}
                 onUpdate={() => null}
                 onDelete={onDelete}
               />
