@@ -11,12 +11,17 @@ import {
 import { DeleteUserRequest, UserListResponse } from '@/type/User'
 import { useConfirmationStore } from '@/store'
 import { ButtonVariant } from '@/type/FormInputs'
-import { redirect } from 'next/navigation'
 import { callAPI } from '@/lib/fetchers'
 import { apiStatusChecker } from '@/lib/utils'
 import { toast } from 'sonner'
+import { useAuthContext } from '@/components/shared/context/AuthContext'
+import { useRouter } from 'next/navigation'
 
 const useUsers = () => {
+  const { push } = useRouter()
+  const {
+    authInfo: { id: userId },
+  } = useAuthContext()
   const { setConfirmation, setLoading, closeConfirmation } =
     useConfirmationStore()
 
@@ -62,11 +67,11 @@ const useUsers = () => {
   }
 
   const onAdd = () => {
-    redirect('/dashboard/users/form')
+    push('/dashboard/users/form')
   }
 
   const onUpdate = (id: number) => {
-    redirect(`/dashboard/users/form/${id}`)
+    push(`/dashboard/users/form/${id}`)
   }
 
   const onDelete = (id: number) => {
@@ -120,6 +125,7 @@ const useUsers = () => {
 
   return {
     filter,
+    userId,
     userList,
     isValidating,
     detailsState,

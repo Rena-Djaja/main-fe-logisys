@@ -5,9 +5,9 @@ export interface CustomTableProps {
   data: { [key: string]: any }[] | []
   onChange: (val: number) => void
   isLoading?: boolean
-  allowDetails?: boolean
-  allowEdit?: boolean
-  allowDelete?: boolean
+  allowDetails?: (data: any) => boolean
+  allowEdit?: (data: any) => boolean
+  allowDelete?: (data: any) => boolean
   withPagination?: boolean
   withAction?: boolean
   page: number

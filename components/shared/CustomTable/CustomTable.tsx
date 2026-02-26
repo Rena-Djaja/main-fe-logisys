@@ -29,9 +29,9 @@ const CustomTable: FC<CustomTableProps> = (props) => {
     headers,
     data,
     isLoading,
-    allowDetails = true,
-    allowEdit = true,
-    allowDelete = true,
+    allowDetails = () => true,
+    allowEdit = () => true,
+    allowDelete = () => true,
     withPagination = true,
     withAction = true,
     onChange,
@@ -75,7 +75,7 @@ const CustomTable: FC<CustomTableProps> = (props) => {
                   {headers.map((h, headerIdx) => (
                     <TableCell
                       key={`cell-${rowIdx}-${headerIdx}`}
-                      onClick={() => allowDetails && onRowClick(each.id)}
+                      onClick={() => allowDetails(each) && onRowClick(each.id)}
                     >
                       {h?.customComponent ? (
                         <h.customComponent data={each} />
@@ -95,14 +95,14 @@ const CustomTable: FC<CustomTableProps> = (props) => {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                          {allowDetails && (
+                          {allowDetails(each) && (
                             <DropdownMenuItem
                               onClick={() => onRowClick(each.id)}
                             >
                               Details
                             </DropdownMenuItem>
                           )}
-                          {allowEdit && (
+                          {allowEdit(each) && (
                             <DropdownMenuItem onClick={() => onUpdate(each.id)}>
                               Edit
                             </DropdownMenuItem>
@@ -132,12 +132,12 @@ const CustomTable: FC<CustomTableProps> = (props) => {
                               </>
                             )}
                           {!!(
-                            (allowEdit ||
-                              allowDetails ||
+                            (allowEdit(each) ||
+                              allowDetails(each) ||
                               customActions?.length) &&
-                            allowDelete
+                            allowDelete(each)
                           ) && <DropdownMenuSeparator />}
-                          {allowDelete && (
+                          {allowDelete(each) && (
                             <DropdownMenuItem
                               variant={'destructive'}
                               onClick={() => onDelete(each.id)}

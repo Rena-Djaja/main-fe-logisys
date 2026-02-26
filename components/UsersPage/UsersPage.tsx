@@ -12,10 +12,12 @@ import {
 import useUsers from '@/components/UsersPage/useUsers'
 import UserDetails from '@/components/UsersPage/Details/UserDetails'
 import { ButtonType } from '@/type/FormInputs'
+import { UserProps } from '@/type/User'
 
 const UsersPage = () => {
   const {
     userList,
+    userId,
     isValidating,
     filter,
     detailsState,
@@ -68,6 +70,7 @@ const UsersPage = () => {
             totalData={userList?.pagination.total_data || 0}
             onChange={(val) => search('page', val)}
             onRowClick={onRowClick}
+            allowDelete={(row: UserProps) => row.id !== userId}
             onUpdate={onUpdate}
             onDelete={onDelete}
             customActions={userCustomActions}
