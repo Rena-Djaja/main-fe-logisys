@@ -49,6 +49,7 @@ const SupplierForm: FC<CommonFormProps> = ({ id }) => {
               name={'phone_number'}
               control={form.control}
               placeholder={'Enter company phone number'}
+              helperText={'Ex: 622123456'}
             />
           </div>
           <div className="lg:col-span-2">

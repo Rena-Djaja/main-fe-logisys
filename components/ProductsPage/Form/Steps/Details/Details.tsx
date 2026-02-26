@@ -35,7 +35,7 @@ const Details: FC<FormStepProps> = ({ form }) => {
           control={form.control}
           label={'Supplier'}
           placeholder={'Choose supplier'}
-          options={supplierList?.data.map((each) => ({
+          options={supplierList?.data?.map((each) => ({
             label: each.name,
             value: each.id,
           }))}
