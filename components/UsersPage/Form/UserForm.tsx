@@ -72,7 +72,7 @@ const UserForm: FC<CommonFormProps> = (props) => {
               placeholder={'Select a role'}
               isLoading={isRoleLoading}
               options={
-                roleListData?.data.map((each) => ({
+                roleListData?.data?.map((each) => ({
                   label: each.name,
                   value: each.id,
                 })) || []

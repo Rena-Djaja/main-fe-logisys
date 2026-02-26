@@ -48,7 +48,7 @@ const TruckForm: FC<CommonFormProps> = ({ id }) => {
           <div>
             <CustomSelect
               options={
-                salesmanList?.data.map((each) => ({
+                salesmanList?.data?.map((each) => ({
                   label: each.name,
                   value: String(each.id),
                 })) || []

@@ -48,7 +48,7 @@ const ItemDialog: FC<ItemDialogProps> = (props) => {
                   label={'Product'}
                   placeholder={'Select a product'}
                   isLoading={isProductListValidating}
-                  options={productList?.data.map((each) => ({
+                  options={productList?.data?.map((each) => ({
                     label: each.name,
                     value: `${each.id}|${each.name}`,
                   }))}
