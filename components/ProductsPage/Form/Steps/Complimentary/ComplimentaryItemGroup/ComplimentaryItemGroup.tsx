@@ -56,7 +56,7 @@ const ComplimentaryItemGroup: FC<ComplimentaryItemGroupProps> = (props) => {
                         label={'Complimentary'}
                         placeholder={'Select complimentary'}
                         isLoading={isValidating}
-                        options={complimentaryList?.data.map((each) => ({
+                        options={complimentaryList?.data?.map((each) => ({
                           label: each.name,
                           value: each.id,
                         }))}
