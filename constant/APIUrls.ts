@@ -60,6 +60,7 @@ export const InOutAPI = {
   GET_IN_OUT_DETAILS: baseURL + '/movement/details',
   GET_IN_OUT_ITEMS: baseURL + '/movement/items',
   POST_IN_OUT: baseURL + '/movement',
+  PUT_UPDATE_STATUS: baseURL + '/movement/status',
 }
 
 export const LogAPI = {

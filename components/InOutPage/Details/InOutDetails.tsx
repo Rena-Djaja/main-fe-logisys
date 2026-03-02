@@ -11,13 +11,15 @@ import {
 } from '@/lib/statuses'
 import CustomTable from '@/components/shared/CustomTable/CustomTable'
 import { inOutDetailsHeaders } from '@/components/InOutPage/Resource'
-import { TransactionItemProps } from '@/type/Transaction'
+import { TransactionItemProps, TransactionStatus } from '@/type/Transaction'
 import { Badge } from '@/components/shared/ui/badge'
 import CommonPageLoading from '@/components/shared/Loading/CommonPageLoading'
 import Timeline from '@/components/shared/Timeline/Timeline'
 import { LogProps } from '@/type/Logs'
 import CustomButton from '@/components/shared/FormInputs/CustomButton'
-import { FileDown } from 'lucide-react'
+import { BadgeCheck, FileDown, Pencil } from 'lucide-react'
+import { ButtonType, ButtonVariant } from '@/type/FormInputs'
+import InOutNotes from '@/components/InOutPage/Details/Notes/InOutNotes'
 
 const InOutDetails: FC<CommonDetailsPageProps> = (props) => {
   const {
@@ -27,6 +29,9 @@ const InOutDetails: FC<CommonDetailsPageProps> = (props) => {
     isItemsValidating,
     transactionLogs,
     isLogsValidating,
+    notesOpen,
+    handleOpenUpdateNotes,
+    handleMutate,
   } = useInOutDetails(props)
 
   const { id } = props
@@ -36,86 +41,122 @@ const InOutDetails: FC<CommonDetailsPageProps> = (props) => {
   }
 
   return (
-    <div className="mt-8 w-full flex flex-col gap-10">
-      <div className="w-full flex flex-col">
-        <h1 className="font-semibold text-[2rem]">Order Details</h1>
-        <span className="font-medium text-[0.95rem]">
-          This is details of your transaction
-        </span>
-      </div>
-      <div className="w-full flex flex-col gap-16">
-        <div className="w-full flex flex-col gap-5 border rounded-xl px-4 py-6">
-          <div className="w-full flex justify-between gap-5">
-            <div className="flex flex-col gap-2">
-              <div>
-                {handleTransactionStatus(Number(transactionDetails?.status))}
+    <>
+      <InOutNotes
+        id={id}
+        open={notesOpen}
+        handleOpen={handleOpenUpdateNotes}
+        mutate={handleMutate}
+      />
+      <div className="mt-8 w-full flex flex-col gap-10">
+        <div className="w-full flex flex-col">
+          <h1 className="font-semibold text-[2rem]">Order Details</h1>
+          <span className="font-medium text-[0.95rem]">
+            This is details of your transaction
+          </span>
+        </div>
+        <div className="w-full flex flex-col gap-16">
+          <div className="w-full flex flex-col gap-6">
+            <div className="w-full flex flex-col gap-5 border rounded-xl px-4 py-6">
+              <div className="w-full flex justify-between gap-5">
+                <div className="flex flex-col gap-2">
+                  <div>
+                    {handleTransactionStatus(
+                      Number(transactionDetails?.status)
+                    )}
+                  </div>
+                  <span className="text-[1.5rem] font-medium">
+                    Order# {transactionDetails?.transaction_id}
+                  </span>
+                  <div>
+                    {handleMovementTransactionType(
+                      transactionDetails?.movement_type
+                    )}
+                  </div>
+                </div>
+                <div className="flex gap-5.5">
+                  {transactionDetails?.status === TransactionStatus.DRAFT && (
+                    <CustomButton
+                      label={'Mark as Created'}
+                      icon={BadgeCheck}
+                      variant={ButtonVariant.OUTLINE}
+                      type={ButtonType.BUTTON}
+                      target="_blank"
+                      onClick={handleOpenUpdateNotes}
+                    />
+                  )}
+                  <div className="flex gap-2">
+                    <CustomButton
+                      label={'Edit'}
+                      icon={Pencil}
+                      variant={ButtonVariant.SECONDARY}
+                      target="_blank"
+                    />
+                    <CustomButton
+                      label={'Export'}
+                      icon={FileDown}
+                      link={`/download/in-out?id=${id}`}
+                      target="_blank"
+                    />
+                  </div>
+                </div>
               </div>
-              <span className="text-[1.5rem] font-medium">
-                Order# {transactionDetails?.transaction_id}
+              <div className="w-full flex items-center gap-4">
+                <Badge variant={'secondary'}>
+                  Transaction Date:{' '}
+                  {formattedDate(transactionDetails?.transaction_date)}
+                </Badge>
+                <Link
+                  className="flex"
+                  href={handleLocationLink(
+                    !!transactionDetails?.warehouse_name,
+                    transactionDetails?.location_id
+                  )}
+                >
+                  <Badge
+                    variant={'secondary'}
+                    className="hover:bg-blue-400/10 hover:text-blue-400/90"
+                  >
+                    Location:{' '}
+                    {transactionDetails?.warehouse_name ||
+                      transactionDetails?.plate_number}
+                  </Badge>
+                </Link>
+              </div>
+            </div>
+            <div className="border rounded-xl p-4 w-full flex flex-col gap-4 font-semibold text-[0.85rem]">
+              <span className="text-muted-foreground">Description</span>
+              <span className="text-[0.9rem]">
+                {transactionDetails?.description || '-'}
               </span>
-              <div>
-                {handleMovementTransactionType(
-                  transactionDetails?.movement_type
-                )}
-              </div>
-            </div>
-            <div>
-              <CustomButton
-                label={'Export'}
-                icon={FileDown}
-                link={`/download/in-out?id=${id}`}
-                target="_blank"
-              />
             </div>
           </div>
-          <div className="w-full flex items-center gap-4">
-            <Badge variant={'secondary'}>
-              Transaction Date:{' '}
-              {formattedDate(transactionDetails?.transaction_date)}
-            </Badge>
-            <Link
-              className="flex"
-              href={handleLocationLink(
-                !!transactionDetails?.warehouse_name,
-                transactionDetails?.location_id
-              )}
-            >
-              <Badge
-                variant={'secondary'}
-                className="hover:bg-blue-400/10 hover:text-blue-400/90"
-              >
-                Location:{' '}
-                {transactionDetails?.warehouse_name ||
-                  transactionDetails?.plate_number}
-              </Badge>
-            </Link>
+          <div>
+            <CustomTable
+              headers={inOutDetailsHeaders}
+              data={transactionItems as TransactionItemProps[]}
+              isLoading={isItemsValidating}
+              withPagination={false}
+              withAction={false}
+              onChange={() => null}
+              onRowClick={() => null}
+              onUpdate={() => null}
+              onDelete={() => null}
+              page={0}
+              perPage={0}
+              totalData={0}
+            />
           </div>
-        </div>
-        <div>
-          <CustomTable
-            headers={inOutDetailsHeaders}
-            data={transactionItems as TransactionItemProps[]}
-            isLoading={isItemsValidating}
-            withPagination={false}
-            withAction={false}
-            onChange={() => null}
-            onRowClick={() => null}
-            onUpdate={() => null}
-            onDelete={() => null}
-            page={0}
-            perPage={0}
-            totalData={0}
-          />
-        </div>
-        <div className="w-full flex flex-col gap-8 border rounded-xl px-6 pt-4 py-6">
-          <span className="font-medium text-[1.35rem]">Order Logs</span>
-          <Timeline
-            logs={transactionLogs as LogProps[]}
-            isLoading={isLogsValidating}
-          />
+          <div className="w-full flex flex-col gap-8 border rounded-xl px-6 pt-4 py-6">
+            <span className="font-medium text-[1.35rem]">Order Logs</span>
+            <Timeline
+              logs={transactionLogs as LogProps[]}
+              isLoading={isLogsValidating}
+            />
+          </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }
 
