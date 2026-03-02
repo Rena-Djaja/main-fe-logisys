@@ -16,3 +16,7 @@ export const inOutValidationSchema = z.object({
     )
     .min(1, 'Pleas insert at least one item'),
 })
+
+export const updateStatusValidationSchema = z.object({
+  notes: z.string().min(1, 'Please insert the note'),
+})

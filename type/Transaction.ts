@@ -1,5 +1,8 @@
 import { z } from 'zod'
-import { inOutValidationSchema } from '@/validations/InOutValidation'
+import {
+  inOutValidationSchema,
+  updateStatusValidationSchema,
+} from '@/validations/InOutValidation'
 import { CommonApiResponse, PaginationResponse } from '@/type/Common'
 
 export type InOutFormInputs = z.infer<typeof inOutValidationSchema>
@@ -62,4 +65,21 @@ export interface PostInOutResponse extends CommonApiResponse {
   data: {
     transaction_id: string
   }
+}
+
+export type UpdateStatusFormInputs = z.infer<
+  typeof updateStatusValidationSchema
+>
+
+export interface UpdateStatusRequest {
+  id: string
+  status: TransactionStatus
+  notes: string
+}
+
+export interface InOutNotesProps {
+  id: string
+  open: boolean
+  handleOpen: () => void
+  mutate: () => void
 }
