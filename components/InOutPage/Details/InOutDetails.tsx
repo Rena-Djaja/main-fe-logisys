@@ -74,32 +74,34 @@ const InOutDetails: FC<CommonDetailsPageProps> = (props) => {
                     )}
                   </div>
                 </div>
-                <div className="flex gap-5.5">
-                  {transactionDetails?.status === TransactionStatus.DRAFT && (
-                    <CustomButton
-                      label={'Mark as Created'}
-                      icon={BadgeCheck}
-                      variant={ButtonVariant.OUTLINE}
-                      type={ButtonType.BUTTON}
-                      target="_blank"
-                      onClick={handleOpenUpdateNotes}
-                    />
-                  )}
-                  <div className="flex gap-2">
-                    <CustomButton
-                      label={'Edit'}
-                      icon={Pencil}
-                      variant={ButtonVariant.SECONDARY}
-                      target="_blank"
-                    />
-                    <CustomButton
-                      label={'Export'}
-                      icon={FileDown}
-                      link={`/download/in-out?id=${id}`}
-                      target="_blank"
-                    />
+                {transactionDetails?.status !== TransactionStatus.DELETED && (
+                  <div className="flex gap-5.5">
+                    {transactionDetails?.status === TransactionStatus.DRAFT && (
+                      <CustomButton
+                        label={'Mark as Created'}
+                        icon={BadgeCheck}
+                        variant={ButtonVariant.OUTLINE}
+                        type={ButtonType.BUTTON}
+                        target="_blank"
+                        onClick={handleOpenUpdateNotes}
+                      />
+                    )}
+                    <div className="flex gap-2">
+                      <CustomButton
+                        label={'Edit'}
+                        icon={Pencil}
+                        variant={ButtonVariant.SECONDARY}
+                        target="_blank"
+                      />
+                      <CustomButton
+                        label={'Export'}
+                        icon={FileDown}
+                        link={`/download/in-out?id=${id}`}
+                        target="_blank"
+                      />
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
               <div className="w-full flex items-center gap-4">
                 <Badge variant={'secondary'}>

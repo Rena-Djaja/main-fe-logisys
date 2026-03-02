@@ -8,6 +8,7 @@ import { ButtonType } from '@/type/FormInputs'
 import CustomTable from '@/components/shared/CustomTable/CustomTable'
 import useInOut from '@/components/InOutPage/useInOut'
 import { inOutListHeaders } from '@/components/InOutPage/Resource'
+import { InOutProps, TransactionStatus } from '@/type/Transaction'
 
 const InOutPage = () => {
   const {
@@ -57,6 +58,12 @@ const InOutPage = () => {
           page={filter.page}
           perPage={filter.per_page}
           totalData={inOutList?.pagination.total_data || 0}
+          allowDelete={(data: InOutProps) =>
+            data.status !== TransactionStatus.DELETED
+          }
+          allowEdit={(data: InOutProps) =>
+            data.status !== TransactionStatus.DELETED
+          }
           onChange={(val) => search('page', val)}
           onRowClick={onDetails}
           onUpdate={onUpdate}
