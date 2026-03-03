@@ -2,7 +2,7 @@
 
 import React, { FC } from 'react'
 import CustomModal from '@/components/shared/CustomModal/CustomModal'
-import useInOutNotes from '@/components/InOutPage/Details/Notes/useInOutNotes'
+import useInOutNotes from '@/components/InOutPage/Notes/useInOutNotes'
 import { Form } from '@/components/shared/ui/form'
 import CustomInput from '@/components/shared/FormInputs/CustomInput'
 import { ButtonType, ButtonVariant, InputType } from '@/type/FormInputs'

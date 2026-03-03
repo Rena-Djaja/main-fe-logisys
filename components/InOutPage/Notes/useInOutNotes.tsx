@@ -5,7 +5,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { updateStatusValidationSchema } from '@/validations/InOutValidation'
 import {
   InOutNotesProps,
-  TransactionStatus,
   UpdateStatusFormInputs,
   UpdateStatusRequest,
 } from '@/type/Transaction'
@@ -17,7 +16,7 @@ import { apiStatusChecker } from '@/lib/utils'
 import { useState } from 'react'
 
 const useInOutNotes = (props: InOutNotesProps) => {
-  const { id, handleOpen, mutate } = props
+  const { id, handleOpen, mutate, type } = props
 
   const form = useForm({
     resolver: zodResolver(updateStatusValidationSchema),
@@ -47,7 +46,7 @@ const useInOutNotes = (props: InOutNotesProps) => {
       const req: UpdateStatusRequest = {
         ...data,
         id,
-        status: TransactionStatus.CREATED,
+        status: type,
       }
 
       const apiRes = await callAPI<UpdateStatusRequest, CommonApiResponse>(

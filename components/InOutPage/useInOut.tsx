@@ -9,16 +9,26 @@ import { useRouter } from 'next/navigation'
 
 const useInOut = () => {
   const { push } = useRouter()
+
+  const [notes, setNotes] = useState({
+    isOpen: false,
+    id: '',
+  })
   const [filter, setFilter] = useState<CommonFilterRequest>({
     page: 1,
     per_page: 10,
     search: '',
   })
 
-  const { data: inOutList, isValidating } = useCommonApi<
-    CommonFilterRequest,
-    InOutListResponse
-  >(InOutAPI.GET_IN_OUT_LIST, filter, { method: 'GET' })
+  const {
+    data: inOutList,
+    isValidating,
+    mutate,
+  } = useCommonApi<CommonFilterRequest, InOutListResponse>(
+    InOutAPI.GET_IN_OUT_LIST,
+    filter,
+    { method: 'GET' }
+  )
 
   const search = (key: keyof CommonFilterRequest, value: number | string) => {
     const newState = { ...filter, [key]: value }
@@ -27,6 +37,20 @@ const useInOut = () => {
     }
 
     setFilter(newState)
+  }
+
+  const handleOpenNotes = (id = '') => {
+    const newState = { ...notes }
+
+    if (newState.isOpen) {
+      newState.id = ''
+    } else {
+      newState.id = id
+    }
+
+    newState.isOpen = !newState.isOpen
+
+    setNotes(newState)
   }
 
   const onDetails = (id: string) => {
@@ -45,10 +69,13 @@ const useInOut = () => {
     filter,
     inOutList,
     isValidating,
+    notes,
+    handleOpenNotes,
     search,
     onDetails,
     onAdd,
     onUpdate,
+    mutate,
   }
 }
 
