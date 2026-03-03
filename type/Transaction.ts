@@ -82,4 +82,5 @@ export interface InOutNotesProps {
   open: boolean
   handleOpen: () => void
   mutate: () => void
+  type: TransactionStatus
 }

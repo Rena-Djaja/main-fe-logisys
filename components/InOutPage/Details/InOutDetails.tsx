@@ -19,7 +19,7 @@ import { LogProps } from '@/type/Logs'
 import CustomButton from '@/components/shared/FormInputs/CustomButton'
 import { BadgeCheck, FileDown, Pencil } from 'lucide-react'
 import { ButtonType, ButtonVariant } from '@/type/FormInputs'
-import InOutNotes from '@/components/InOutPage/Details/Notes/InOutNotes'
+import InOutNotes from '@/components/InOutPage/Notes/InOutNotes'
 
 const InOutDetails: FC<CommonDetailsPageProps> = (props) => {
   const {
@@ -47,6 +47,7 @@ const InOutDetails: FC<CommonDetailsPageProps> = (props) => {
         open={notesOpen}
         handleOpen={handleOpenUpdateNotes}
         mutate={handleMutate}
+        type={TransactionStatus.CREATED}
       />
       <div className="mt-8 w-full flex flex-col gap-10">
         <div className="w-full flex flex-col">
