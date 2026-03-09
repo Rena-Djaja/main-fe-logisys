@@ -86,7 +86,8 @@ const UserForm: FC<CommonFormProps> = (props) => {
               }}
             />
           </div>
-          <div className="lg:col-span-2">
+          {/* Hidden for now. Upcoming feature */}
+          <div className="lg:col-span-2 hidden">
             <FormField
               name={`has_employee_data`}
               control={form.control}
