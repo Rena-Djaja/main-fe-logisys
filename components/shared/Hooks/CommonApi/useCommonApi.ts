@@ -3,6 +3,7 @@
 import { Method } from 'axios'
 import useSWR, { SWRConfiguration, SWRResponse } from 'swr'
 import { callAPI, CallAPIOptions } from '@/lib/fetchers'
+import {toast} from "sonner";
 
 export type DataType<T> = T | null
 type ResType<T> = {
@@ -33,6 +34,8 @@ export default function useCommonApi<TReq, TReturn>(
     callAPI<TReq, ResType<TReturn>>(url[0], apiReq, options).then((res) => {
       if (res.status === 200 && res.data !== undefined) {
         return res.data.data
+      } else if (!res?.status || res.status >= 500) {
+          toast.error('Internal server error. Please try again.')
       }
       return null
     })
