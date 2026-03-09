@@ -68,7 +68,7 @@ const useUserForm = (props: CommonFormProps) => {
       form.setValue(
         each as keyof UserFormInputs,
         // @ts-ignore
-        data[each as keyof PostUserRequest]
+        String(data[each as keyof PostUserRequest])
       )
     })
   }
