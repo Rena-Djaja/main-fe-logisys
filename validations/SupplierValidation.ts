@@ -10,12 +10,24 @@ export const supplierFormValidationSchema = z.object({
   phone_number: z
     .string()
     .nullable()
-    .refine(
-      (val) => {
-        if (!val) return true
-
-        return /^(62)(8|2)[1-9][0-9]{6,9}$/.test(val)
-      },
-      { message: 'Invalid phone number format' }
-    ),
+}).superRefine((data, ctx) => {
+  if(data.phone_number) {
+    if(data.phone_number.length > 0 && data.phone_number.length < 11) {
+      ctx.addIssue({
+        code: 'too_small',
+        origin: 'string',
+        minimum: 11,
+        message: 'Phone number must be at least 11 digits',
+        path: ['phone_number'],
+      })
+    }
+    if(!(/^(62)(8|2)[1-9][0-9]{6,9}$/.test(data.phone_number))) {
+      ctx.addIssue({
+        code: 'custom',
+        origin: 'string',
+        message: "Phone number should contain only numeric value and started with '62'",
+        path: ['phone_number']
+      })
+    }
+  }
 })
