@@ -96,6 +96,7 @@ export interface ProductDetailsResponse extends CommonApiResponse {
 
 export interface ProductVariantsRequest {
   product_id: number
+  is_active?: boolean
 }
 
 export interface ProductVariantsResponse extends CommonApiResponse {

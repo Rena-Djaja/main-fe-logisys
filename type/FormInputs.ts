@@ -36,6 +36,7 @@ export interface CustomSelectProps extends CustomInputProps {
   isLoading?: boolean
   customOnChange?: any
   onSearch?: (value: string) => void
+  defaultFilter?: string
 }
 
 export interface OptionType {
