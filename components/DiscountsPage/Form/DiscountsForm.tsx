@@ -19,7 +19,7 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from '@/components/shared/ui/empty'
-import { Plus, ScanBarcode } from 'lucide-react'
+import { Minus, Plus, ScanBarcode } from 'lucide-react'
 import CustomButton from '@/components/shared/FormInputs/CustomButton'
 import { Separator } from '@/components/shared/ui/separator'
 import { cn } from '@/lib/utils'
@@ -35,6 +35,7 @@ const DiscountsForm = () => {
     onSubmit,
     handleOpenProductSchema,
     handleAddProduct,
+    handleRemoveProduct,
   } = useDiscountForm()
 
   return (
@@ -158,9 +159,18 @@ const DiscountsForm = () => {
                 <div className="flex flex-col border rounded-md divide-y">
                   {addedProducts.map((each, productIdx) => (
                     <div key={each.id} className="w-full flex flex-col p-4">
-                      <span className="font-semibold text-[0.925rem]">
-                        {each.name}
-                      </span>
+                      <div className="w-full flex justify-between items-center gap-4">
+                        <span className="font-semibold text-[0.925rem]">
+                          {each.name}
+                        </span>
+                        <button
+                          type={ButtonType.BUTTON}
+                          className="border border-primary rounded-sm p-0.5"
+                          onClick={() => handleRemoveProduct(productIdx)}
+                        >
+                          <Minus className="size-3" />
+                        </button>
+                      </div>
                       <div className="w-full p-4 flex flex-col gap-4">
                         {each.variants.map((variant, variantIdx) => (
                           <div

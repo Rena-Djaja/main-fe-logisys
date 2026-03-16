@@ -16,7 +16,11 @@ const useDiscountForm = () => {
     },
   })
 
-  const { fields: addedProducts } = useFieldArray({
+  const {
+    fields: addedProducts,
+    append,
+    remove,
+  } = useFieldArray({
     name: 'products',
     control: form.control,
   })
@@ -28,7 +32,19 @@ const useDiscountForm = () => {
   }
 
   const handleAddProduct = (data: BulkProductDetailsProps[]) => {
-    form.setValue('products', data)
+    const existedIds = form.getValues('products').map((each) => String(each.id))
+
+    const existedSet = new Set(existedIds)
+
+    data.forEach((each) => {
+      if (!existedSet.has(String(each.id))) {
+        append(each)
+      }
+    })
+  }
+
+  const handleRemoveProduct = (idx: number) => {
+    remove(idx)
   }
 
   const onSubmit = async (data: any) => {
@@ -42,6 +58,7 @@ const useDiscountForm = () => {
     onSubmit,
     handleOpenProductSchema,
     handleAddProduct,
+    handleRemoveProduct,
   }
 }
 
