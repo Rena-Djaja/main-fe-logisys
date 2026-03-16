@@ -11,5 +11,22 @@ export const discountValidationSchema = z.object({
     ['all_payments', 'cash', 'credit'],
     'Please select the payment type'
   ),
-  products: z.array(z.object({})).min(1, 'Please select at least one product'),
+  products: z
+    .array(
+      z.object({
+        id: z.number(),
+        supplier_id: z.number(),
+        supplier_name: z.string(),
+        name: z.string(),
+        sku: z.string(),
+        variants: z.array(
+          z.object({
+            id: z.number(),
+            name: z.string(),
+            is_active: z.boolean(),
+          })
+        ),
+      })
+    )
+    .min(1, 'Please select at least one product'),
 })

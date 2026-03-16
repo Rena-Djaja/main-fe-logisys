@@ -24,6 +24,7 @@ import {
 import { Button } from '@/components/shared/ui/button'
 import Link from 'next/link'
 import { Checkbox } from '@/components/shared/ui/checkbox'
+import { cn } from '@/lib/utils'
 
 const CustomTable: FC<CustomTableProps> = (props) => {
   const {
@@ -48,6 +49,7 @@ const CustomTable: FC<CustomTableProps> = (props) => {
     withCheckbox,
     selectedRows,
     setSelectedRows = () => null,
+    disabledIds,
   } = props
 
   const dataIds = data.map((each) => String(each.id))
@@ -116,23 +118,35 @@ const CustomTable: FC<CustomTableProps> = (props) => {
               ))
             ) : data?.length ? (
               data.map((each, rowIdx) => (
-                <TableRow key={rowIdx}>
+                <TableRow
+                  key={rowIdx}
+                  className={cn(
+                    disabledIds?.has(String(each.id)) && 'opacity-50'
+                  )}
+                >
                   {withCheckbox && (
                     <TableCell key={`row-${rowIdx}-checkbox`}>
                       <Checkbox
                         id={`row-${rowIdx}-checkbox`}
                         name={`row-${rowIdx}-checkbox`}
                         checked={selectedRows?.has(String(each.id))}
-                        onCheckedChange={(checked: boolean) =>
-                          handleSelectRow(String(each.id), checked)
-                        }
+                        disabled={disabledIds?.has(each.id)}
+                        onCheckedChange={(checked: boolean) => {
+                          if (!disabledIds?.has(String(each.id))) {
+                            handleSelectRow(String(each.id), checked)
+                          }
+                        }}
                       />
                     </TableCell>
                   )}
                   {headers.map((h, headerIdx) => (
                     <TableCell
                       key={`cell-${rowIdx}-${headerIdx}`}
-                      onClick={() => allowDetails(each) && onRowClick(each.id)}
+                      onClick={() =>
+                        allowDetails(each) &&
+                        !disabledIds?.has(String(each.id)) &&
+                        onRowClick(each.id)
+                      }
                     >
                       {h?.customComponent ? (
                         <h.customComponent data={each} />

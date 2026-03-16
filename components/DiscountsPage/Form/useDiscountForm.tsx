@@ -1,9 +1,10 @@
 'use client'
 
-import { useForm } from 'react-hook-form'
+import { useFieldArray, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { discountValidationSchema } from '@/validations/DiscountValidation'
 import { useState } from 'react'
+import { BulkProductDetailsProps } from '@/type/Product'
 
 const useDiscountForm = () => {
   const form = useForm({
@@ -15,10 +16,19 @@ const useDiscountForm = () => {
     },
   })
 
+  const { fields: addedProducts } = useFieldArray({
+    name: 'products',
+    control: form.control,
+  })
+
   const [productSchemaOpen, setProductSchemaOpen] = useState(false)
 
   const handleOpenProductSchema = () => {
     setProductSchemaOpen((prev) => !prev)
+  }
+
+  const handleAddProduct = (data: BulkProductDetailsProps[]) => {
+    form.setValue('products', data)
   }
 
   const onSubmit = async (data: any) => {
@@ -28,8 +38,10 @@ const useDiscountForm = () => {
   return {
     form,
     productSchemaOpen,
+    addedProducts,
     onSubmit,
     handleOpenProductSchema,
+    handleAddProduct,
   }
 }
 

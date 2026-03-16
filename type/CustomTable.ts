@@ -22,6 +22,7 @@ export interface CustomTableProps {
   withCheckbox?: boolean
   selectedRows?: Set<string>
   setSelectedRows?: Dispatch<Set<string>>
+  disabledIds?: Set<string>
 }
 
 export interface TableHeaderProps {
