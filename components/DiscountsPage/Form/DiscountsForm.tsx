@@ -7,6 +7,7 @@ import {
   FormControl,
   FormField,
   FormItem,
+  FormLabel,
 } from '@/components/shared/ui/form'
 import CustomInput from '@/components/shared/FormInputs/CustomInput'
 import { ButtonType, ButtonVariant, InputType } from '@/type/FormInputs'
@@ -26,6 +27,7 @@ import { cn } from '@/lib/utils'
 import AddProduct from '@/components/DiscountsPage/Form/AddProduct/AddProduct'
 import CustomNumberFormatInput from '@/components/shared/FormInputs/CustomNumberFormatInput'
 import { Switch } from '@/components/shared/ui/switch'
+import DatePicker from '@/components/shared/DatePicker/DatePicker'
 
 const DiscountsForm = () => {
   const {
@@ -56,7 +58,7 @@ const DiscountsForm = () => {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="w-full max-w-2xl grid lg:grid-cols-2 gap-x-6 gap-y-10"
+            className="w-full max-w-4xl grid lg:grid-cols-2 gap-x-6 gap-y-10"
           >
             <div className="lg:col-span-2">
               <CustomInput
@@ -76,27 +78,52 @@ const DiscountsForm = () => {
               />
             </div>
             <div>
-              <CustomSelect
-                name={'discount_type'}
+              <DatePicker
+                name={'start_date'}
                 control={form.control}
-                label={'Discount Type'}
-                placeholder={'Select discount type'}
-                options={['Price', 'Percentage'].map((opt) => ({
-                  label: opt,
-                  value: opt.toLowerCase(),
-                }))}
+                label={'Start Date'}
+                placeholder={'Select start date'}
               />
             </div>
             <div>
-              <CustomSelect
-                name={'payment_type'}
+              <DatePicker
+                name={'end_date'}
                 control={form.control}
-                label={'Payment Type'}
-                placeholder={'Select payment type'}
-                options={['All Payments', 'Cash', 'Credit'].map((opt) => ({
-                  label: opt,
-                  value: opt.toLowerCase().replace(' ', '_'),
-                }))}
+                label={'End Date'}
+                placeholder={'Select end date'}
+                minDate={new Date(form.watch('start_date'))}
+              />
+            </div>
+            <div>
+              <CustomNumberFormatInput
+                name={'valid_thru_days'}
+                control={form.control}
+                label={'Valid Thru Days'}
+                placeholder={'Enter valid thru days'}
+              />
+            </div>
+            <div className="w-full lg:col-span-2">
+              <FormField
+                name={'is_combinable'}
+                control={form.control}
+                render={({ field: { onChange, value } }) => {
+                  return (
+                    <FormItem>
+                      <FormControl>
+                        <div className="w-full flex gap-4">
+                          <FormLabel>Is Discount Combinable</FormLabel>
+                          <Switch
+                            id={'is_combinable'}
+                            defaultChecked={!!value}
+                            onClick={() => {
+                              onChange(!value)
+                            }}
+                          />
+                        </div>
+                      </FormControl>
+                    </FormItem>
+                  )
+                }}
               />
             </div>
             <div className="lg:col-span-2">
@@ -175,38 +202,86 @@ const DiscountsForm = () => {
                         {each.variants.map((variant, variantIdx) => (
                           <div
                             key={variant.id}
-                            className="w-full grid lg:grid-cols-4 items-center py-2 gap-5"
+                            className="w-full flex flex-col lg:flex-row lg:items-center py-2 gap-5"
                           >
-                            <span className="font-medium text-[0.875rem]">
+                            <span className="w-full font-medium text-[0.875rem] md:col-span-2 lg:col-span-1">
                               {variant.name}
                             </span>
-                            <div className="w-full lg:col-span-2 flex items-center gap-2">
-                              <span
-                                className={
-                                  cn(form.watch('discount_type') === 'price')
-                                    ? 'order-1'
-                                    : 'order-2'
+                            <div className="w-full">
+                              <CustomSelect
+                                name={`products.${productIdx}.variants.${variantIdx}.discount_type`}
+                                control={form.control}
+                                placeholder={'Discount type'}
+                                disabled={
+                                  !form.watch(
+                                    `products.${productIdx}.variants.${variantIdx}.is_active`
+                                  )
                                 }
-                              >
-                                {form.watch('discount_type') === 'price'
-                                  ? 'Rp'
-                                  : form.watch('discount_type') === 'percentage'
-                                    ? '%'
-                                    : ''}
-                              </span>
+                                options={['Price', 'Percentage'].map((opt) => ({
+                                  label: opt,
+                                  value: opt.toLowerCase(),
+                                }))}
+                              />
+                            </div>
+                            <div className="w-full">
+                              <CustomSelect
+                                name={`products.${productIdx}.variants.${variantIdx}.payment_type`}
+                                control={form.control}
+                                placeholder={'Payment type'}
+                                disabled={
+                                  !form.watch(
+                                    `products.${productIdx}.variants.${variantIdx}.is_active`
+                                  )
+                                }
+                                options={['All Payments', 'Cash', 'Credit'].map(
+                                  (opt) => ({
+                                    label: opt,
+                                    value: opt.toLowerCase().replace(' ', '_'),
+                                  })
+                                )}
+                              />
+                            </div>
+                            <div className="flex items-center gap-2">
+                              {form.watch(
+                                `products.${productIdx}.variants.${variantIdx}.discount_type`
+                              ) && (
+                                <span
+                                  className={
+                                    cn(
+                                      form.watch(
+                                        `products.${productIdx}.variants.${variantIdx}.discount_type`
+                                      ) === 'price'
+                                    )
+                                      ? 'order-1'
+                                      : 'order-2'
+                                  }
+                                >
+                                  {form.watch(
+                                    `products.${productIdx}.variants.${variantIdx}.discount_type`
+                                  ) === 'price'
+                                    ? 'Rp'
+                                    : form.watch(
+                                          `products.${productIdx}.variants.${variantIdx}.discount_type`
+                                        ) === 'percentage'
+                                      ? '%'
+                                      : ''}
+                                </span>
+                              )}
                               <div
                                 className={cn(
-                                  form.watch('discount_type') === 'price'
+                                  form.watch(
+                                    `products.${productIdx}.variants.${variantIdx}.discount_type`
+                                  ) === 'price'
                                     ? 'order-2'
                                     : 'order-1',
                                   'w-full'
                                 )}
                               >
-                                <div className="w-full">
+                                <div className="w-full min-w-[10rem]">
                                   <CustomNumberFormatInput
                                     name={`products.${productIdx}.variants.${variantIdx}.discount_amount`}
                                     control={form.control}
-                                    placeholder={'Enter discount amount'}
+                                    placeholder={'Discount amount'}
                                     disabled={
                                       !form.watch(
                                         `products.${productIdx}.variants.${variantIdx}.is_active`
@@ -216,7 +291,7 @@ const DiscountsForm = () => {
                                 </div>
                               </div>
                             </div>
-                            <div className="w-full">
+                            <div className="w-fit">
                               <FormField
                                 name={`products.${productIdx}.variants.${variantIdx}.is_active`}
                                 control={form.control}
@@ -224,11 +299,24 @@ const DiscountsForm = () => {
                                   return (
                                     <FormItem>
                                       <FormControl>
-                                        <Switch
-                                          id={`${variant.id}.is_active`}
-                                          defaultChecked={!!value}
-                                          onClick={() => onChange(!value)}
-                                        />
+                                        <div className="flex gap-3 items-center">
+                                          <FormLabel className="lg:hidden font-semibold text-[0.8rem]">
+                                            Inactive
+                                          </FormLabel>
+                                          <Switch
+                                            id={`${variant.id}.is_active`}
+                                            defaultChecked={!!value}
+                                            onClick={() => {
+                                              onChange(!value)
+                                              form.clearErrors(
+                                                `products.${productIdx}.variants.${variantIdx}`
+                                              )
+                                            }}
+                                          />
+                                          <FormLabel className="lg:hidden font-semibold text-[0.8rem]">
+                                            Active
+                                          </FormLabel>
+                                        </div>
                                       </FormControl>
                                     </FormItem>
                                   )

@@ -89,7 +89,7 @@ const CustomTable: FC<CustomTableProps> = (props) => {
         <Table>
           <TableHeader>
             <TableRow>
-              {withCheckbox && !isLoading && (
+              {withCheckbox && !isLoading && !!data?.length && (
                 <TableHead className="w-8">
                   <Checkbox
                     id="select-all-checkbox"
@@ -107,7 +107,7 @@ const CustomTable: FC<CustomTableProps> = (props) => {
           </TableHeader>
           <TableBody>
             {isLoading ? (
-              [...Array(4)].map((_, rowIdx) => (
+              [...Array(perPage)].map((_, rowIdx) => (
                 <TableRow key={rowIdx} className="py-[8rem]">
                   {headers.map((_, cellIdx) => (
                     <TableCell key={cellIdx} className="text-center">
