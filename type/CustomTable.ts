@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { Dispatch, FC } from 'react'
 
 export interface CustomTableProps {
   headers: TableHeaderProps[]
@@ -19,6 +19,10 @@ export interface CustomTableProps {
   customActions?: CustomActionProps[]
   customActionParam?: any
   allowedCustomAction?: (id: any) => void
+  withCheckbox?: boolean
+  selectedRows?: Set<string>
+  setSelectedRows?: Dispatch<Set<string>>
+  disabledIds?: Set<string>
 }
 
 export interface TableHeaderProps {

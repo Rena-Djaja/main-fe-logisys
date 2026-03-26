@@ -96,6 +96,7 @@ export interface ProductDetailsResponse extends CommonApiResponse {
 
 export interface ProductVariantsRequest {
   product_id: number
+  is_active?: boolean
 }
 
 export interface ProductVariantsResponse extends CommonApiResponse {
@@ -234,4 +235,25 @@ export interface PostVariantStatusRequest {
 
 export interface DeleteProductRequest {
   id: number
+}
+
+export interface BulkProductDetailsRequest {
+  ids: number[]
+}
+
+export interface BulkProductDetailsProps {
+  id: number
+  supplier_id: number
+  supplier_name: string
+  name: string
+  sku: string
+  variants: {
+    id: number
+    name: string
+    is_active: boolean
+  }[]
+}
+
+export interface BulkProductDetailsResponse extends CommonApiResponse {
+  data: BulkProductDetailsProps[]
 }

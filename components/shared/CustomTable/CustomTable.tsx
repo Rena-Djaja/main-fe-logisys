@@ -23,6 +23,8 @@ import {
 } from '@/components/shared/ui/dropdown-menu'
 import { Button } from '@/components/shared/ui/button'
 import Link from 'next/link'
+import { Checkbox } from '@/components/shared/ui/checkbox'
+import { cn } from '@/lib/utils'
 
 const CustomTable: FC<CustomTableProps> = (props) => {
   const {
@@ -44,14 +46,59 @@ const CustomTable: FC<CustomTableProps> = (props) => {
     customActions = [],
     customActionParam,
     allowedCustomAction,
+    withCheckbox,
+    selectedRows,
+    setSelectedRows = () => null,
+    disabledIds,
   } = props
 
+  const dataIds = data.map((each) => String(each.id))
+  const dataset = new Set(dataIds)
+
+  const eqSet = (selected: Set<string> | undefined, data: Set<string>) => {
+    return [...data].every((x) => selected?.has(x))
+  }
+
+  const selectAll = eqSet(selectedRows, dataset)
+
+  const handleSelectAll = (checked: boolean) => {
+    const ext = selectedRows ? [...selectedRows] : []
+    if (checked) {
+      const newState = [...ext, ...data?.map((row) => String(row.id))]
+      setSelectedRows(new Set(newState))
+    } else {
+      const newState = new Set(selectedRows ? [...selectedRows] : [])
+      dataIds.forEach((each) => newState?.delete(each))
+      setSelectedRows(newState)
+    }
+  }
+
+  const handleSelectRow = (id: string, checked: boolean) => {
+    const newSelected = new Set(selectedRows)
+    if (checked) {
+      newSelected.add(id)
+    } else {
+      newSelected.delete(id)
+    }
+    setSelectedRows(newSelected)
+  }
+
   return (
-    <div className="w-full flex flex-col gap-6">
-      <div className="rounded-md border">
+    <div className="relative w-full flex flex-col gap-6">
+      <div className="rounded-md border overflow-auto scroll-auto">
         <Table>
           <TableHeader>
             <TableRow>
+              {withCheckbox && !isLoading && !!data?.length && (
+                <TableHead className="w-8">
+                  <Checkbox
+                    id="select-all-checkbox"
+                    name="select-all-checkbox"
+                    checked={selectAll}
+                    onCheckedChange={handleSelectAll}
+                  />
+                </TableHead>
+              )}
               {headers.map((each, idx) => (
                 <TableHead key={idx}>{each.title}</TableHead>
               ))}
@@ -60,7 +107,7 @@ const CustomTable: FC<CustomTableProps> = (props) => {
           </TableHeader>
           <TableBody>
             {isLoading ? (
-              [...Array(4)].map((_, rowIdx) => (
+              [...Array(perPage)].map((_, rowIdx) => (
                 <TableRow key={rowIdx} className="py-[8rem]">
                   {headers.map((_, cellIdx) => (
                     <TableCell key={cellIdx} className="text-center">
@@ -71,11 +118,35 @@ const CustomTable: FC<CustomTableProps> = (props) => {
               ))
             ) : data?.length ? (
               data.map((each, rowIdx) => (
-                <TableRow key={rowIdx}>
+                <TableRow
+                  key={rowIdx}
+                  className={cn(
+                    disabledIds?.has(String(each.id)) && 'opacity-50'
+                  )}
+                >
+                  {withCheckbox && (
+                    <TableCell key={`row-${rowIdx}-checkbox`}>
+                      <Checkbox
+                        id={`row-${rowIdx}-checkbox`}
+                        name={`row-${rowIdx}-checkbox`}
+                        checked={selectedRows?.has(String(each.id))}
+                        disabled={disabledIds?.has(each.id)}
+                        onCheckedChange={(checked: boolean) => {
+                          if (!disabledIds?.has(String(each.id))) {
+                            handleSelectRow(String(each.id), checked)
+                          }
+                        }}
+                      />
+                    </TableCell>
+                  )}
                   {headers.map((h, headerIdx) => (
                     <TableCell
                       key={`cell-${rowIdx}-${headerIdx}`}
-                      onClick={() => allowDetails(each) && onRowClick(each.id)}
+                      onClick={() =>
+                        allowDetails(each) &&
+                        !disabledIds?.has(String(each.id)) &&
+                        onRowClick(each.id)
+                      }
                     >
                       {h?.customComponent ? (
                         <h.customComponent data={each} />

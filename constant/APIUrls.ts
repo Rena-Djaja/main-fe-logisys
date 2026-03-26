@@ -34,9 +34,14 @@ export const ProductAPI = {
   GET_PRODUCT_DETAILS: baseURL + '/product/details',
   GET_PRODUCT_VARIANTS: baseURL + '/product/variant/list',
   GET_PRODUCT_VARIANT_DETAILS: baseURL + '/product/variant/details',
+  POST_BULK_PRODUCT_DETAILS: baseURL + '/product/details/bulk',
   POST_PRODUCT: baseURL + '/product',
   POST_PRODUCT_VARIANT: baseURL + '/product/variant',
   POST_PRODUCT_VARIANT_STATUS: baseURL + '/product/variant/status',
+}
+
+export const DiscountAPI = {
+  POST_DISCOUNT: baseURL + '/discount',
 }
 
 export const InventoryAPI = {

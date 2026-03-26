@@ -22,6 +22,10 @@ export interface CustomInputProps {
   defaultValue?: string
 }
 
+export interface CustomNumberInputProps extends CustomInputProps {
+  allowNegative?: boolean
+}
+
 export interface CustomDateInputProps extends CustomInputProps {
   minDate?: Date
   maxDate?: Date
@@ -36,6 +40,7 @@ export interface CustomSelectProps extends CustomInputProps {
   isLoading?: boolean
   customOnChange?: any
   onSearch?: (value: string) => void
+  defaultFilter?: string
 }
 
 export interface OptionType {

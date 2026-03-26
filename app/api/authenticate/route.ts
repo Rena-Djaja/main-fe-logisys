@@ -6,8 +6,6 @@ import { apiStatusChecker } from '@/lib/utils'
 export async function POST(req: Request) {
   const authHeader = req.headers.get('authorization')
 
-  console.log(authHeader, 'route token')
-
   if (!authHeader) {
     return NextResponse.json({
       success: false,
@@ -37,8 +35,6 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: false, error: authInfoData.error })
     }
 
-    console.log(AuthAPI.GET_PERMISSION_LIST, 'BE URL')
-
     const permissionRes = await fetch(AuthAPI.GET_PERMISSION_LIST, {
       method: 'GET',
       headers: {
@@ -53,8 +49,6 @@ export async function POST(req: Request) {
         error: 'Unable to fetch permission list',
       })
     }
-
-    console.log(permissionRes, 'BE Response')
 
     const permissionListData = await permissionRes.json()
 

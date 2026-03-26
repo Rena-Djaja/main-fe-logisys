@@ -58,8 +58,13 @@ export const menuList: MenuListProps[] = [
             resourceID: [PermissionTypes.READ_PRODUCT],
           },
           {
-            title: 'Promo',
-            url: '/dashboard/promo',
+            title: 'Discounts',
+            url: '/dashboard/discounts',
+            resourceID: [PermissionTypes.READ_DISCOUNT],
+          },
+          {
+            title: 'Complimentaries',
+            url: '/dashboard/complimentaries',
             resourceID: [PermissionTypes.PUBLIC],
           },
         ],

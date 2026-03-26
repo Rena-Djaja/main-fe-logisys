@@ -1,30 +1,9 @@
 'use client'
 
-import React, { FC, useEffect, useState } from 'react'
-import { ButtonType, CustomSelectProps, OptionType } from '@/type/FormInputs'
+import * as React from 'react'
+
 import { useMediaQuery } from '@/hooks/use-media-query'
-import {
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/shared/ui/form'
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/shared/ui/popover'
-import {
-  Drawer,
-  DrawerContent,
-  DrawerTitle,
-  DrawerTrigger,
-} from '@/components/shared/ui/drawer'
 import { Button } from '@/components/shared/ui/button'
-import { Check, ChevronsUpDown, X } from 'lucide-react'
-import { Spinner } from '@/components/shared/ui/spinner'
 import {
   Command,
   CommandEmpty,
@@ -33,8 +12,31 @@ import {
   CommandItem,
   CommandList,
 } from '@/components/shared/ui/command'
-import { ScrollArea } from '@/components/shared/ui/scroll-area'
+import {
+  Drawer,
+  DrawerContent,
+  DrawerTitle,
+  DrawerTrigger,
+} from '@/components/shared/ui/drawer'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/shared/ui/popover'
+import { FC, useEffect, useState } from 'react'
+import { ButtonType, CustomSelectProps, OptionType } from '@/type/FormInputs'
+import { Check, ChevronsUpDown, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { ScrollArea } from '@/components/shared/ui/scroll-area'
+import {
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/shared/ui/form'
+import { Spinner } from '@/components/shared/ui/spinner'
 
 const CustomAsyncSelect: FC<CustomSelectProps> = (props) => {
   const {
@@ -49,10 +51,12 @@ const CustomAsyncSelect: FC<CustomSelectProps> = (props) => {
     helperText,
     customOnChange,
     onSearch,
+    defaultFilter = '',
   } = props
   const [isMounted, setIsMounted] = useState(false)
   const [open, setOpen] = React.useState(false)
   const isDesktop = useMediaQuery('(min-width: 768px)')
+  const [selected, setSelected] = useState<OptionType | undefined>()
 
   useEffect(() => {
     setIsMounted(true)
@@ -77,6 +81,7 @@ const CustomAsyncSelect: FC<CustomSelectProps> = (props) => {
               onChange?.(newValue)
               customOnChange && customOnChange(newValue)
             } else {
+              setSelected(options?.find((each) => each.value === selectedValue))
               onChange?.(selectedValue)
               customOnChange && customOnChange(selectedValue)
               setOpen(false)
@@ -88,7 +93,7 @@ const CustomAsyncSelect: FC<CustomSelectProps> = (props) => {
           }
 
           return (
-            <FormItem>
+            <FormItem className={cn(disabled && 'opacity-55')}>
               {!!label && <FormLabel>{label}</FormLabel>}
               <FormControl>
                 <Popover
@@ -100,11 +105,12 @@ const CustomAsyncSelect: FC<CustomSelectProps> = (props) => {
                       <SelectionInput
                         value={value}
                         options={options}
-                        placeholder={String(placeholder)}
+                        placeholder={String(placeholder || 'Select option')}
                         handleSelect={handleSelect}
                         multiple={!!multiple}
                         handleClear={handleClear}
                         isLoading={isLoading}
+                        selected={selected}
                       />
                     </div>
                   </PopoverTrigger>
@@ -114,6 +120,8 @@ const CustomAsyncSelect: FC<CustomSelectProps> = (props) => {
                       handleSelect={handleSelect}
                       value={value}
                       onSearch={onSearch}
+                      isLoading={isLoading}
+                      defaultFilter={defaultFilter}
                     />
                   </PopoverContent>
                 </Popover>
@@ -163,11 +171,12 @@ const CustomAsyncSelect: FC<CustomSelectProps> = (props) => {
                     <SelectionInput
                       value={value}
                       options={options}
-                      placeholder={String(placeholder)}
+                      placeholder={String(placeholder || 'Select option')}
                       handleSelect={handleSelect}
                       multiple={!!multiple}
                       handleClear={handleClear}
                       isLoading={isLoading}
+                      selected={selected}
                     />
                   </div>
                 </DrawerTrigger>
@@ -181,6 +190,7 @@ const CustomAsyncSelect: FC<CustomSelectProps> = (props) => {
                       handleSelect={handleSelect}
                       value={value}
                       onSearch={onSearch}
+                      defaultFilter={defaultFilter}
                     />
                   </div>
                 </DrawerContent>
@@ -207,6 +217,7 @@ const SelectionInput = (props: {
   multiple: boolean
   handleClear: () => void
   isLoading?: boolean
+  selected: OptionType | undefined
 }) => {
   const {
     value,
@@ -216,6 +227,7 @@ const SelectionInput = (props: {
     handleClear,
     multiple,
     isLoading,
+    selected,
   } = props
 
   return (
@@ -259,9 +271,7 @@ const SelectionInput = (props: {
           </div>
         )
       ) : value ? (
-        <>
-          {options?.find((opt) => String(opt.value) === String(value))?.label}
-        </>
+        <>{selected?.label}</>
       ) : (
         <>{placeholder}</>
       )}
@@ -285,17 +295,27 @@ function OptionList({
   handleSelect,
   value,
   onSearch,
+  isLoading,
+  defaultFilter = '',
 }: {
   options: OptionType[] | [] | undefined
   handleSelect: (selectedValue: string | number) => void
   value: string | number
   onSearch?: (value: string) => void
+  isLoading?: boolean
+  defaultFilter: string
 }) {
   return (
     <Command className="w-full" shouldFilter={!onSearch}>
-      <CommandInput placeholder="Search..." onValueChange={onSearch} />
+      <CommandInput
+        placeholder="Search..."
+        onValueChange={onSearch}
+        value={defaultFilter}
+      />
       <CommandList>
-        <CommandEmpty>No results found.</CommandEmpty>
+        <CommandEmpty>
+          {isLoading ? 'Loading...' : 'No results found.'}
+        </CommandEmpty>
         <CommandGroup>
           <ScrollArea>
             <div>
