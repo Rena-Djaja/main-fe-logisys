@@ -44,6 +44,12 @@ export const handleLocationLink = (
   return `/dashboard/inventory/${isWarehouse ? 'warehouse' : 'trucks'}/details/${locationId}`
 }
 
+export const convertStringToNumber = (value = '') => {
+  if (isNaN(Number(value.replaceAll(',', '')))) return 0
+
+  return Number(value.replaceAll(',', ''))
+}
+
 export const handleLogout = () => {
   ;(['access_token', 'skip_change_password'] as CookieName[]).forEach((key) => {
     removeCookie(key)

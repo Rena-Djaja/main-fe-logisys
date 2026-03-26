@@ -40,6 +40,10 @@ export const ProductAPI = {
   POST_PRODUCT_VARIANT_STATUS: baseURL + '/product/variant/status',
 }
 
+export const DiscountAPI = {
+  POST_DISCOUNT: baseURL + '/discount',
+}
+
 export const InventoryAPI = {
   GET_WAREHOUSE_LIST: baseURL + '/inventory/warehouse/list',
   GET_TRUCK_LIST: baseURL + '/inventory/truck/list',

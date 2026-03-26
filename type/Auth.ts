@@ -31,7 +31,6 @@ export interface AuthInfoProps {
 }
 
 export interface PermissionItemProps {
-  id: number
   name: string
 }
 
@@ -41,17 +40,23 @@ export interface AuthContextProps {
 }
 
 export enum PermissionTypes {
-  PUBLIC = 0,
-  READ_USER = 1,
-  WRITE_USER = 2,
-  READ_ROLE = 3,
-  WRITE_ROLE = 4,
-  READ_SUPPLIER = 5,
-  WRITE_SUPPLIER = 6,
-  READ_LOCATION = 7,
-  WRITE_LOCATION = 8,
-  READ_PRODUCT = 9,
-  WRITE_PRODUCT = 10,
+  PUBLIC = 'public',
+  READ_USER = 'read_user',
+  WRITE_USER = 'write_user',
+  READ_ROLE = 'read_role',
+  WRITE_ROLE = 'write_role',
+  READ_SUPPLIER = 'read_supplier',
+  WRITE_SUPPLIER = 'write_supplier',
+  READ_LOCATION = 'read_location',
+  WRITE_LOCATION = 'write_location',
+  READ_PRODUCT = 'read_product',
+  WRITE_PRODUCT = 'write_product',
+  READ_INVENTORY = 'read_inventory',
+  WRITE_INVENTORY = 'write_inventory',
+  READ_MOVEMENT = 'read_movement',
+  WRITE_MOVEMENT = 'write_movement',
+  READ_DISCOUNT = 'read_discount',
+  WRITE_DISCOUNT = 'write_discount',
 }
 
 export type ChangePasswordFormInputs = z.infer<

@@ -1,7 +1,7 @@
 'use client'
 
 import React, { FC } from 'react'
-import { CustomInputProps } from '@/type/FormInputs'
+import { CustomNumberInputProps } from '@/type/FormInputs'
 import {
   FormControl,
   FormDescription,
@@ -13,8 +13,16 @@ import {
 import { Input } from '@/components/shared/ui/input'
 import { NumericFormat } from 'react-number-format'
 
-const CustomNumberFormatInput: FC<CustomInputProps> = (props) => {
-  const { label, placeholder, name, control, disabled, helperText } = props
+const CustomNumberFormatInput: FC<CustomNumberInputProps> = (props) => {
+  const {
+    label,
+    placeholder,
+    name,
+    control,
+    disabled,
+    helperText,
+    allowNegative = false,
+  } = props
 
   return (
     <FormField
@@ -27,6 +35,7 @@ const CustomNumberFormatInput: FC<CustomInputProps> = (props) => {
             <FormControl>
               <NumericFormat
                 {...field}
+                allowNegative={allowNegative}
                 customInput={Input}
                 placeholder={placeholder}
                 thousandSeparator=","

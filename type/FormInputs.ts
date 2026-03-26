@@ -22,6 +22,10 @@ export interface CustomInputProps {
   defaultValue?: string
 }
 
+export interface CustomNumberInputProps extends CustomInputProps {
+  allowNegative?: boolean
+}
+
 export interface CustomDateInputProps extends CustomInputProps {
   minDate?: Date
   maxDate?: Date

@@ -60,7 +60,7 @@ export const menuList: MenuListProps[] = [
           {
             title: 'Discounts',
             url: '/dashboard/discounts',
-            resourceID: [PermissionTypes.PUBLIC],
+            resourceID: [PermissionTypes.READ_DISCOUNT],
           },
           {
             title: 'Complimentaries',

@@ -54,7 +54,7 @@ const AppSidebar: FC<AppSidebarProps> = ({ menu, ...props }) => {
       </SidebarHeader>
       <SidebarContent>
         {menu.map((m, menuIdx) => {
-          const authIDs = (auth.permissions || []).map((each) => each.id)
+          const authIDs = (auth.permissions || []).map((each) => each.name)
           const items = m.menuItems.filter((each) =>
             each.resourceID.some(
               (r) => authIDs.includes(r) || r === PermissionTypes.PUBLIC

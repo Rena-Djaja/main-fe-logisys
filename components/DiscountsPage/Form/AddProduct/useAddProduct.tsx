@@ -1,11 +1,10 @@
 'use client'
 
-import { ProductSchemaProps } from '@/type/Discounts'
+import { DiscountProductFormInputs, ProductSchemaProps } from '@/type/Discounts'
 import useCommonApi from '@/components/shared/Hooks/CommonApi/useCommonApi'
 import { ProductAPI } from '@/constant/APIUrls'
 import { useEffect, useState } from 'react'
 import {
-  BulkProductDetailsProps,
   BulkProductDetailsRequest,
   BulkProductDetailsResponse,
   ProductListRequest,
@@ -65,7 +64,7 @@ const useAddProduct = (props: ProductSchemaProps) => {
     setSelectedProduct(prefetchedProduct)
   }
 
-  const handlePreselectProducts = (products: BulkProductDetailsProps[]) => {
+  const handlePreselectProducts = (products: DiscountProductFormInputs[]) => {
     const selectedIds = products.map((product) => product.id.toString())
     setPrefetchedProduct(new Set(selectedIds))
     setSelectedProduct(new Set(selectedIds))
