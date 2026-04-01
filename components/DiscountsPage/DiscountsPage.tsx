@@ -8,21 +8,28 @@ import { ButtonType } from '@/type/FormInputs'
 import CustomTable from '@/components/shared/CustomTable/CustomTable'
 import useDiscounts from '@/components/DiscountsPage/useDiscounts'
 import { discountListHeaders } from '@/components/DiscountsPage/Resource'
+import DiscountDetails from '@/components/DiscountsPage/Details/DiscountDetails'
 
 const DiscountsPage = () => {
   const {
     filter,
     discountRuleList,
     isValidating,
+    detailsState,
     search,
     onRowClick,
     onAdd,
     onUpdate,
     onDelete,
+    handleDetails,
   } = useDiscounts()
 
   return (
     <>
+      <DiscountDetails
+        detailsState={detailsState}
+        handleDetails={handleDetails}
+      />
       <div className="mt-8 w-full flex flex-col gap-10">
         <div className="w-full flex flex-col">
           <h1 className="font-semibold text-[2rem]">Product Discount List</h1>

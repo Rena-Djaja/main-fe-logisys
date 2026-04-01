@@ -7,7 +7,7 @@ import {
   variantsParentValidationSchema,
 } from '@/validations/DiscountValidation'
 import { UseFormReturn } from 'react-hook-form'
-import { PaginationResponse } from '@/type/Common'
+import { CommonApiResponse, PaginationResponse } from '@/type/Common'
 
 export interface DiscountRuleProps {
   id: number
@@ -24,6 +24,10 @@ export interface DiscountRuleProps {
   updated_at: string
   updated_by_id: number
   updated_by_name: string
+}
+
+export interface DiscountRuleDetailsResponse extends CommonApiResponse {
+  data: DiscountRuleProps
 }
 
 export interface DiscountRuleListResponse {

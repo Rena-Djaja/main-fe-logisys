@@ -3,14 +3,22 @@
 import { useState } from 'react'
 import useCommonApi from '@/components/shared/Hooks/CommonApi/useCommonApi'
 import { DiscountAPI } from '@/constant/APIUrls'
-import { CommonFilterRequest } from '@/type/Common'
+import { CommonDetailsStateProps, CommonFilterRequest } from '@/type/Common'
 import { DiscountRuleListResponse } from '@/type/Discounts'
+import { useRouter } from 'next/navigation'
 
 const useDiscounts = () => {
+  const { push } = useRouter()
+
   const [filter, setFilter] = useState<CommonFilterRequest>({
     page: 1,
     per_page: 10,
     search: '',
+  })
+
+  const [detailsState, setDetailsState] = useState<CommonDetailsStateProps>({
+    id: null,
+    isOpen: false,
   })
 
   const { data: discountRuleList, isValidating } = useCommonApi<
@@ -27,12 +35,19 @@ const useDiscounts = () => {
     setFilter(newState)
   }
 
+  const handleDetails = (type: 'open' | 'close', id?: number) => {
+    setDetailsState({
+      isOpen: type === 'open',
+      id: type === 'open' ? id : null,
+    })
+  }
+
   const onRowClick = (id: number) => {
-    console.log('Row clicked:', id)
+    handleDetails('open', id)
   }
 
   const onAdd = () => {
-    console.log('Add button clicked')
+    push('/dashboard/discounts/form')
   }
 
   const onUpdate = (id: number) => {
@@ -47,11 +62,13 @@ const useDiscounts = () => {
     filter,
     discountRuleList,
     isValidating,
+    detailsState,
     search,
     onRowClick,
     onAdd,
     onUpdate,
     onDelete,
+    handleDetails,
   }
 }
 
