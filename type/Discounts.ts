@@ -7,6 +7,29 @@ import {
   variantsParentValidationSchema,
 } from '@/validations/DiscountValidation'
 import { UseFormReturn } from 'react-hook-form'
+import { PaginationResponse } from '@/type/Common'
+
+export interface DiscountRuleProps {
+  id: number
+  name: string
+  description: string
+  start_date: string
+  end_date: string
+  valid_thru_days: number
+  is_active: true
+  is_combinable: false
+  created_at: string
+  created_by_id: number
+  created_by_name: string
+  updated_at: string
+  updated_by_id: number
+  updated_by_name: string
+}
+
+export interface DiscountRuleListResponse {
+  data: DiscountRuleProps[]
+  pagination: PaginationResponse
+}
 
 export interface ProductSchemaProps {
   open: boolean
