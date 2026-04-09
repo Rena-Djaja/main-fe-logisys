@@ -43,6 +43,7 @@ export const ProductAPI = {
 export const DiscountAPI = {
   GET_DISCOUNT_RULE_LIST: baseURL + '/discount/list',
   GET_DISCOUNT_RULE_DETAILS: baseURL + '/discount/details',
+  GET_DISCOUNT_ITEM_LIST: baseURL + '/discount/items',
   POST_DISCOUNT: baseURL + '/discount',
 }
 

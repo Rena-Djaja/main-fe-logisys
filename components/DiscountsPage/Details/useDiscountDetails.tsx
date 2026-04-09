@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import {
   CommonDetailsComponentProps,
   CommonDetailsRequest,
@@ -9,10 +9,12 @@ import { toast } from 'sonner'
 import { callAPI } from '@/lib/fetchers'
 import { apiStatusChecker } from '@/lib/utils'
 import {
+  DiscountItemsResponse,
   DiscountRuleDetailsResponse,
-  DiscountRuleProps,
 } from '@/type/Discounts'
 import { DiscountAPI } from '@/constant/APIUrls'
+import { mapDiscountsByProductId } from '@/components/DiscountsPage/Resource'
+import { useDiscountStore } from '@/store/discount'
 
 const useDiscountDetails = (props: CommonDetailsComponentProps) => {
   const {
@@ -20,26 +22,41 @@ const useDiscountDetails = (props: CommonDetailsComponentProps) => {
     handleDetails,
   } = props
 
-  const [discountDetails, setDiscountDetails] = useState<
-    DiscountRuleProps | undefined
-  >()
-  const [isLoading, setIsLoading] = useState(false)
+  const {
+    discount: { isLoading },
+    setDiscountDetails,
+    setDiscountItems,
+    setLoading,
+  } = useDiscountStore()
 
-  const handleSuccess = (response: DiscountRuleDetailsResponse) => {
+  const handleSuccess = async (response: DiscountRuleDetailsResponse) => {
     const { data } = response
 
     setDiscountDetails(data)
+    await fetchDiscountItems()
   }
 
-  const handleFailure = (response?: DiscountRuleDetailsResponse) => {
+  const handleItemSuccess = (response: DiscountItemsResponse) => {
+    const { data } = response
+
+    setDiscountItems(mapDiscountsByProductId(data))
+  }
+
+  const handleFailure = (
+    response?: DiscountRuleDetailsResponse | DiscountItemsResponse,
+    closeDetails = true
+  ) => {
     setTimeout(() => {
       toast.error(response?.error)
-      handleDetails('close')
+
+      if (closeDetails) {
+        handleDetails('close')
+      }
     }, 300)
   }
 
   const fetchDetails = async () => {
-    setIsLoading(true)
+    setLoading(true)
 
     try {
       const apiRes = await callAPI<
@@ -54,7 +71,7 @@ const useDiscountDetails = (props: CommonDetailsComponentProps) => {
       const { data: discountDetailsData, status } = apiRes
 
       if (apiStatusChecker(status) && discountDetailsData) {
-        handleSuccess(discountDetailsData)
+        await handleSuccess(discountDetailsData)
       } else {
         handleFailure(discountDetailsData)
       }
@@ -62,7 +79,28 @@ const useDiscountDetails = (props: CommonDetailsComponentProps) => {
       handleFailure()
       throw 'Failed to fetch details'
     } finally {
-      setTimeout(() => setIsLoading(false), 500)
+      setTimeout(() => setLoading(false), 500)
+    }
+  }
+
+  const fetchDiscountItems = async () => {
+    try {
+      const apiRes = await callAPI<CommonDetailsRequest, DiscountItemsResponse>(
+        DiscountAPI.GET_DISCOUNT_ITEM_LIST,
+        { id: Number(id) },
+        { method: 'GET' }
+      )
+
+      const { data: discountItemsData, status } = apiRes
+
+      if (apiStatusChecker(status) && discountItemsData) {
+        handleItemSuccess(discountItemsData)
+      } else {
+        handleFailure(discountItemsData, false)
+      }
+    } catch {
+      handleFailure()
+      throw 'Failed to fetch discount items'
     }
   }
 
@@ -73,7 +111,6 @@ const useDiscountDetails = (props: CommonDetailsComponentProps) => {
   }, [id, isOpen])
 
   return {
-    discountDetails,
     isLoading,
   }
 }
