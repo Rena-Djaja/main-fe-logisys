@@ -64,10 +64,14 @@ export const mapDiscountsByProductId = (
         is_active: variantFirstItem.is_active,
         discount_type: variantFirstItem.discount_type,
         limit: String(variantFirstItem.limit),
+        unit: variantFirstItem.unit,
+        used_count: String(variantFirstItem.used_count),
         cash: cashItems,
         credit: creditItems,
       }
     })
+
+    console.log(variants)
 
     return {
       product_id: firstItem.product_id,

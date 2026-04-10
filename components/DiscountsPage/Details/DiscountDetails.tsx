@@ -13,6 +13,7 @@ import { Skeleton } from '@/components/shared/ui/skeleton'
 import useDiscountDetails from '@/components/DiscountsPage/Details/useDiscountDetails'
 import Details from '@/components/DiscountsPage/Details/Section/Details'
 import Logs from '@/components/DiscountsPage/Details/Section/Logs'
+import Items from '@/components/DiscountsPage/Details/Section/Items'
 
 const DiscountDetails: FC<CommonDetailsComponentProps> = (props) => {
   const { isLoading } = useDiscountDetails(props)
@@ -23,7 +24,7 @@ const DiscountDetails: FC<CommonDetailsComponentProps> = (props) => {
       open={detailsState.isOpen}
       onOpenChange={() => handleDetails('close')}
     >
-      <SheetContent>
+      <SheetContent className="overflow-auto pb-10">
         <SheetHeader>
           <SheetTitle>Discount Details</SheetTitle>
           <SheetDescription>
@@ -36,6 +37,7 @@ const DiscountDetails: FC<CommonDetailsComponentProps> = (props) => {
           ) : (
             <div className="w-full flex flex-col gap-6">
               <Details />
+              <Items />
               <Logs />
             </div>
           )}

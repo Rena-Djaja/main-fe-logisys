@@ -32,6 +32,7 @@ export interface DiscountItemProps {
   product_id: number
   product_name: string
   product_variant_id: number
+  unit: string
   variant_name: string
   payment_type: 'cash' | 'credit'
   min_quantity: number
@@ -55,7 +56,9 @@ export interface VariantConvertionProps {
   name: string
   is_active: boolean
   discount_type: string
+  unit: string
   limit: string
+  used_count: string
   cash: PaymentSchemaProps[]
   credit: PaymentSchemaProps[]
 }
