@@ -121,6 +121,8 @@ const useDiscountForm = () => {
     )
   }
 
+  console.log(form.getValues())
+
   const onSubmit = async (data: DiscountFormInputs) => {
     setIsLoading((prev) => ({ ...prev, submit: true }))
 
