@@ -38,7 +38,7 @@ const useDiscountForm = (props: CommonFormProps) => {
       description: '',
       start_date: '',
       end_date: undefined,
-      valid_thru_days: undefined,
+      valid_thru_days: '',
       is_combinable: false,
       products: [],
     },

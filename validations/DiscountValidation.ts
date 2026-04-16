@@ -87,7 +87,7 @@ export const discountValidationSchema = z.object({
   description: z.string().min(1, 'Please insert the discount percentage'),
   start_date: z.string().min(1, 'Please insert the discount start date'),
   end_date: z.string().optional(),
-  valid_thru_days: z.string().optional(),
+  valid_thru_days: z.string().min(1, 'Please insert the discount valid days'),
   is_combinable: z.boolean(),
   products: z
     .array(productValidationSchema)
