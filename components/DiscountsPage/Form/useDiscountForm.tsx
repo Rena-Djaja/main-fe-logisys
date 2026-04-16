@@ -251,15 +251,15 @@ const useDiscountForm = (props: CommonFormProps) => {
         'valid_thru_days',
       ].forEach((each) => {
         if (each === 'is_combinable') {
-          // @ts-ignore
           form.setValue(
             each as keyof DiscountFormInputs,
+            // @ts-ignore
             discountDetails[each as keyof DiscountFormInputs]
           )
         } else {
-          // @ts-ignore
           form.setValue(
             each as keyof DiscountFormInputs,
+            // @ts-ignore
             String(discountDetails[each as keyof DiscountFormInputs])
           )
         }
