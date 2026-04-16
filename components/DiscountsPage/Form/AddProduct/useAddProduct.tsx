@@ -65,7 +65,9 @@ const useAddProduct = (props: ProductSchemaProps) => {
   }
 
   const handlePreselectProducts = (products: DiscountProductFormInputs[]) => {
-    const selectedIds = products.map((product) => product.id.toString())
+    const selectedIds = products.map((product) =>
+      product?.product_id?.toString()
+    )
     setPrefetchedProduct(new Set(selectedIds))
     setSelectedProduct(new Set(selectedIds))
   }

@@ -32,6 +32,7 @@ export interface DiscountItemProps {
   product_id: number
   product_name: string
   product_variant_id: number
+  sku: string
   unit: string
   variant_name: string
   payment_type: 'cash' | 'credit'
@@ -66,6 +67,7 @@ export interface VariantConvertionProps {
 export interface MappedDiscountItems {
   product_id: number
   name: string
+  sku: string
   variants: VariantConvertionProps[]
 }
 

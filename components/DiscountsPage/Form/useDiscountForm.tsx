@@ -7,7 +7,9 @@ import { useEffect, useState } from 'react'
 import { BulkProductDetailsProps } from '@/type/Product'
 import {
   DiscountFormInputs,
+  DiscountItemsResponse,
   DiscountProductFormInputs,
+  DiscountRuleDetailsResponse,
   DiscountVariantItemFormInputs,
   DiscountVariantParentFormInputs,
   PostDiscountRequest,
@@ -15,13 +17,20 @@ import {
 } from '@/type/Discounts'
 import { apiStatusChecker, convertStringToNumber } from '@/lib/utils'
 import { callAPI } from '@/lib/fetchers'
-import { CommonApiResponse } from '@/type/Common'
+import {
+  CommonApiResponse,
+  CommonDetailsRequest,
+  CommonFormProps,
+} from '@/type/Common'
 import { DiscountAPI } from '@/constant/APIUrls'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
+import { mapDiscountsByProductId } from '@/components/DiscountsPage/Resource'
 
-const useDiscountForm = () => {
+const useDiscountForm = (props: CommonFormProps) => {
+  const { id } = props
   const { push } = useRouter()
+
   const form = useForm<DiscountFormInputs>({
     resolver: zodResolver(discountValidationSchema),
     defaultValues: {
@@ -55,14 +64,20 @@ const useDiscountForm = () => {
   }
 
   const handleAddProduct = (data: BulkProductDetailsProps[]) => {
-    const existedIds = form.getValues('products').map((each) => String(each.id))
+    const existedIds = form
+      .getValues('products')
+      .map((each) => String(each.product_id))
 
     const existedSet = new Set(existedIds)
 
     data.forEach((each) => {
       if (!existedSet.has(String(each.id))) {
         const row: DiscountProductFormInputs = {
-          ...each,
+          product_id: each.id,
+          name: each.name,
+          sku: each.sku,
+          supplier_id: each.supplier_id,
+          supplier_name: each.supplier_name,
           variants: each.variants.map((variant) => ({
             product_variant_id: variant.id,
             name: variant.name,
@@ -99,6 +114,7 @@ const useDiscountForm = () => {
     type: 'cash' | 'credit'
   ) => {
     return {
+      ...(varItem?.id && { id: varItem.id }),
       product_variant_id: varParent.product_variant_id,
       payment_type: type,
       discount_type: varParent.discount_type,
@@ -120,8 +136,6 @@ const useDiscountForm = () => {
       response?.error || 'Something went wrong. Please try again later.'
     )
   }
-
-  console.log(form.getValues())
 
   const onSubmit = async (data: DiscountFormInputs) => {
     setIsLoading((prev) => ({ ...prev, submit: true }))
@@ -145,6 +159,7 @@ const useDiscountForm = () => {
       })
 
       const req: PostDiscountRequest = {
+        ...(id && { id: Number(id) }),
         name: data.name,
         description: data.description,
         start_date: data.start_date,
@@ -175,9 +190,96 @@ const useDiscountForm = () => {
     }
   }
 
+  const fetchDetails = async () => {
+    try {
+      const apiRes = await callAPI<
+        CommonDetailsRequest,
+        DiscountRuleDetailsResponse
+      >(
+        DiscountAPI.GET_DISCOUNT_RULE_DETAILS,
+        { id: Number(id) },
+        { method: 'GET' }
+      )
+
+      const { data: discountDetailsData, status } = apiRes
+
+      if (apiStatusChecker(status) && discountDetailsData) {
+        return discountDetailsData.data
+      } else {
+        handleFailure(discountDetailsData)
+      }
+    } catch {
+      handleFailure()
+      throw 'Failed to fetch details'
+    }
+  }
+
+  const fetchDiscountItems = async () => {
+    try {
+      const apiRes = await callAPI<CommonDetailsRequest, DiscountItemsResponse>(
+        DiscountAPI.GET_DISCOUNT_ITEM_LIST,
+        { id: Number(id) },
+        { method: 'GET' }
+      )
+
+      const { data: discountItemsData, status } = apiRes
+
+      if (apiStatusChecker(status) && discountItemsData) {
+        return discountItemsData.data
+      } else {
+        handleFailure(discountItemsData)
+      }
+    } catch {
+      handleFailure()
+      throw 'Failed to fetch discount items'
+    }
+  }
+
+  const fetchDiscount = async () => {
+    const [discountDetails, discountItems] = await Promise.all([
+      fetchDetails(),
+      fetchDiscountItems(),
+    ])
+
+    if (discountDetails && discountItems) {
+      ;[
+        'name',
+        'description',
+        'start_date',
+        'end_date',
+        'is_combinable',
+        'valid_thru_days',
+      ].forEach((each) => {
+        if (each === 'is_combinable') {
+          form.setValue(
+            each as keyof DiscountFormInputs,
+            // @ts-ignore
+            discountDetails[each as keyof DiscountFormInputs]
+          )
+        } else {
+          form.setValue(
+            each as keyof DiscountFormInputs,
+            // @ts-ignore
+            String(discountDetails[each as keyof DiscountFormInputs])
+          )
+        }
+
+        const items = mapDiscountsByProductId(discountItems)
+
+        form.setValue('products', items)
+      })
+    }
+  }
+
   useEffect(() => {
     handleValidateEndDate()
   }, [form.watch('start_date'), form.watch('end_date')])
+
+  useEffect(() => {
+    if (!!id) {
+      fetchDiscount()
+    }
+  }, [id])
 
   return {
     form,

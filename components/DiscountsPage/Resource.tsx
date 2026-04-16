@@ -71,10 +71,9 @@ export const mapDiscountsByProductId = (
       }
     })
 
-    console.log(variants)
-
     return {
       product_id: firstItem.product_id,
+      sku: firstItem.sku,
       name: firstItem.product_name,
       variants,
     }

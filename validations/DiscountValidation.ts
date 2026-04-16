@@ -1,6 +1,7 @@
 import { z } from 'zod'
 
 export const variantItemValidationSchema = z.object({
+  id: z.number().optional(),
   min_quantity: z.string().optional(),
   max_quantity: z.string().optional(),
   discount_amount: z.string().optional(),
@@ -58,9 +59,9 @@ export const variantsParentValidationSchema = z
 
 export const productValidationSchema = z
   .object({
-    id: z.number(),
-    supplier_id: z.number(),
-    supplier_name: z.string(),
+    product_id: z.number(),
+    supplier_id: z.number().optional(),
+    supplier_name: z.string().optional(),
     name: z.string(),
     sku: z.string(),
     variants: z.array(variantsParentValidationSchema),
