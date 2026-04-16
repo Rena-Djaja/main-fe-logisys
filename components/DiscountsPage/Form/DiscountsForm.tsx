@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { FC } from 'react'
 import useDiscountForm from '@/components/DiscountsPage/Form/useDiscountForm'
 import {
   Form,
@@ -29,8 +29,9 @@ import CustomNumberFormatInput from '@/components/shared/FormInputs/CustomNumber
 import { Switch } from '@/components/shared/ui/switch'
 import DatePicker from '@/components/shared/DatePicker/DatePicker'
 import ItemVariant from '@/components/DiscountsPage/Form/ItemVariant/ItemVariant'
+import { CommonFormProps } from '@/type/Common'
 
-const DiscountsForm = () => {
+const DiscountsForm: FC<CommonFormProps> = ({ id }) => {
   const {
     form,
     productSchemaOpen,
@@ -40,7 +41,7 @@ const DiscountsForm = () => {
     handleOpenProductSchema,
     handleAddProduct,
     handleRemoveProduct,
-  } = useDiscountForm()
+  } = useDiscountForm({ id })
 
   return (
     <>

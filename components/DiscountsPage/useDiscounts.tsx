@@ -51,7 +51,7 @@ const useDiscounts = () => {
   }
 
   const onUpdate = (id: number) => {
-    console.log('Update button clicked for ID:', id)
+    push(`/dashboard/discounts/form/${id}`)
   }
 
   const onDelete = (id: number) => {
