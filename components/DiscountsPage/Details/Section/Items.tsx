@@ -58,7 +58,8 @@ const Items = () => {
                     <div className="flex items-center gap-2 font-medium text-[0.8rem] text-muted-foreground">
                       <span>
                         {thousandFormat(Number(variant.used_count))} /{' '}
-                        {variant?.limit
+                        {!Number.isNaN(variant.limit) &&
+                        Number(variant.limit) > 0
                           ? thousandFormat(Number(variant.limit ?? 0))
                           : '-'}
                         &nbsp;{variant.unit}
