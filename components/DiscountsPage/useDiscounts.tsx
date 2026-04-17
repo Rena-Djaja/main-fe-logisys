@@ -3,12 +3,24 @@
 import { useState } from 'react'
 import useCommonApi from '@/components/shared/Hooks/CommonApi/useCommonApi'
 import { DiscountAPI } from '@/constant/APIUrls'
-import { CommonDetailsStateProps, CommonFilterRequest } from '@/type/Common'
+import {
+  CommonApiResponse,
+  CommonDetailsStateProps,
+  CommonFilterRequest,
+} from '@/type/Common'
 import { DiscountRuleListResponse } from '@/type/Discounts'
 import { useRouter } from 'next/navigation'
+import { useConfirmationStore } from '@/store'
+import { ButtonVariant } from '@/type/FormInputs'
+import { callAPI } from '@/lib/fetchers'
+import { DeleteUserRequest } from '@/type/User'
+import { apiStatusChecker } from '@/lib/utils'
+import { toast } from 'sonner'
 
 const useDiscounts = () => {
   const { push } = useRouter()
+  const { setConfirmation, setLoading, closeConfirmation } =
+    useConfirmationStore()
 
   const [filter, setFilter] = useState<CommonFilterRequest>({
     page: 1,
@@ -21,10 +33,15 @@ const useDiscounts = () => {
     isOpen: false,
   })
 
-  const { data: discountRuleList, isValidating } = useCommonApi<
-    CommonFilterRequest,
-    DiscountRuleListResponse
-  >(DiscountAPI.GET_DISCOUNT_RULE_LIST, filter, { method: 'GET' })
+  const {
+    data: discountRuleList,
+    isValidating,
+    mutate,
+  } = useCommonApi<CommonFilterRequest, DiscountRuleListResponse>(
+    DiscountAPI.GET_DISCOUNT_RULE_LIST,
+    filter,
+    { method: 'GET' }
+  )
 
   const search = (key: keyof CommonFilterRequest, value: number | string) => {
     const newState = { ...filter, [key]: value }
@@ -55,7 +72,52 @@ const useDiscounts = () => {
   }
 
   const onDelete = (id: number) => {
-    console.log('Delete button clicked for ID:', id)
+    setConfirmation({
+      isOpen: true,
+      title: 'Are you absolutely sure?',
+      description:
+        'This action cannot be undone. This will permanently delete this account and remove the data.',
+      confirmButtonVariant: ButtonVariant.DESTRUCTIVES,
+      confirmButtonText: "Yes, I'm sure",
+      onConfirm: () => onConfirmDelete(id),
+    })
+  }
+
+  const onConfirmDelete = async (id: number) => {
+    setLoading(true)
+
+    try {
+      const apiRes = await callAPI<DeleteUserRequest, CommonApiResponse>(
+        DiscountAPI.POST_DISCOUNT,
+        { id },
+        { method: 'DELETE' }
+      )
+
+      const { status, data: deleteUserRes } = apiRes
+
+      if (apiStatusChecker(status) && deleteUserRes) {
+        handleSuccessDelete(deleteUserRes)
+      } else {
+        handleFailureDelete(deleteUserRes)
+      }
+    } catch (err) {
+      handleFailureDelete()
+      throw err
+    } finally {
+      setLoading(false)
+      closeConfirmation()
+    }
+  }
+
+  const handleSuccessDelete = (response: CommonApiResponse) => {
+    toast.success(response.message)
+    mutate()
+  }
+
+  const handleFailureDelete = (response?: CommonApiResponse) => {
+    toast.error(
+      response?.error || 'Something went wrong. Please try again later.'
+    )
   }
 
   return {
