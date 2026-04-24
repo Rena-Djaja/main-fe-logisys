@@ -52,7 +52,7 @@ const useChangePassword = () => {
 
   const handleFailure = (response?: CommonApiResponse) => {
     toast.error(
-      response?.error || 'Something went wrong. Please try again later.'
+      response?.message || 'Something went wrong. Please try again later.'
     )
   }
 
@@ -61,14 +61,14 @@ const useChangePassword = () => {
 
     try {
       const req: ChangePasswordRequest = {
-        old_password: data.current_password,
+        current_password: data.current_password,
         new_password: data.new_password,
       }
 
       const apiRes = await callAPI<ChangePasswordRequest, CommonApiResponse>(
         AuthAPI.POST_CHANGE_PASSWORD,
         req,
-        { method: 'POST' }
+        { method: 'PUT' }
       )
 
       const { data: changePasswordData, status } = apiRes
