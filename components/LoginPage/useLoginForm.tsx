@@ -43,12 +43,13 @@ const useLoginForm = () => {
     setAlert({
       show: true,
       title: 'Unable to log in',
-      message: response?.error || 'Internal server error',
+      message: response?.message || 'Internal server error',
     })
   }
 
   const onSubmit = async (data: PostLoginRequest) => {
     setIsLoading(true)
+    setAlert({ show: false, title: '', message: '' })
 
     try {
       const apiRes = await callAPI<PostLoginRequest, PostLoginResponse>(

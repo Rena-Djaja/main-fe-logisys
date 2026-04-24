@@ -5,7 +5,7 @@ export const AuthAPI = {
   POST_LOGIN: baseURL + '/auth/login',
   POST_AUTH_INFO: privateBaseURL + '/auth/info',
   POST_CHANGE_PASSWORD: baseURL + '/auth/change-password',
-  GET_PERMISSION_LIST: privateBaseURL + '/auth/permission/list',
+  GET_PERMISSION_LIST: privateBaseURL + '/permission/list',
 }
 
 export const LocationAPI = {
