@@ -64,6 +64,6 @@ export type ChangePasswordFormInputs = z.infer<
 >
 
 export interface ChangePasswordRequest {
-  old_password: string
+  current_password: string
   new_password: string
 }
