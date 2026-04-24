@@ -15,7 +15,7 @@ export async function POST(req: Request) {
 
   try {
     const authInfoRes = await fetch(AuthAPI.POST_AUTH_INFO, {
-      method: 'POST',
+      method: 'GET',
       headers: {
         Authorization: authHeader,
       },
