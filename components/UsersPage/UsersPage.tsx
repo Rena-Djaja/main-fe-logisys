@@ -63,7 +63,7 @@ const UsersPage = () => {
           </div>
           <CustomTable
             headers={userListHeaders}
-            data={userList?.data || []}
+            data={userList?.users || []}
             isLoading={isValidating}
             page={filter.page}
             perPage={filter.per_page}

@@ -36,7 +36,7 @@ const useUserDetails = (props: CommonDetailsComponentProps) => {
     try {
       const apiRes = await callAPI<UserDetailsRequest, UserDetailsResponse>(
         UserAPI.GET_USER_DETAILS,
-        { id: Number(id) },
+        { id },
         { method: 'GET' }
       )
 

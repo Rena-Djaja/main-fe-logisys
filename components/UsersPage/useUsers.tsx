@@ -55,14 +55,14 @@ const useUsers = () => {
     setFilter(newState)
   }
 
-  const handleDetails = (type: 'open' | 'close', id?: number) => {
+  const handleDetails = (type: 'open' | 'close', id?: string) => {
     setDetailsState({
       isOpen: type === 'open',
       id: type === 'open' ? id : null,
     })
   }
 
-  const onRowClick = (id: number) => {
+  const onRowClick = (id: string) => {
     handleDetails('open', id)
   }
 
