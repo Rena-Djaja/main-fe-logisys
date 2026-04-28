@@ -22,7 +22,7 @@ export interface UserProps {
 }
 
 export interface UserListResponse {
-  data: UserProps[]
+  users: UserProps[]
   pagination: PaginationResponse
 }
 
