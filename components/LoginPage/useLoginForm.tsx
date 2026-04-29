@@ -42,7 +42,7 @@ const useLoginForm = () => {
   const handleFailure = (response?: PostLoginResponse) => {
     setAlert({
       show: true,
-      title: 'Unable to log in',
+      title: 'Tidak dapat masuk ke akun Anda',
       message: response?.message || 'Internal server error',
     })
   }
@@ -67,7 +67,7 @@ const useLoginForm = () => {
       }
     } catch {
       handleFailure()
-      throw 'Failed to login'
+      throw 'Gagal untuk masuk ke akun Anda'
     } finally {
       setIsLoading(false)
     }

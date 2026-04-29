@@ -28,7 +28,7 @@ const LoginForm = () => {
             <CustomInput
               name={'email'}
               control={form.control}
-              placeholder={'Enter your email'}
+              placeholder={'Masukkan email Anda'}
               label={'Email'}
             />
           </div>
@@ -36,8 +36,8 @@ const LoginForm = () => {
             <CustomInput
               name={'password'}
               control={form.control}
-              placeholder={'Enter your password'}
-              label={'Password'}
+              placeholder={'Masukkan kata sandi Anda'}
+              label={'Kata Sandi'}
               icon={showPassword ? Eye : EyeClosed}
               iconOnClick={handleShowPassword}
               type={showPassword ? InputType.TEXT : InputType.PASSWORD}
@@ -45,14 +45,14 @@ const LoginForm = () => {
           </div>
           <div className="ml-auto -mt-5">
             <CustomButton
-              label={'Forgot your password?'}
+              label={'Lupa kata sandi?'}
               variant={ButtonVariant.LINK}
               type={ButtonType.BUTTON}
               link={'/forgot-password'}
             />
           </div>
           <Field>
-            <CustomButton label={'Sign in'} isLoading={isLoading} />
+            <CustomButton label={'Masuk'} isLoading={isLoading} />
           </Field>
         </FieldGroup>
       </form>
