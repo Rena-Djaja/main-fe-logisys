@@ -54,11 +54,11 @@ const CustomPagination: FC<PaginationProps> = (props) => {
       <div className="w-full flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
         <div className="order-2 lg:order-1 w-full">
           <p className="text-[0.875rem] text-[#414651]">
-            Showing <span>{1 + (perPage * page - perPage)}</span> to{' '}
+            Hasil <span>{1 + (perPage * page - perPage)}</span> ke{' '}
             <span>
               {perPage * page >= totalData ? totalData : perPage * page}
             </span>{' '}
-            from <span>{totalData}</span>
+            dari <span>{totalData} data</span>
           </p>
         </div>
         <Pagination className="order-1 lg:order-2">
@@ -67,6 +67,7 @@ const CustomPagination: FC<PaginationProps> = (props) => {
               <PaginationPrevious
                 onClick={handleNavigate('previous')}
                 className="cursor-pointer"
+                text={'Sebelumnya'}
               />
             </PaginationItem>
             {renderNumber.map((each, index) =>
@@ -88,6 +89,7 @@ const CustomPagination: FC<PaginationProps> = (props) => {
               <PaginationNext
                 onClick={handleNavigate('next')}
                 className="cursor-pointer"
+                text={'Selanjutnya'}
               />
             </PaginationItem>
           </PaginationContent>

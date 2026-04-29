@@ -18,12 +18,12 @@ export const employeeDataValidationSchema = z
 export const userFormValidationSchema = z
   .object({
     name: z
-      .string("Please insert a user's name")
-      .min(1, "Please insert a user's name"),
-    email: z.email('Please insert a valid email address'),
+      .string('Mohon masukkan nama lengkap pengguna')
+      .min(1, 'Mohon masukkan nama lengkap pengguna'),
+    email: z.email('Email tidak valid'),
     role_id: z
-      .string('Please select a role of this user')
-      .min(1, 'Please select a role of this user'),
+      .string('Mohon pilih jenis pengguna')
+      .min(1, 'Mohon pilih jenis pengguna'),
     has_employee_data: z.boolean(),
     employee_data: employeeDataValidationSchema,
   })
@@ -65,5 +65,5 @@ export const assignLocationValidationSchema = z.object({
         location_id: z.string(),
       })
     )
-    .min(1, 'You must select at least one location'),
+    .min(1, 'Mohon pilih setidaknya satu lokasi'),
 })

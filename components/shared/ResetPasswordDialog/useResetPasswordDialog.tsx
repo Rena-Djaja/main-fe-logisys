@@ -21,12 +21,12 @@ const useResetPasswordDialog = () => {
       if (Number(skipAllowed) < 1 && !pathArr.includes('change-password')) {
         setConfirmation({
           isOpen: true,
-          title: 'Protect your account',
+          title: 'Proteksi akun Anda',
           description:
-            'For security reason, we recommend you to change your password. Or you can skip & hide this alert for 24 hours.',
+            'Untuk alasan keamanan, kami rekomendasikan untuk merubah kata sandi Anda. Atau Anda dapat melewatkan pesan ini untuk 24 jam kedepan.',
           confirmButtonVariant: ButtonVariant.DEFAULT,
-          confirmButtonText: 'Change Password',
-          cancelButtonText: 'Skip for Today',
+          confirmButtonText: 'Ubah Kata Sandi',
+          cancelButtonText: 'Lewatkan',
           onConfirm: () => {
             push('/dashboard/settings/change-password')
             closeConfirmation()

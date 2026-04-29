@@ -21,10 +21,10 @@ const ChangePasswordPage = () => {
         >
           <div>
             <CustomInput
-              label={'Current Password'}
+              label={'Kata Sandi Saat Ini'}
               name={'current_password'}
               control={form.control}
-              placeholder={'Enter your current password'}
+              placeholder={'Masukkan kata sandi saat ini'}
               icon={showPassword ? Eye : EyeClosed}
               iconOnClick={() => handleShowPassword('current')}
               type={showPassword.current ? InputType.TEXT : InputType.PASSWORD}
@@ -32,10 +32,10 @@ const ChangePasswordPage = () => {
           </div>
           <div>
             <CustomInput
-              label={'New Password'}
+              label={'Kata Sandi Baru'}
               name={'new_password'}
               control={form.control}
-              placeholder={'Enter new password'}
+              placeholder={'Masukkan kata sandi baru'}
               icon={showPassword ? Eye : EyeClosed}
               iconOnClick={() => handleShowPassword('new')}
               type={showPassword.new ? InputType.TEXT : InputType.PASSWORD}
@@ -43,17 +43,17 @@ const ChangePasswordPage = () => {
           </div>
           <div>
             <CustomInput
-              label={'Confirm Password'}
+              label={'Konfirmasi Kata Sandi'}
               name={'confirm_password'}
               control={form.control}
-              placeholder={'Confirm New Password'}
+              placeholder={'Konfirmasi kata sandi baru'}
               icon={showPassword ? Eye : EyeClosed}
               iconOnClick={() => handleShowPassword('confirm')}
               type={showPassword.confirm ? InputType.TEXT : InputType.PASSWORD}
             />
           </div>
           <div className="mt-4 flex gap-2">
-            <CustomButton label={'Save'} isLoading={isLoading} />
+            <CustomButton label={'Simpan'} isLoading={isLoading} />
           </div>
         </form>
       </Form>

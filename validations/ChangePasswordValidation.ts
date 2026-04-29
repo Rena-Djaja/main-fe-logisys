@@ -2,9 +2,11 @@ import { z } from 'zod'
 
 export const changePasswordValidationSchema = z
   .object({
-    current_password: z.string().min(1, 'Please insert your current password'),
-    new_password: z.string().min(1, 'Please insert your new password'),
-    confirm_password: z.string().min(1, 'Please confirm your new password'),
+    current_password: z.string().min(1, 'Mohon masukkan kata sandi saat ini'),
+    new_password: z.string().min(1, 'Mohon masukkan kata sandi baru'),
+    confirm_password: z
+      .string()
+      .min(1, 'Mohon masukkan konfirmasi kata sandi baru'),
   })
   .superRefine((data, ctx) => {
     if (data.new_password && data.new_password.length < 8) {
@@ -12,7 +14,7 @@ export const changePasswordValidationSchema = z
         code: 'too_small',
         origin: 'string',
         minimum: 8,
-        message: 'Password must be at least 8 characters',
+        message: 'Kata sandi harus mempunyai minimal 8 karakter',
         path: ['new_password'],
       })
     }
@@ -22,7 +24,7 @@ export const changePasswordValidationSchema = z
         ctx.addIssue({
           code: 'custom',
           origin: 'string',
-          message: 'New password & confirmation must be the same',
+          message: 'Kata sandi baru & konfirmasi harus sama',
           path: [`confirm_password`],
         })
       }
@@ -33,7 +35,8 @@ export const changePasswordValidationSchema = z
         ctx.addIssue({
           code: 'custom',
           origin: 'string',
-          message: 'New password must be different with current password',
+          message:
+            'Kata sandi baru tidak boleh sama dengan kata sandi saat ini',
           path: [`new_password`],
         })
       }

@@ -75,7 +75,7 @@ const useUserForm = (props: CommonFormProps) => {
 
   const handleFailureFetchDetails = (response?: UserDetailsResponse) => {
     toast.error(
-      response?.error || 'Something went wrong. Please try again later'
+      response?.error || 'Terjadi kesalahan. Mohon coba beberapa saat lagi.'
     )
     push('/dashboard/users')
   }
@@ -112,7 +112,7 @@ const useUserForm = (props: CommonFormProps) => {
 
   const handleFailure = (response?: CommonApiResponse) => {
     toast.error(
-      response?.error || 'Something went wrong. Please try again later.'
+      response?.error || 'Terjadi kesalahan. Mohon coba beberapa saat lagi.'
     )
   }
 

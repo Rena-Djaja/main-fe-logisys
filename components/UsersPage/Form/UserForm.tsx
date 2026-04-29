@@ -36,10 +36,10 @@ const UserForm: FC<CommonFormProps> = (props) => {
     <div className="mt-8 w-full flex flex-col gap-10">
       <div className="w-full flex flex-col">
         <h1 className="font-semibold text-[2rem]">
-          {!!id ? 'Edit' : 'Add'} User
+          {!!id ? 'Ubah' : 'Tambah'} Pengguna
         </h1>
         <span className="font-medium text-[0.95rem]">
-          {!!id ? 'Update' : 'Add new'} user record
+          {!!id ? 'Ubah' : 'Tambah'} daftar pengguna
         </span>
       </div>
       <Form {...form}>
@@ -49,10 +49,10 @@ const UserForm: FC<CommonFormProps> = (props) => {
         >
           <div className="lg:col-span-2">
             <CustomInput
-              label={'Full Name'}
+              label={'Nama Lengkap'}
               name={'name'}
               control={form.control}
-              placeholder={"Enter user's name"}
+              placeholder={'Masukkan nama lengkap'}
             />
           </div>
           <div>
@@ -60,16 +60,16 @@ const UserForm: FC<CommonFormProps> = (props) => {
               label={'Email'}
               name={'email'}
               control={form.control}
-              placeholder={'Enter email address'}
+              placeholder={'Masukkan email pengguna'}
               disabled={!!id}
             />
           </div>
           <div>
             <CustomSelect
-              label={'Role'}
+              label={'Jenis Pengguna'}
               name={'role_id'}
               control={form.control}
-              placeholder={'Select a role'}
+              placeholder={'Pilih jenis pengguna'}
               isLoading={isRoleLoading}
               options={
                 roleListData?.data?.map((each) => ({
@@ -180,11 +180,11 @@ const UserForm: FC<CommonFormProps> = (props) => {
             <CustomButton
               type={ButtonType.BUTTON}
               variant={ButtonVariant.OUTLINE}
-              label={'Cancel'}
+              label={'Batal'}
               link={'/dashboard/users'}
               disabled={isLoading.submit}
             />
-            <CustomButton label={'Save'} isLoading={isLoading.submit} />
+            <CustomButton label={'Simpan'} isLoading={isLoading.submit} />
           </div>
         </form>
       </Form>

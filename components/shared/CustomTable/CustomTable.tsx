@@ -165,17 +165,17 @@ const CustomTable: FC<CustomTableProps> = (props) => {
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                          <DropdownMenuLabel>Aksi</DropdownMenuLabel>
                           {allowDetails(each) && (
                             <DropdownMenuItem
                               onClick={() => onRowClick(each.id)}
                             >
-                              Details
+                              Detail
                             </DropdownMenuItem>
                           )}
                           {allowEdit(each) && (
                             <DropdownMenuItem onClick={() => onUpdate(each.id)}>
-                              Edit
+                              Ubah
                             </DropdownMenuItem>
                           )}
                           {customActionParam &&
@@ -228,7 +228,7 @@ const CustomTable: FC<CustomTableProps> = (props) => {
                   colSpan={withAction ? headers.length + 1 : headers.length}
                   className="h-32 text-center"
                 >
-                  <span>No Data Available</span>
+                  <span>Data Tidak Tersedia</span>
                 </TableCell>
               </TableRow>
             )}

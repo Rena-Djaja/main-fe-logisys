@@ -90,7 +90,7 @@ const useWarehouseForm = ({ id }: CommonFormProps) => {
 
   const handleFailure = (response?: CommonApiResponse) => {
     toast.error(
-      response?.error || 'Something went wrong. Please try again later.'
+      response?.error || 'Terjadi kesalahan. Mohon coba beberapa saat lagi.'
     )
   }
 

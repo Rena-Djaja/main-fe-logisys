@@ -40,7 +40,7 @@ export const menuList: MenuListProps[] = [
         ],
       },
       {
-        title: 'Market Locations',
+        title: 'Lokasi Penjualan',
         url: '/dashboard/locations',
         icon: MapIcon,
         resourceID: [
@@ -49,21 +49,21 @@ export const menuList: MenuListProps[] = [
         ],
       },
       {
-        title: 'Product Management',
+        title: 'Manajemen Produk',
         icon: Boxes,
         children: [
           {
-            title: 'Products',
+            title: 'Produk',
             url: '/dashboard/products',
             resourceID: [PermissionTypes.READ_PRODUCT],
           },
           {
-            title: 'Discounts',
+            title: 'Diskon',
             url: '/dashboard/discounts',
             resourceID: [PermissionTypes.READ_DISCOUNT],
           },
           {
-            title: 'Complimentaries',
+            title: 'Hadiah',
             url: '/dashboard/complimentaries',
             resourceID: [PermissionTypes.PUBLIC],
           },
@@ -74,54 +74,54 @@ export const menuList: MenuListProps[] = [
         ],
       },
       {
-        title: 'User Management',
+        title: 'Manajemen Pengguna',
         icon: UsersRound,
         children: [
           {
-            title: 'Users',
+            title: 'Pengguna',
             url: '/dashboard/users',
             resourceID: [PermissionTypes.READ_USER, PermissionTypes.WRITE_USER],
           },
-          {
-            title: 'Roles',
-            url: '/dashboard/roles',
-            resourceID: [PermissionTypes.READ_ROLE, PermissionTypes.WRITE_ROLE],
-          },
+          // {
+          //   title: 'Jenis Pengguna',
+          //   url: '/dashboard/roles',
+          //   resourceID: [PermissionTypes.READ_ROLE, PermissionTypes.WRITE_ROLE],
+          // },
         ],
         resourceID: [PermissionTypes.PUBLIC],
       },
     ],
   },
   {
-    title: 'activity',
+    title: 'Aktivitas',
     menuItems: [
       {
-        title: 'Inventory',
+        title: 'Stok Gudang',
         url: '/dashboard/inventory',
         icon: Boxes,
         resourceID: [PermissionTypes.PUBLIC],
       },
       {
-        title: 'Transactions',
+        title: 'Transaksi',
         icon: ArrowRightLeft,
         children: [
           {
-            title: 'Purchases',
+            title: 'Pembelian',
             url: '/dashboard/purchase',
             resourceID: [PermissionTypes.PUBLIC],
           },
           {
-            title: 'Sales',
+            title: 'Penjualan',
             url: '/dashboard/sales',
             resourceID: [PermissionTypes.PUBLIC],
           },
           {
-            title: 'Transfers',
+            title: 'Transfer',
             url: '/dashboard/transfer',
             resourceID: [PermissionTypes.PUBLIC],
           },
           {
-            title: 'In & Out',
+            title: 'Barang Masuk & Keluar',
             url: '/dashboard/in-out',
             resourceID: [PermissionTypes.PUBLIC],
           },
@@ -134,23 +134,23 @@ export const menuList: MenuListProps[] = [
 
 export const userMenuList = [
   {
-    name: 'Profile',
+    name: 'Profil Pengguna',
     href: '/dashboard/settings/profile',
     icon: UserPen,
   },
   {
-    name: 'Change Password',
+    name: 'Ganti Kata Sandi',
     href: '/dashboard/settings/change-password',
     icon: RectangleEllipsis,
   },
   {
-    name: 'Preferences',
+    name: 'Pengaturan',
     href: '/dashboard/settings/preferences',
     icon: SlidersHorizontal,
   },
 ]
 
 export const breadcrumbMap: Record<string, string> = {
-  users: 'User Management',
-  locations: 'Market Locations',
+  users: 'Manajemen User',
+  locations: 'Lokasi Penjualan',
 }

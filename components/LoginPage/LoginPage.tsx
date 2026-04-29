@@ -15,9 +15,9 @@ const LoginPage = () => {
     <div>
       <Card>
         <CardHeader>
-          <CardTitle>Login to your account</CardTitle>
+          <CardTitle>Masuk ke Akun Anda</CardTitle>
           <CardDescription>
-            Enter your email below to login to your account
+            Masukkan email Anda untuk masuk ke dalam aplikasi
           </CardDescription>
         </CardHeader>
         <CardContent>
