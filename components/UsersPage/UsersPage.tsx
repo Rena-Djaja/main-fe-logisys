@@ -34,9 +34,9 @@ const UsersPage = () => {
       <UserDetails detailsState={detailsState} handleDetails={handleDetails} />
       <div className="mt-8 w-full flex flex-col gap-10">
         <div className="w-full flex flex-col">
-          <h1 className="font-semibold text-[2rem]">User List</h1>
+          <h1 className="font-semibold text-[2rem]">List Pengguna</h1>
           <span className="font-medium text-[0.95rem]">
-            Manage all the user listed below
+            Kelola semua pengguna dibawah ini
           </span>
         </div>
         <div className="w-full flex flex-col gap-6">
@@ -53,7 +53,7 @@ const UsersPage = () => {
               </div>
               <div>
                 <CustomButton
-                  label={'Add New'}
+                  label={'Tambah'}
                   icon={Plus}
                   type={ButtonType.BUTTON}
                   onClick={onAdd}

@@ -14,15 +14,15 @@ const SettingsPage: FC<SettingsPageProps> = ({ children }) => {
 
   const menuItems = [
     {
-      name: 'Profile',
+      name: 'Profil',
       href: '/dashboard/settings/profile',
     },
     {
-      name: 'Change Password',
+      name: 'Ubah Kata Sandi',
       href: '/dashboard/settings/change-password',
     },
     {
-      name: 'Preferences',
+      name: 'Pengaturan',
       href: '/dashboard/settings/preferences',
     },
   ]

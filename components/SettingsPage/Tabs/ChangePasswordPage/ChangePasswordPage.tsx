@@ -32,7 +32,7 @@ const ChangePasswordPage = () => {
           </div>
           <div>
             <CustomInput
-              label={'New Password'}
+              label={'Kata Sandi Baru'}
               name={'new_password'}
               control={form.control}
               placeholder={'Masukkan kata sandi baru'}
@@ -43,7 +43,7 @@ const ChangePasswordPage = () => {
           </div>
           <div>
             <CustomInput
-              label={'Confirm Password'}
+              label={'Konfirmasi Kata Sandi'}
               name={'confirm_password'}
               control={form.control}
               placeholder={'Konfirmasi kata sandi baru'}

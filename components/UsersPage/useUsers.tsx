@@ -77,11 +77,11 @@ const useUsers = () => {
   const onDelete = (id: number) => {
     setConfirmation({
       isOpen: true,
-      title: 'Are you absolutely sure?',
+      title: 'Apakah Anda yakin?',
       description:
-        'This action cannot be undone. This will permanently delete this account and remove the data.',
+        'Aksi ini tidak dapat dibatalkan. Anda akan menghapus akun ini secara permanen.',
       confirmButtonVariant: ButtonVariant.DESTRUCTIVES,
-      confirmButtonText: "Yes, I'm sure",
+      confirmButtonText: 'Saya Yakin',
       onConfirm: () => onConfirmDelete(id),
     })
   }
