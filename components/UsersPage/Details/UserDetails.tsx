@@ -29,9 +29,9 @@ const UserDetails: FC<CommonDetailsComponentProps> = (props) => {
     >
       <SheetContent>
         <SheetHeader>
-          <SheetTitle>User Details</SheetTitle>
+          <SheetTitle>Detail Pengguna</SheetTitle>
           <SheetDescription>
-            View the details of the selected user
+            Lihat detail dari pengguna yang dipilih
           </SheetDescription>
         </SheetHeader>
         <div className="px-6 mt-2">
