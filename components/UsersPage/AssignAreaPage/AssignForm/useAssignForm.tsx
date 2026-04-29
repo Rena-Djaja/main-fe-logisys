@@ -82,7 +82,7 @@ const useAssignForm = (props: AssignAreaFormProps) => {
           })
         }
       } else {
-        toast.error('Something went wrong. Please try again later.')
+        toast.error('Terjadi kesalahan. Mohon coba beberapa saat lagi.')
         form.setValue('location_id', undefined)
       }
     } catch (err) {
@@ -145,7 +145,7 @@ const useAssignForm = (props: AssignAreaFormProps) => {
 
   const handleFailure = (response?: CommonApiResponse) => {
     toast.error(
-      response?.message || 'Something went wrong. Please try again later.'
+      response?.message || 'Terjadi kesalahan. Mohon coba beberapa saat lagi.'
     )
   }
 

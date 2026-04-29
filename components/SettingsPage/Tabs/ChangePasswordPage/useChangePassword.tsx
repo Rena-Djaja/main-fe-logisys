@@ -39,9 +39,9 @@ const useChangePassword = () => {
   const handleSuccess = () => {
     setAlert({
       isOpen: true,
-      title: 'Password Changed Successfully!',
+      title: 'Kata Sandi Berhasil Diubah!',
       description:
-        'You will be automatically redirected to login page. Please re enter your credentials with the new password',
+        'Anda akan otomatis diarahkan ke halaman login. Mohon login lagi dengan kredential yang baru.',
       disableClose: true,
     })
 
@@ -52,7 +52,7 @@ const useChangePassword = () => {
 
   const handleFailure = (response?: CommonApiResponse) => {
     toast.error(
-      response?.message || 'Something went wrong. Please try again later.'
+      response?.message || 'Terjadi kesalahan. Mohon coba beberapa saat lagi.'
     )
   }
 

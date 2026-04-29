@@ -119,7 +119,7 @@ const useUsers = () => {
 
   const handleFailureDelete = (response?: CommonApiResponse) => {
     toast.error(
-      response?.error || 'Something went wrong. Please try again later.'
+      response?.error || 'Terjadi kesalahan. Mohon coba beberapa saat lagi.'
     )
   }
 
