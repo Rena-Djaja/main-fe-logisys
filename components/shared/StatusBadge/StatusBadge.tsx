@@ -24,7 +24,7 @@ const StatusBadge: FC<StatusBadgeProps> = ({ isActive }) => {
           isActive ? 'bg-chart-2' : 'bg-destructive'
         )}
       />
-      {isActive ? 'Active' : 'Inactive'}
+      {isActive ? 'Aktif' : 'Tidak Aktif'}
     </Badge>
   )
 }

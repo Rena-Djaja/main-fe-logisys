@@ -9,7 +9,7 @@ import StatusBadge from '@/components/shared/StatusBadge/StatusBadge'
 export const userListHeaders: TableHeaderProps[] = [
   {
     key: 'name',
-    title: 'Name',
+    title: 'Nama Pengguna',
   },
   {
     key: 'email',
@@ -17,21 +17,21 @@ export const userListHeaders: TableHeaderProps[] = [
   },
   {
     key: 'role_name',
-    title: 'User Role',
+    title: 'Jenis Pengguna',
     customComponent: ({ data }: { data: UserProps }) => (
       <Badge>{data.role_name}</Badge>
     ),
   },
   {
     key: 'created_at',
-    title: 'Date added',
+    title: 'Tanggal Dibuat',
     customComponent: ({ data }: { data: UserProps }) => (
       <span>{formattedDate(data.created_at, true)}</span>
     ),
   },
   {
     key: 'updated_at',
-    title: 'Last Updated',
+    title: 'Terakhir Diperbaharui',
     customComponent: ({ data }: { data: UserProps }) => (
       <span>{formattedDate(data.updated_at, true)}</span>
     ),
