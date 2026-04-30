@@ -72,13 +72,13 @@ const UserForm: FC<CommonFormProps> = (props) => {
               placeholder={'Pilih jenis pengguna'}
               isLoading={isRoleLoading}
               options={
-                roleListData?.data?.map((each) => ({
+                roleListData?.roles?.map((each) => ({
                   label: each.name,
                   value: each.id,
                 })) || []
               }
               customOnChange={(value: string) => {
-                const selectedRole = roleListData?.data?.find(
+                const selectedRole = roleListData?.roles?.find(
                   (each) => each.id === Number(value)
                 )?.name
 

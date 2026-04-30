@@ -11,6 +11,6 @@ export interface RoleProps {
 }
 
 export interface RoleListResponse {
-  data: RoleProps[]
+  roles: RoleProps[]
   pagination: PaginationResponse
 }
