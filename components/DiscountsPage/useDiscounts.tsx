@@ -8,12 +8,14 @@ import {
   CommonDetailsStateProps,
   CommonFilterRequest,
 } from '@/type/Common'
-import { DiscountRuleListResponse } from '@/type/Discounts'
+import {
+  DeleteDiscountRequest,
+  DiscountRuleListResponse,
+} from '@/type/Discounts'
 import { useRouter } from 'next/navigation'
 import { useConfirmationStore } from '@/store'
 import { ButtonVariant } from '@/type/FormInputs'
 import { callAPI } from '@/lib/fetchers'
-import { DeleteUserRequest } from '@/type/User'
 import { apiStatusChecker } from '@/lib/utils'
 import { toast } from 'sonner'
 
@@ -87,7 +89,7 @@ const useDiscounts = () => {
     setLoading(true)
 
     try {
-      const apiRes = await callAPI<DeleteUserRequest, CommonApiResponse>(
+      const apiRes = await callAPI<DeleteDiscountRequest, CommonApiResponse>(
         DiscountAPI.POST_DISCOUNT,
         { id },
         { method: 'DELETE' }

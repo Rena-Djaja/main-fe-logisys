@@ -27,7 +27,7 @@ export interface UserListResponse {
 }
 
 export interface UserDetailsRequest {
-  id: number
+  id: string
 }
 
 export interface UserDetailsResponse extends CommonApiResponse {
@@ -48,15 +48,15 @@ export interface EmployeeDataRequest {
 }
 
 export interface PostUserRequest {
-  id?: number
+  id?: string
   name: string
   email: string
   role_id: number
-  employee_data: EmployeeDataRequest | null
+  // employee_data: EmployeeDataRequest | null
 }
 
 export interface DeleteUserRequest {
-  id: number
+  id: string
 }
 
 export interface AssignedAreaListRequest {

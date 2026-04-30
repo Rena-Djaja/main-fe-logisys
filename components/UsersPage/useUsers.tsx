@@ -70,11 +70,11 @@ const useUsers = () => {
     push('/dashboard/users/form')
   }
 
-  const onUpdate = (id: number) => {
+  const onUpdate = (id: string) => {
     push(`/dashboard/users/form/${id}`)
   }
 
-  const onDelete = (id: number) => {
+  const onDelete = (id: string) => {
     setConfirmation({
       isOpen: true,
       title: 'Apakah Anda yakin?',
@@ -86,7 +86,7 @@ const useUsers = () => {
     })
   }
 
-  const onConfirmDelete = async (id: number) => {
+  const onConfirmDelete = async (id: string) => {
     setLoading(true)
 
     try {
@@ -119,7 +119,7 @@ const useUsers = () => {
 
   const handleFailureDelete = (response?: CommonApiResponse) => {
     toast.error(
-      response?.error || 'Terjadi kesalahan. Mohon coba beberapa saat lagi.'
+      response?.message || 'Terjadi kesalahan. Mohon coba beberapa saat lagi.'
     )
   }
 
