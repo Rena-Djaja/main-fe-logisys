@@ -74,7 +74,7 @@ const useAssignArea = ({ id }: CommonFormProps) => {
     try {
       const apiRes = await callAPI<UserDetailsRequest, UserDetailsResponse>(
         UserAPI.GET_USER_DETAILS,
-        { id: Number(id) },
+        { id: String(id) },
         { method: 'GET' }
       )
 

@@ -70,7 +70,7 @@ const useUsers = () => {
     push('/dashboard/users/form')
   }
 
-  const onUpdate = (id: number) => {
+  const onUpdate = (id: string) => {
     push(`/dashboard/users/form/${id}`)
   }
 
