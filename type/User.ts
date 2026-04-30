@@ -56,7 +56,7 @@ export interface PostUserRequest {
 }
 
 export interface DeleteUserRequest {
-  id: number
+  id: string
 }
 
 export interface AssignedAreaListRequest {

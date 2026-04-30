@@ -79,6 +79,10 @@ export interface DiscountItemsResponse extends CommonApiResponse {
   data: DiscountItemProps[]
 }
 
+export interface DeleteDiscountRequest {
+  id: number
+}
+
 export interface DiscountRuleListResponse {
   data: DiscountRuleProps[]
   pagination: PaginationResponse

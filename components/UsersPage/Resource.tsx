@@ -40,7 +40,7 @@ export const userListHeaders: TableHeaderProps[] = [
     key: 'is_deleted',
     title: 'Status',
     customComponent: ({ data }: { data: UserProps }) => (
-      <StatusBadge isActive={!data.is_deleted} />
+      <StatusBadge isActive={!data.deleted_at} />
     ),
   },
 ]
