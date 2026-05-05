@@ -58,16 +58,6 @@ const MapProvider = ({
     loadMap()
   }, [initialViewState, mapContainerRef])
 
-  if (!isLoaded)
-    return (
-      <div className="absolute inset-0 flex items-center justify-center bg-background/80 z-[1000]">
-        <div className="flex gap-2 items-center">
-          <Spinner className="size-5" />
-          <span className="text-lg font-medium">Loading map...</span>
-        </div>
-      </div>
-    )
-
   return (
     <div className="z-[1000]">
       <MapContext.Provider value={{ map: mapContextValue }}>
