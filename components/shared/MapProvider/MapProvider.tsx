@@ -15,12 +15,18 @@ type MapComponentProps = {
     latitude: number
     zoom: number
   }
+  setCurrentPosition: (position: {
+    hasLocation: boolean
+    latitude: number
+    longitude: number
+  }) => void
   children?: React.ReactNode
 }
 
 const MapProvider = ({
   mapContainerRef,
   initialViewState,
+  setCurrentPosition,
   children,
 }: MapComponentProps) => {
   const map = useRef<mapboxgl.Map | null>(null)
@@ -60,7 +66,7 @@ const MapProvider = ({
 
   return (
     <div className="z-[1000]">
-      <MapContext.Provider value={{ map: mapContextValue }}>
+      <MapContext.Provider value={{ map: mapContextValue, setCurrentPosition }}>
         {children}
       </MapContext.Provider>
       {!isLoaded && (

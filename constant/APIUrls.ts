@@ -15,6 +15,8 @@ export const LocationAPI = {
   GET_VALIDATE_LOCATION: baseURL + '/location/sales/check',
   POST_LOCATION: baseURL + '/location',
   POST_ASSIGN_LOCATION: baseURL + '/location/sales',
+  GET_LOCATION_SUGGESTIONS: baseURL + '/location/search',
+  GET_RETRIEVED_LOCATION: baseURL + '/location/retrieve',
 }
 
 export const UserAPI = {
