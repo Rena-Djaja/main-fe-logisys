@@ -12,6 +12,7 @@ import {
 } from '@/components/shared/ui/command'
 import { cn } from '@/lib/utils'
 import { Loader2, MapPin, X } from 'lucide-react'
+import LocationPopup from '@/components/shared/Map/Tools/Popup/LocationPopup'
 
 const Searchbox = () => {
   const {
@@ -19,8 +20,12 @@ const Searchbox = () => {
     isLoading,
     displayValue,
     results,
+    // selectedLocations,
+    selectedLocation,
     handleSearch,
     clearSearch,
+    handleSelect,
+    setSelectedLocation,
   } = useSearchbox()
 
   return (
@@ -29,7 +34,7 @@ const Searchbox = () => {
         <Command className="rounded-lg">
           <div
             className={cn(
-              'w-full flex items-center justify-between px-3 gap-1',
+              '!w-full flex items-center justify-between px-3 gap-1',
               isOpen && 'border-b'
             )}
           >
@@ -50,7 +55,7 @@ const Searchbox = () => {
             )}
           </div>
 
-          {isOpen && !isLoading && (
+          {isOpen && (
             <CommandList className="max-h-60 overflow-y-auto">
               {!results.length ? (
                 <CommandEmpty className="py-6 text-center">
@@ -66,7 +71,7 @@ const Searchbox = () => {
                   {results?.map((each) => (
                     <CommandItem
                       key={each.mapbox_id}
-                      // onSelect={() => handleSelect(location)}
+                      onSelect={() => handleSelect(each.mapbox_id)}
                       value={each.name}
                       className="flex items-center py-3 px-2 cursor-pointer hover:bg-accent rounded-md"
                     >
@@ -100,12 +105,12 @@ const Searchbox = () => {
       {/*  />*/}
       {/*))}*/}
 
-      {/*{selectedLocation && (*/}
-      {/*  <LocationPopup*/}
-      {/*    location={selectedLocation}*/}
-      {/*    onClose={() => setSelectedLocation(null)}*/}
-      {/*  />*/}
-      {/*)}*/}
+      {selectedLocation && (
+        <LocationPopup
+          location={selectedLocation}
+          onClose={() => setSelectedLocation(null)}
+        />
+      )}
     </>
   )
 }

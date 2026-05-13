@@ -32,3 +32,26 @@ export interface StyleOption {
   label: string
   icon: React.ReactNode
 }
+
+export interface RetrievedLocationProps {
+  properties: {
+    name: string
+    mapbox_id: string
+    full_address: string
+    feature_type: string
+    coordinates: {
+      longitude: number
+      latitude: number
+    }
+  }
+}
+
+export interface RetrieveLocationRequest {
+  id: string
+}
+
+export interface RetrieveLocationResponse extends CommonApiResponse {
+  data: {
+    data: RetrievedLocationProps[]
+  }
+}

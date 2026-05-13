@@ -2,22 +2,61 @@
 
 import { useRef, useState } from 'react'
 import {
+  LocationFeature,
   LocationSuggestion,
+  RetrievedLocationProps,
+  RetrieveLocationRequest,
+  RetrieveLocationResponse,
   SearchLocationRequest,
   SearchLocationResponse,
 } from '@/type/Map'
 import { callAPI } from '@/lib/fetchers'
 import { LocationAPI } from '@/constant/APIUrls'
 import { apiStatusChecker } from '@/lib/utils'
+import { useMapContext } from '@/components/shared/context/MapContext'
+import { LngLatLike } from 'mapbox-gl'
 
 const useSearchbox = () => {
+  const { map } = useMapContext()
   const debounce = useRef(0)
   const [displayValue, setDisplayValue] = useState('')
   const [results, setResults] = useState<LocationSuggestion[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
-  // const [selectedLocation, setSelectedLocation] = useState<LocationFeature | null>(null);
-  // const [selectedLocations, setSelectedLocations] = useState<LocationFeature[]>([]);
+  const [selectedLocation, setSelectedLocation] =
+    useState<LocationFeature | null>(null)
+  const [selectedLocations, setSelectedLocations] = useState<LocationFeature[]>(
+    []
+  )
+
+  if (map) {
+    map.on('click', (e) => {
+      const coordinates = e.lngLat
+      // Start the countdown
+      const result: RetrievedLocationProps = {
+        properties: {
+          name: `${coordinates.lat}, ${coordinates.lng}`,
+          feature_type: '',
+          mapbox_id: '',
+          full_address: '',
+          coordinates: {
+            longitude: coordinates.lng,
+            latitude: coordinates.lat,
+          },
+        },
+      }
+
+      map.flyTo({
+        center: [coordinates.lng, coordinates.lat],
+        zoom: 15,
+        speed: 4,
+        duration: 1000,
+        essential: true,
+      })
+
+      setSelectedLocation(result)
+    })
+  }
 
   const handleSearch = (val: string) => {
     setDisplayValue(val)
@@ -56,50 +95,55 @@ const useSearchbox = () => {
     }
   }
 
-  // Handle location selection
-  // const handleSelect = async (suggestion: LocationSuggestion) => {
-  //   try {
-  //     setIsSearching(true);
-  //
-  //     const res = await fetch(
-  //       `https://api.mapbox.com/search/searchbox/v1/retrieve/${suggestion.mapbox_id}?access_token=${process.env.NEXT_PUBLIC_MAPBOX_TOKEN}&session_token=${process.env.NEXT_PUBLIC_MAPBOX_SESSION_TOKEN}`
-  //     );
-  //
-  //     const data = await res.json();
-  //     const featuresData = data?.features;
-  //
-  //     if (map && featuresData?.length > 0) {
-  //       const coordinates = featuresData[0]?.geometry?.coordinates;
-  //
-  //       map.flyTo({
-  //         center: coordinates,
-  //         zoom: 14,
-  //         speed: 4,
-  //         duration: 1000,
-  //         essential: true,
-  //       });
-  //
-  //       setDisplayValue(suggestion.name);
-  //
-  //       setSelectedLocations(featuresData);
-  //       setSelectedLocation(featuresData[0]);
-  //
-  //       setResults([]);
-  //       setIsOpen(false);
-  //     }
-  //   } catch (err) {
-  //     console.error("Retrieve error:", err);
-  //   } finally {
-  //     setIsSearching(false);
-  //   }
-  // };
+  const handleSelect = async (id: string) => {
+    try {
+      setIsLoading(true)
+
+      const apiRes = await callAPI<
+        RetrieveLocationRequest,
+        RetrieveLocationResponse
+      >(LocationAPI.GET_RETRIEVED_LOCATION, { id }, { method: 'GET' })
+      const { data: retrievedLocationRes, status } = apiRes
+
+      if (apiStatusChecker(status) && retrievedLocationRes) {
+        const locationData = retrievedLocationRes.data.data
+        if (map && locationData?.length > 0) {
+          const loc = locationData[0]
+          const coordinates = [
+            loc.properties.coordinates.longitude,
+            loc.properties.coordinates.latitude,
+          ]
+
+          map.flyTo({
+            center: coordinates as LngLatLike,
+            zoom: 15,
+            speed: 4,
+            duration: 1000,
+            essential: true,
+          })
+
+          setDisplayValue(loc.properties.name)
+
+          setSelectedLocations((prev) => [...prev, loc])
+          setSelectedLocation(loc)
+
+          setResults([])
+          setIsOpen(false)
+        }
+      }
+    } catch {
+      throw 'Failed to retrieve location'
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   const clearSearch = () => {
     setDisplayValue('')
     setResults([])
     setIsOpen(false)
-    // setSelectedLocation(null);
-    // setSelectedLocations([]);
+    setSelectedLocation(null)
+    setSelectedLocations([])
   }
 
   return {
@@ -107,8 +151,12 @@ const useSearchbox = () => {
     isLoading,
     displayValue,
     results,
+    selectedLocations,
+    selectedLocation,
     handleSearch,
     clearSearch,
+    handleSelect,
+    setSelectedLocation,
   }
 }
 

@@ -66,24 +66,20 @@ const Marker = (props: Props) => {
     const handleMouseEnter = () => handleHover(true)
     const handleMouseLeave = () => handleHover(false)
 
-    // Add event listeners
     markerEl.addEventListener('mouseenter', handleMouseEnter)
     markerEl.addEventListener('mouseleave', handleMouseLeave)
     markerEl.addEventListener('click', handleClick)
 
-    // Marker options
     const options = {
       element: markerEl,
       ...props,
     }
 
-    // @ts-ignore
     markerInstanceRef.current = new mapboxgl.Marker(options)
       .setLngLat([longitude, latitude])
       .addTo(map)
 
     return () => {
-      // Cleanup on unmount
       if (markerInstanceRef.current) markerInstanceRef.current.remove()
       if (markerEl) {
         markerEl.removeEventListener('mouseenter', handleMouseEnter)
