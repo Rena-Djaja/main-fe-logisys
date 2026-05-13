@@ -1,6 +1,6 @@
 'use client'
 
-import React, { FC } from 'react'
+import React from 'react'
 import { CustomInputProps, InputType } from '@/type/FormInputs'
 import {
   FormControl,
@@ -12,8 +12,11 @@ import {
 } from '@/components/shared/ui/form'
 import { Input } from '@/components/shared/ui/input'
 import { Textarea } from '@/components/shared/ui/textarea'
+import { FieldValues } from 'react-hook-form'
 
-const CustomInput: FC<CustomInputProps> = (props) => {
+const CustomInput = <T extends FieldValues = FieldValues>(
+  props: CustomInputProps<T>
+) => {
   const inputProps = props
   const {
     label,

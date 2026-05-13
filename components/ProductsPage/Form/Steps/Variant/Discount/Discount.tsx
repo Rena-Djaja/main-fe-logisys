@@ -198,7 +198,7 @@ const Discount: FC<VariantDiscountProps> = (props) => {
                   new Date(
                     form.watch(
                       `variants.${variantIdx}.discounts.${idx}.start_date`
-                    )
+                    ) as string
                   )
                 }
                 disabled={isDisabled}

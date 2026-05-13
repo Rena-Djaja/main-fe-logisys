@@ -1,4 +1,4 @@
-import { Control, FieldValue, FieldValues } from 'react-hook-form'
+import { Control, FieldValues, Path } from 'react-hook-form'
 import {
   ForwardRefExoticComponent,
   HTMLAttributeAnchorTarget,
@@ -6,13 +6,13 @@ import {
 } from 'react'
 import { LucideProps } from 'lucide-react'
 
-export interface CustomInputProps {
-  name: string
+export interface CustomInputProps<T extends FieldValues = FieldValues> {
+  name: Path<T>
   label?: string
   placeholder?: string
   disabled?: boolean
   helperText?: string
-  control: Control<FieldValue<FieldValues>>
+  control: Control<T>
   iconPlacement?: IconPlacementType
   icon?: ForwardRefExoticComponent<
     Omit<LucideProps, 'ref'> & RefAttributes<SVGSVGElement>
@@ -22,16 +22,22 @@ export interface CustomInputProps {
   defaultValue?: string
 }
 
-export interface CustomNumberInputProps extends CustomInputProps {
+export interface CustomNumberInputProps<
+  T extends FieldValues = FieldValues,
+> extends CustomInputProps<T> {
   allowNegative?: boolean
 }
 
-export interface CustomDateInputProps extends CustomInputProps {
+export interface CustomDateInputProps<
+  T extends FieldValues = FieldValues,
+> extends CustomInputProps<T> {
   minDate?: Date
   maxDate?: Date
 }
 
-export interface CustomSelectProps extends CustomInputProps {
+export interface CustomSelectProps<
+  T extends FieldValues = FieldValues,
+> extends CustomInputProps<T> {
   isAsync?: boolean
   defaultOptions?: OptionType[]
   // callbackOptions?: (inputValue: string, callback: (options: any[]) => void) => void;

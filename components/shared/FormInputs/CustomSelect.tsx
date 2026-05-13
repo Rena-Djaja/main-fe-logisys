@@ -23,8 +23,9 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/shared/ui/popover'
-import { FC, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ButtonType, CustomSelectProps, OptionType } from '@/type/FormInputs'
+import { FieldValues } from 'react-hook-form'
 import { Check, ChevronsUpDown, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { ScrollArea } from '@/components/shared/ui/scroll-area'
@@ -38,7 +39,9 @@ import {
 } from '@/components/shared/ui/form'
 import { Spinner } from '@/components/shared/ui/spinner'
 
-const CustomSelect: FC<CustomSelectProps> = (props) => {
+const CustomSelect = <T extends FieldValues = FieldValues>(
+  props: CustomSelectProps<T>
+) => {
   const {
     isLoading,
     label,
@@ -74,7 +77,7 @@ const CustomSelect: FC<CustomSelectProps> = (props) => {
             if (multiple) {
               const newValue =
                 value?.includes(selectedValue) && Array.isArray(value)
-                  ? value.filter((v) => v !== selectedValue)
+                  ? value.filter((v: any) => v !== selectedValue)
                   : [...(value ?? []), selectedValue]
               onChange?.(newValue)
               customOnChange && customOnChange(newValue)
@@ -142,7 +145,7 @@ const CustomSelect: FC<CustomSelectProps> = (props) => {
           if (multiple) {
             const newValue =
               value?.includes(selectedValue) && Array.isArray(value)
-                ? value.filter((v) => v !== selectedValue)
+                ? value.filter((v: any) => v !== selectedValue)
                 : [...(value ?? []), selectedValue]
             onChange?.(newValue)
           } else {

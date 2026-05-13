@@ -1,6 +1,6 @@
 'use client'
 
-import React, { FC } from 'react'
+import React from 'react'
 import { toZonedTime } from 'date-fns-tz'
 import {
   Popover,
@@ -20,8 +20,11 @@ import { CustomDateInputProps } from '@/type/FormInputs'
 import { formattedDate } from '@/lib/utils'
 import { Matcher } from 'react-day-picker'
 import { format } from 'date-fns'
+import { FieldValues } from 'react-hook-form'
 
-const DatePicker: FC<CustomDateInputProps> = (props) => {
+const DatePicker = <T extends FieldValues = FieldValues>(
+  props: CustomDateInputProps<T>
+) => {
   const {
     name,
     control,

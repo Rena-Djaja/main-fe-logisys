@@ -175,7 +175,9 @@ const Complimentary: FC<VariantComplimentaryProps> = (props) => {
                 control={form.control}
                 label={'End Date'}
                 minDate={
-                  new Date(form.watch(`complimentary.${idx}.start_date`))
+                  new Date(
+                    form.watch(`complimentary.${idx}.start_date`) as string
+                  )
                 }
                 disabled={isDisabled}
               />

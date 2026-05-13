@@ -76,9 +76,11 @@ const ComplimentaryItemGroup: FC<ComplimentaryItemGroupProps> = (props) => {
                     <VariantItems
                       complimentaryIdx={complimentaryIdx}
                       itemIdx={idx}
-                      productId={form.watch(
-                        `complimentary.${complimentaryIdx}.items.${idx}.product_id`
-                      )}
+                      productId={
+                        form.watch(
+                          `complimentary.${complimentaryIdx}.items.${idx}.product_id`
+                        ) as string
+                      }
                       form={form}
                     />
                   </div>

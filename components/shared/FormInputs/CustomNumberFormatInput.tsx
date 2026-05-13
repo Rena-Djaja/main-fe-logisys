@@ -1,6 +1,6 @@
 'use client'
 
-import React, { FC } from 'react'
+import React from 'react'
 import { CustomNumberInputProps } from '@/type/FormInputs'
 import {
   FormControl,
@@ -12,8 +12,11 @@ import {
 } from '@/components/shared/ui/form'
 import { Input } from '@/components/shared/ui/input'
 import { NumericFormat } from 'react-number-format'
+import { FieldValues } from 'react-hook-form'
 
-const CustomNumberFormatInput: FC<CustomNumberInputProps> = (props) => {
+const CustomNumberFormatInput = <T extends FieldValues = FieldValues>(
+  props: CustomNumberInputProps<T>
+) => {
   const {
     label,
     placeholder,

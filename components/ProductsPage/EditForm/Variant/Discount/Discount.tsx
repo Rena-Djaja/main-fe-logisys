@@ -195,7 +195,9 @@ const Discount: FC<DiscountProps> = (props) => {
                 name={`discount.${idx}.end_date`}
                 control={form.control}
                 label={'End Date'}
-                minDate={new Date(form.watch(`discount.${idx}.start_date`))}
+                minDate={
+                  new Date(form.watch(`discount.${idx}.start_date`) as string)
+                }
               />
             </div>
           </div>
