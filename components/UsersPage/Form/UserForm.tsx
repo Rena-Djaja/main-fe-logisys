@@ -18,6 +18,8 @@ import { CommonFormProps } from '@/type/Common'
 import { Switch } from '@/components/shared/ui/switch'
 import CustomNumberFormatInput from '@/components/shared/FormInputs/CustomNumberFormatInput'
 import DatePicker from '@/components/shared/DatePicker/DatePicker'
+import { withAuthPage } from '@/components/shared/context/AuthContext'
+import { PermissionTypes } from '@/type/Auth'
 
 const UserForm: FC<CommonFormProps> = (props) => {
   const { id } = props
@@ -192,4 +194,6 @@ const UserForm: FC<CommonFormProps> = (props) => {
   )
 }
 
-export default UserForm
+export default withAuthPage({ permission: PermissionTypes.WRITE_USER })(
+  UserForm
+)
