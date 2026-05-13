@@ -13,6 +13,8 @@ import useUsers from '@/components/UsersPage/useUsers'
 import UserDetails from '@/components/UsersPage/Details/UserDetails'
 import { ButtonType } from '@/type/FormInputs'
 import { UserProps } from '@/type/User'
+import { withAuthPage } from '@/components/shared/context/AuthContext'
+import { PermissionTypes } from '@/type/Auth'
 
 const UsersPage = () => {
   const {
@@ -83,4 +85,6 @@ const UsersPage = () => {
   )
 }
 
-export default UsersPage
+export default withAuthPage({ permission: PermissionTypes.READ_USER })(
+  UsersPage
+)
