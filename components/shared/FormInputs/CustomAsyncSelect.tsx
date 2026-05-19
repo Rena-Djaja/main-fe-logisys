@@ -23,7 +23,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/shared/ui/popover'
-import { FC, useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { ButtonType, CustomSelectProps, OptionType } from '@/type/FormInputs'
 import { Check, ChevronsUpDown, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -37,8 +37,11 @@ import {
   FormMessage,
 } from '@/components/shared/ui/form'
 import { Spinner } from '@/components/shared/ui/spinner'
+import { FieldValues } from 'react-hook-form'
 
-const CustomAsyncSelect: FC<CustomSelectProps> = (props) => {
+const CustomAsyncSelect = <T extends FieldValues = FieldValues>(
+  props: CustomSelectProps<T>
+) => {
   const {
     isLoading,
     label,
@@ -76,7 +79,7 @@ const CustomAsyncSelect: FC<CustomSelectProps> = (props) => {
             if (multiple) {
               const newValue =
                 value?.includes(selectedValue) && Array.isArray(value)
-                  ? value.filter((v) => v !== selectedValue)
+                  ? value.filter((v: any) => v !== selectedValue)
                   : [...(value ?? []), selectedValue]
               onChange?.(newValue)
               customOnChange && customOnChange(newValue)
@@ -148,7 +151,7 @@ const CustomAsyncSelect: FC<CustomSelectProps> = (props) => {
           if (multiple) {
             const newValue =
               value?.includes(selectedValue) && Array.isArray(value)
-                ? value.filter((v) => v !== selectedValue)
+                ? value.filter((v: any) => v !== selectedValue)
                 : [...(value ?? []), selectedValue]
             onChange?.(newValue)
           } else {
@@ -305,16 +308,29 @@ function OptionList({
   isLoading?: boolean
   defaultFilter: string
 }) {
+  const [searchValue, setSearchValue] = useState(defaultFilter)
+  const debounceRef = useRef(0)
+
+  const handleValueChange = (val: string) => {
+    setSearchValue(val)
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current)
+    }
+    debounceRef.current = window.setTimeout(() => {
+      onSearch?.(val)
+    }, 500)
+  }
+
   return (
     <Command className="w-full" shouldFilter={!onSearch}>
       <CommandInput
-        placeholder="Search..."
-        onValueChange={onSearch}
-        value={defaultFilter}
+        placeholder="Cari..."
+        value={searchValue}
+        onValueChange={handleValueChange}
       />
       <CommandList>
         <CommandEmpty>
-          {isLoading ? 'Loading...' : 'No results found.'}
+          {isLoading ? 'Memuat...' : 'Hasil tidak ditemukan.'}
         </CommandEmpty>
         <CommandGroup>
           <ScrollArea>

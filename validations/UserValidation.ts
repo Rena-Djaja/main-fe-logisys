@@ -58,11 +58,15 @@ export const userFormValidationSchema = z
   })
 
 export const assignLocationValidationSchema = z.object({
-  location_id: z.string().optional(),
+  province_id: z.string('Mohon pilih provinsi').min(1, 'Mohon pilih provinsi'),
+  regency_id: z
+    .string('Mohon pilih kabupaten/kota')
+    .min(1, 'Mohon pilih kabupaten/kota'),
   locations: z
     .array(
       z.object({
-        location_id: z.string(),
+        province_id: z.string(),
+        regency_id: z.string(),
       })
     )
     .min(1, 'Mohon pilih setidaknya satu lokasi'),

@@ -39,17 +39,27 @@ const Controls = () => {
   }
 
   return (
-    <aside className="absolute bottom-8 right-4 z-10 bg-background p-1 rounded-lg shadow-lg flex flex-col divide-y">
-      <Button variant="ghost" size="icon" onClick={handleZoomIn}>
-        <Plus className="size-5" />
+    <aside className="absolute bottom-2 md:bottom-8 right-2 md:right-4 z-10 bg-background p-0 md:p-1 rounded-lg shadow-lg flex flex-col divide-y">
+      <Button
+        className="hidden md:flex"
+        variant="ghost"
+        size="icon"
+        onClick={handleZoomIn}
+      >
+        <Plus className="size-4 md:size-5" />
         <span className="sr-only">Zoom in</span>
       </Button>
-      <Button variant="ghost" size="icon" onClick={handleZoomOut}>
-        <Minus className="size-5" />
+      <Button
+        className="hidden md:flex"
+        variant="ghost"
+        size="icon"
+        onClick={handleZoomOut}
+      >
+        <Minus className="size-4 md:size-5" />
         <span className="sr-only">Zoom out</span>
       </Button>
       <Button variant="ghost" size="icon" onClick={handleLocate}>
-        <Locate className="size-5" />
+        <Locate className="size-4 md:size-5" />
         <span className="sr-only">Locate</span>
       </Button>
     </aside>

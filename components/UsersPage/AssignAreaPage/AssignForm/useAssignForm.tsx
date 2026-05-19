@@ -1,115 +1,149 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
-import useCommonApi from '@/components/shared/Hooks/CommonApi/useCommonApi'
+import { useEffect, useState } from 'react'
 import { LocationAPI } from '@/constant/APIUrls'
-import { CommonApiResponse, CommonFilterRequest } from '@/type/Common'
 import {
+  LocationFilterRequest,
+  LocationLevelType,
+  LocationListProps,
   LocationListResponse,
-  ValidateLocationRequest,
-  ValidateLocationResponse,
 } from '@/type/Location'
 import { useFieldArray, useForm } from 'react-hook-form'
 import { callAPI } from '@/lib/fetchers'
 import { apiStatusChecker } from '@/lib/utils'
 import { toast } from 'sonner'
-import {
-  AssignAreaFormProps,
-  AssignLocationFormInputs,
-  AssignLocationRequest,
-} from '@/type/User'
+import { AssignAreaFormProps, AssignLocationFormInputs } from '@/type/User'
 import { useConfirmationStore } from '@/store'
 import { ButtonVariant } from '@/type/FormInputs'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { assignLocationValidationSchema } from '@/validations/UserValidation'
 
 const useAssignForm = (props: AssignAreaFormProps) => {
-  const { userID, handleClose, mutate } = props
+  const {
+    // userID,
+    handleClose,
+    // mutate
+  } = props
   const { setConfirmation } = useConfirmationStore()
+  // const { map } = useMapContext()
 
   const form = useForm<AssignLocationFormInputs>({
     resolver: zodResolver(assignLocationValidationSchema),
     defaultValues: {
-      location_id: undefined,
+      province_id: '',
+      regency_id: '',
       locations: [],
     },
   })
 
-  const { fields, append, remove } = useFieldArray({
+  const { fields, remove } = useFieldArray({
     control: form.control,
     name: 'locations',
   })
 
-  const debounce = useRef(0)
-  const [filter] = useState<CommonFilterRequest>({
-    page: 1,
-    per_page: 100,
-    search: '',
+  const [searchLoading, setSearchLoading] = useState({
+    province: false,
+    regency: false,
   })
-
+  const [defaultFilter] = useState({
+    province: '',
+    regency: '',
+  })
+  const [provinceList, setProvinceList] = useState<LocationListProps>()
+  const [regencyList, setRegencyList] = useState<LocationListProps>()
   const [isLoading, setIsLoading] = useState({
     validate: false,
     submit: false,
   })
 
-  const { data: locationList, isValidating: isLocationLoading } = useCommonApi<
-    CommonFilterRequest,
-    LocationListResponse
-  >(LocationAPI.GET_LOCATION_LIST, filter, { method: 'GET' })
+  const mapLocationResult = (
+    key: LocationLevelType,
+    data: LocationListProps
+  ) => {
+    switch (key) {
+      case LocationLevelType.PROVINCE:
+        setProvinceList(data)
+        break
+      case LocationLevelType.REGENCY:
+        setRegencyList(data)
+        break
+      default:
+        return
+    }
+  }
 
-  const fetchValidateLocation = async () => {
+  const handleSearch = async (
+    level: LocationLevelType,
+    search = '',
+    parentId?: string
+  ) => {
+    setSearchLoading((prev) => {
+      if (level === LocationLevelType.PROVINCE) {
+        return {
+          ...prev,
+          province: true,
+        }
+      } else {
+        return {
+          ...prev,
+          regency: true,
+        }
+      }
+    })
+
     try {
-      const locationID = form.watch('location_id')?.split('|')?.[0]
-      const apiRes = await callAPI<
-        ValidateLocationRequest,
-        ValidateLocationResponse
-      >(
-        LocationAPI.GET_VALIDATE_LOCATION,
-        { location_id: String(locationID) },
+      const filter: LocationFilterRequest = {
+        page: 1,
+        per_page: 10,
+        search,
+        level,
+      }
+
+      if (parentId) {
+        filter['parent_id'] = parentId
+      }
+
+      const apiRes = await callAPI<LocationFilterRequest, LocationListResponse>(
+        LocationAPI.GET_LOCATION_LIST,
+        filter,
         { method: 'GET' }
       )
 
-      const { data: validateLocationRes, status } = apiRes
-
-      if (apiStatusChecker(status) && validateLocationRes) {
-        const {
-          data: { is_available },
-        } = validateLocationRes
-
-        if (!is_available) {
-          form.setError('location_id', {
-            message: 'Location is already assigned',
-          })
-        }
+      const { status, data: locationData } = apiRes
+      if (apiStatusChecker(status) && locationData) {
+        mapLocationResult(level, locationData.data)
       } else {
-        toast.error('Terjadi kesalahan. Mohon coba beberapa saat lagi.')
-        form.setValue('location_id', undefined)
+        toast.error(
+          locationData?.message ||
+            'Terjadi kesalahan. Mohon coba beberapa saat lagi.'
+        )
       }
-    } catch (err) {
-      toast.error('Something went wrong')
-      form.setValue('location_id', undefined)
-      throw err
+    } catch {
+      toast.error('Terjadi kesalahan. Mohon coba beberapa saat lagi.')
+      throw 'Failed to fetch locations'
     } finally {
-      setIsLoading((prev) => ({ ...prev, validate: false }))
+      setSearchLoading((prev) => {
+        if (level === LocationLevelType.PROVINCE) {
+          return {
+            ...prev,
+            province: false,
+          }
+        } else {
+          return {
+            ...prev,
+            regency: false,
+          }
+        }
+      })
     }
   }
 
-  const handleValidateLocation = () => {
-    form.clearErrors()
-    setIsLoading((prev) => ({ ...prev, validate: true }))
-    if (debounce.current) {
-      clearTimeout(debounce.current)
-    }
-    debounce.current = window.setTimeout(() => {
-      fetchValidateLocation()
-    }, 500)
-  }
+  const fetchLocByRegency = (regencyId: string) => {
+    const selectedReg = regencyList?.locations.find(
+      (each) => each.id === regencyId
+    )
 
-  const handleAddLocation = () => {
-    const locationID = {
-      location_id: String(form.watch('location_id')),
-    }
-    append(locationID)
+    console.log(selectedReg)
   }
 
   const handleRemoveLocation = (idx: number) => {
@@ -137,63 +171,41 @@ const useAssignForm = (props: AssignAreaFormProps) => {
     form.reset()
   }
 
-  const handleSuccess = (response: CommonApiResponse) => {
-    toast.success(response.message)
-    handleConfirmClose()
-    mutate()
-  }
-
-  const handleFailure = (response?: CommonApiResponse) => {
-    toast.error(
-      response?.message || 'Terjadi kesalahan. Mohon coba beberapa saat lagi.'
-    )
-  }
+  // const handleSuccess = (response: CommonApiResponse) => {
+  //   toast.success(response.message)
+  //   handleConfirmClose()
+  //   mutate()
+  // }
+  //
+  // const handleFailure = (response?: CommonApiResponse) => {
+  //   toast.error(
+  //     response?.message || 'Terjadi kesalahan. Mohon coba beberapa saat lagi.'
+  //   )
+  // }
 
   const onSubmit = async (data: AssignLocationFormInputs) => {
     setIsLoading((prev) => ({ ...prev, submit: true }))
 
-    try {
-      const req: AssignLocationRequest = {
-        sales_id: Number(userID),
-        locations: data.locations.map((loc) => ({
-          location_id: Number(loc.location_id.split('|')?.[0]),
-        })),
-      }
-
-      const apiRes = await callAPI<AssignLocationRequest, CommonApiResponse>(
-        LocationAPI.POST_ASSIGN_LOCATION,
-        req,
-        { method: 'POST' }
-      )
-
-      const { data: assignLocationRes, status } = apiRes
-
-      if (apiStatusChecker(status) && assignLocationRes) {
-        handleSuccess(assignLocationRes)
-      } else {
-        handleFailure(assignLocationRes)
-      }
-    } catch {
-      handleFailure()
-      throw 'Failed to assign location to this user'
-    } finally {
-      setIsLoading((prev) => ({ ...prev, submit: false }))
-    }
+    console.log(data)
   }
 
   useEffect(() => {
-    if (form.watch('location_id')) {
-      handleValidateLocation()
-    }
-  }, [form.watch('location_id')])
+    ;(async () => {
+      await handleSearch(LocationLevelType.PROVINCE, defaultFilter.province)
+    })()
+  }, [])
 
   return {
     form,
     fields,
-    locationList,
-    isLocationLoading,
+    searchLoading,
     isLoading,
-    handleAddLocation,
+    defaultFilter,
+    provinceList,
+    regencyList,
+    handleSearch,
+    fetchLocByRegency,
+    // handleAddLocation,
     handleRemoveLocation,
     handleCloseForm,
     onSubmit,
