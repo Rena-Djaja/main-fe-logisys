@@ -7,7 +7,12 @@ import UserMarker from '@/components/shared/Map/Tools/Marker/UserMarker'
 import Controls from '@/components/shared/Map/Tools/Controls/Controls'
 import Style from '@/components/shared/Map/Tools/Style/Style'
 import { useMapContext } from '@/components/shared/context/MapContext'
-const Map = () => {
+
+interface MapProps {
+  withSearchbox?: boolean
+}
+
+const Map = ({ withSearchbox = true }: MapProps) => {
   const {
     map,
     isLoaded,
@@ -58,7 +63,7 @@ const Map = () => {
           </div>
         )}
         <Style />
-        <Searchbox />
+        {withSearchbox && <Searchbox />}
         <UserMarker {...currentPosition} />
         <Controls />
       </div>

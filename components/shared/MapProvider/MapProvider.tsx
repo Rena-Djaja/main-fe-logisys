@@ -32,7 +32,8 @@ const MapProvider = ({ children }: MapComponentProps) => {
   })
 
   const loadMap = () => {
-    if (!mapContainerRef || map.current) return
+    console.log(map)
+    if (!mapContainerRef) return
 
     map.current = new mapboxgl.Map({
       container: mapContainerRef,

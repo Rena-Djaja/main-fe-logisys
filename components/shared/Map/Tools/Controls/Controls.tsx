@@ -41,6 +41,7 @@ const Controls = () => {
   return (
     <aside className="absolute bottom-2 md:bottom-8 right-2 md:right-4 z-10 bg-background p-0 md:p-1 rounded-lg shadow-lg flex flex-col divide-y">
       <Button
+        type="button"
         className="hidden md:flex"
         variant="ghost"
         size="icon"
@@ -50,6 +51,7 @@ const Controls = () => {
         <span className="sr-only">Zoom in</span>
       </Button>
       <Button
+        type="button"
         className="hidden md:flex"
         variant="ghost"
         size="icon"
@@ -58,7 +60,7 @@ const Controls = () => {
         <Minus className="size-4 md:size-5" />
         <span className="sr-only">Zoom out</span>
       </Button>
-      <Button variant="ghost" size="icon" onClick={handleLocate}>
+      <Button type="button" variant="ghost" size="icon" onClick={handleLocate}>
         <Locate className="size-4 md:size-5" />
         <span className="sr-only">Locate</span>
       </Button>

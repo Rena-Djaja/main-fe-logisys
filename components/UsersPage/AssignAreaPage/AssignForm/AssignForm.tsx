@@ -78,7 +78,7 @@ const AssignForm: FC<AssignAreaFormProps> = (props) => {
               />
             </div>
             <div className="w-full aspect-video lg:col-span-2 my-4">
-              <Map />
+              <Map withSearchbox={false} />
             </div>
             {/*<div>*/}
             {/*  <CustomButton*/}
