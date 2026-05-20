@@ -17,6 +17,7 @@ interface MapProps {
   withMarkerClick?: boolean
   onMarkerHover?: (data: LocationFeature) => void
   onMarkerClick?: (data: LocationFeature) => void
+  onMarkerRemoveClick?: (data: LocationFeature) => void
 }
 
 const CustomMap = ({
@@ -24,6 +25,7 @@ const CustomMap = ({
   isLoading,
   withMarkerClick = true,
   onMarkerClick,
+  onMarkerRemoveClick,
   onMarkerHover,
 }: MapProps) => {
   const {
@@ -96,6 +98,9 @@ const CustomMap = ({
             enableClick={withMarkerClick}
             onHover={(data) => onMarkerHover && onMarkerHover(data)}
             onClick={(data) => onMarkerClick && onMarkerClick(data)}
+            onRemoveClick={(data) =>
+              onMarkerRemoveClick && onMarkerRemoveClick(data)
+            }
           />
         ))}
 

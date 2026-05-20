@@ -11,10 +11,11 @@ interface LocationMarkerProps {
   enableClick: boolean
   onHover?: (data: LocationFeature) => void
   onClick?: (data: LocationFeature) => void
+  onRemoveClick?: (data: LocationFeature) => void
 }
 
 const LocationMarker = (props: LocationMarkerProps) => {
-  const { location, enableClick, onClick, onHover } = props
+  const { location, enableClick, onClick, onRemoveClick, onHover } = props
   const { selectedLocations, setSelectedLocations } = useMapContext()
 
   const debounce = useRef(0)
@@ -41,22 +42,21 @@ const LocationMarker = (props: LocationMarkerProps) => {
 
   const handleClick = (location: LocationFeature) => {
     if (enableClick) {
-      setSelectedLocations((prev) => {
-        const newState = [...prev]
-        const existedIdx = newState.findIndex(
-          (each) => each.properties.mapbox_id === location.properties.mapbox_id
-        )
+      const newState = [...selectedLocations]
+      const existedIdx = newState.findIndex(
+        (each) => each.properties.mapbox_id === location.properties.mapbox_id
+      )
 
-        if (existedIdx !== -1) {
-          newState.splice(existedIdx, 1)
-        } else {
-          newState.push(location)
-        }
+      if (existedIdx !== -1) {
+        newState.splice(existedIdx, 1)
+        onRemoveClick && onRemoveClick(location)
+      } else {
+        newState.push(location)
+        onClick && onClick(location)
+      }
 
-        return newState
-      })
+      setSelectedLocations(newState)
     }
-    onClick && onClick(location)
   }
 
   return (

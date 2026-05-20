@@ -21,6 +21,8 @@ const AssignForm: FC<AssignAreaFormProps> = (props) => {
     provinceList,
     regencyList,
     handleSearch,
+    handleAddLocation,
+    handleRemoveLocation,
     fetchLocByRegency,
     handleCloseForm,
     onSubmit,
@@ -78,7 +80,12 @@ const AssignForm: FC<AssignAreaFormProps> = (props) => {
               />
             </div>
             <div className="w-full aspect-video lg:col-span-2 my-4">
-              <Map withSearchbox={false} isLoading={searchLoading.disVil} />
+              <Map
+                withSearchbox={false}
+                isLoading={searchLoading.disVil}
+                onMarkerClick={handleAddLocation}
+                onMarkerRemoveClick={handleRemoveLocation}
+              />
             </div>
             {/*<div>*/}
             {/*  <CustomButton*/}

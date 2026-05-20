@@ -41,7 +41,7 @@ const useAssignForm = (props: AssignAreaFormProps) => {
     },
   })
 
-  const { fields, remove } = useFieldArray({
+  const { fields, append, remove } = useFieldArray({
     control: form.control,
     name: 'locations',
   })
@@ -62,8 +62,6 @@ const useAssignForm = (props: AssignAreaFormProps) => {
     validate: false,
     submit: false,
   })
-
-  console.log(districtList)
 
   const mapLocationResult = (
     key: LocationLevelType,
@@ -188,7 +186,7 @@ const useAssignForm = (props: AssignAreaFormProps) => {
     const locations: LocationFeature[] = data.map((each) => ({
       properties: {
         name: each.name,
-        mapbox_id: `location-${each.id}`,
+        mapbox_id: each.id,
         full_address: '',
         feature_type: '',
         coordinates: {
@@ -202,8 +200,35 @@ const useAssignForm = (props: AssignAreaFormProps) => {
     setLocationList(locations)
   }
 
-  const handleRemoveLocation = (idx: number) => {
-    remove(idx)
+  const handleAddLocation = (location: LocationFeature) => {
+    const selected = districtList?.find(
+      (each) => each.id === location.properties.mapbox_id
+    )
+
+    if (selected) {
+      const result = {
+        location_id: selected.id,
+        name: selected.name,
+        latitude: selected.latitude,
+        longitude: selected.longitude,
+        level: selected.level,
+        villages: selected.villages,
+      }
+
+      append(result)
+    }
+  }
+
+  console.log(fields, 'fields')
+
+  const handleRemoveLocation = (location: LocationFeature) => {
+    const selectedIdx = fields.findIndex(
+      (each) => each.location_id === location.properties.mapbox_id
+    )
+
+    if (selectedIdx !== -1) {
+      remove(selectedIdx)
+    }
   }
 
   const handleCloseForm = () => {
@@ -260,6 +285,7 @@ const useAssignForm = (props: AssignAreaFormProps) => {
     provinceList,
     regencyList,
     handleSearch,
+    handleAddLocation,
     fetchLocByRegency,
     handleRemoveLocation,
     handleCloseForm,
