@@ -7,19 +7,42 @@ import UserMarker from '@/components/shared/Map/Tools/Marker/UserMarker'
 import Controls from '@/components/shared/Map/Tools/Controls/Controls'
 import Style from '@/components/shared/Map/Tools/Style/Style'
 import { useMapContext } from '@/components/shared/context/MapContext'
+import LocationMarker from '@/components/shared/Map/Tools/Marker/LocationMarker'
+import LocationPopup from '@/components/shared/Map/Tools/Popup/LocationPopup'
+import { LocationFeature } from '@/type/Map'
 
 interface MapProps {
   withSearchbox?: boolean
+  isLoading?: boolean
+  withMarkerClick?: boolean
+  onMarkerHover?: (data: LocationFeature) => void
+  onMarkerClick?: (data: LocationFeature) => void
 }
 
-const Map = ({ withSearchbox = true }: MapProps) => {
+const CustomMap = ({
+  withSearchbox = true,
+  isLoading,
+  withMarkerClick = true,
+  onMarkerClick,
+  onMarkerHover,
+}: MapProps) => {
   const {
     map,
     isLoaded,
-    setMapContainerRef,
     currentPosition,
+    selectedLocation,
+    locationList,
+    selectedLocations,
+    setMapContainerRef,
     setCurrentPosition,
   } = useMapContext()
+
+  const combinedLocations = [...locationList, ...selectedLocations]
+  const locations = [
+    ...new Map(
+      combinedLocations.map((item) => [item.properties.mapbox_id, item])
+    ).values(),
+  ]
 
   const locateCurrentLocation = () => {
     if ('geolocation' in navigator) {
@@ -54,7 +77,7 @@ const Map = ({ withSearchbox = true }: MapProps) => {
         id={'assign-form-map'}
         className="absolute inset-0 h-full w-full"
       >
-        {!isLoaded && (
+        {(!isLoaded || isLoading) && (
           <div className="absolute inset-0 flex items-center justify-center bg-background/80 z-1000">
             <div className="flex gap-2 items-center">
               <Spinner className="size-5" />
@@ -66,9 +89,25 @@ const Map = ({ withSearchbox = true }: MapProps) => {
         {withSearchbox && <Searchbox />}
         <UserMarker {...currentPosition} />
         <Controls />
+        {locations.map((location) => (
+          <LocationMarker
+            key={location.properties.mapbox_id}
+            location={location}
+            enableClick={withMarkerClick}
+            onHover={(data) => onMarkerHover && onMarkerHover(data)}
+            onClick={(data) => onMarkerClick && onMarkerClick(data)}
+          />
+        ))}
+
+        {selectedLocation && (
+          <LocationPopup
+            location={selectedLocation}
+            onClose={() => console.log(null)}
+          />
+        )}
       </div>
     </div>
   )
 }
 
-export default Map
+export default CustomMap

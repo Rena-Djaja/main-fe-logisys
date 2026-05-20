@@ -60,3 +60,27 @@ export enum LocationLevelType {
   DISTRICT = 'district',
   VILLAGE = 'village',
 }
+
+export interface DisVilListRequest {
+  regency_id: string
+}
+
+export interface DistrictProps {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  level: string
+  villages: VillageProps[]
+}
+
+interface VillageProps {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+}
+
+export interface DisVilListResponse extends CommonApiResponse {
+  data: DistrictProps[]
+}

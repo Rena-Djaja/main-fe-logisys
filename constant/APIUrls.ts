@@ -17,6 +17,7 @@ export const LocationAPI = {
   POST_ASSIGN_LOCATION: baseURL + '/location/sales',
   GET_LOCATION_SUGGESTIONS: baseURL + '/location/search',
   GET_RETRIEVED_LOCATION: baseURL + '/location/retrieve',
+  GET_DIS_VIL_LIST: baseURL + '/location/list/disvil',
 }
 
 export const UserAPI = {

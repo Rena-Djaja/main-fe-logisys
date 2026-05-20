@@ -10,7 +10,7 @@ import { DialogClose, DialogFooter } from '@/components/shared/ui/dialog'
 import { AssignAreaFormProps } from '@/type/User'
 import CustomAsyncSelect from '@/components/shared/FormInputs/CustomAsyncSelect'
 import { LocationLevelType } from '@/type/Location'
-import Map from '@/components/shared/Map/Map'
+import Map from '@/components/shared/Map/CustomMap'
 
 const AssignForm: FC<AssignAreaFormProps> = (props) => {
   const {
@@ -78,7 +78,7 @@ const AssignForm: FC<AssignAreaFormProps> = (props) => {
               />
             </div>
             <div className="w-full aspect-video lg:col-span-2 my-4">
-              <Map withSearchbox={false} />
+              <Map withSearchbox={false} isLoading={searchLoading.disVil} />
             </div>
             {/*<div>*/}
             {/*  <CustomButton*/}

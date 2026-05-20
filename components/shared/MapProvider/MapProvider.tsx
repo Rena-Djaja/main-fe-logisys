@@ -22,6 +22,7 @@ const MapProvider = ({ children }: MapComponentProps) => {
   )
   const [selectedLocation, setSelectedLocation] =
     useState<LocationFeature | null>(null)
+  const [locationList, setLocationList] = useState<LocationFeature[]>([])
   const [selectedLocations, setSelectedLocations] = useState<LocationFeature[]>(
     []
   )
@@ -32,7 +33,6 @@ const MapProvider = ({ children }: MapComponentProps) => {
   })
 
   const loadMap = () => {
-    console.log(map)
     if (!mapContainerRef) return
 
     map.current = new mapboxgl.Map({
@@ -68,11 +68,13 @@ const MapProvider = ({ children }: MapComponentProps) => {
           map: mapContextValue,
           isLoaded,
           currentPosition,
+          selectedLocation,
+          locationList,
+          selectedLocations,
           setMapContainerRef,
           setCurrentPosition,
-          selectedLocation,
-          selectedLocations,
           setSelectedLocations,
+          setLocationList,
           setSelectedLocation,
         }}
       >

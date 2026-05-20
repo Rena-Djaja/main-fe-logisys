@@ -3,6 +3,9 @@
 import { useEffect, useState } from 'react'
 import { LocationAPI } from '@/constant/APIUrls'
 import {
+  DistrictProps,
+  DisVilListRequest,
+  DisVilListResponse,
   LocationFilterRequest,
   LocationLevelType,
   LocationListProps,
@@ -17,6 +20,8 @@ import { useConfirmationStore } from '@/store'
 import { ButtonVariant } from '@/type/FormInputs'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { assignLocationValidationSchema } from '@/validations/UserValidation'
+import { useMapContext } from '@/components/shared/context/MapContext'
+import { LocationFeature } from '@/type/Map'
 
 const useAssignForm = (props: AssignAreaFormProps) => {
   const {
@@ -25,7 +30,7 @@ const useAssignForm = (props: AssignAreaFormProps) => {
     // mutate
   } = props
   const { setConfirmation } = useConfirmationStore()
-  // const { map } = useMapContext()
+  const { map, setLocationList } = useMapContext()
 
   const form = useForm<AssignLocationFormInputs>({
     resolver: zodResolver(assignLocationValidationSchema),
@@ -44,6 +49,7 @@ const useAssignForm = (props: AssignAreaFormProps) => {
   const [searchLoading, setSearchLoading] = useState({
     province: false,
     regency: false,
+    disVil: false,
   })
   const [defaultFilter] = useState({
     province: '',
@@ -51,10 +57,13 @@ const useAssignForm = (props: AssignAreaFormProps) => {
   })
   const [provinceList, setProvinceList] = useState<LocationListProps>()
   const [regencyList, setRegencyList] = useState<LocationListProps>()
+  const [districtList, setDistrictList] = useState<DistrictProps[]>()
   const [isLoading, setIsLoading] = useState({
     validate: false,
     submit: false,
   })
+
+  console.log(districtList)
 
   const mapLocationResult = (
     key: LocationLevelType,
@@ -138,12 +147,59 @@ const useAssignForm = (props: AssignAreaFormProps) => {
     }
   }
 
-  const fetchLocByRegency = (regencyId: string) => {
-    const selectedReg = regencyList?.locations.find(
-      (each) => each.id === regencyId
-    )
+  const fetchLocByRegency = async (regencyId: string) => {
+    setSearchLoading((prev) => ({ ...prev, disVil: true }))
 
-    console.log(selectedReg)
+    try {
+      const selectedReg = regencyList?.locations.find(
+        (each) => each.id === regencyId
+      )
+
+      const apiRes = await callAPI<DisVilListRequest, DisVilListResponse>(
+        LocationAPI.GET_DIS_VIL_LIST,
+        { regency_id: regencyId },
+        { method: 'GET' }
+      )
+      const { status, data: locationData } = apiRes
+
+      if (apiStatusChecker(status) && locationData) {
+        handleSuccessFetchLoc(locationData)
+
+        if (selectedReg) {
+          map?.flyTo({
+            center: [selectedReg.longitude, selectedReg?.latitude],
+            zoom: 10,
+            speed: 4,
+            duration: 1000,
+            essential: true,
+          })
+        }
+      }
+    } catch {
+      throw 'Failed to fetch locations'
+    } finally {
+      setSearchLoading((prev) => ({ ...prev, disVil: false }))
+    }
+  }
+
+  const handleSuccessFetchLoc = (res: DisVilListResponse) => {
+    const { data } = res
+
+    const locations: LocationFeature[] = data.map((each) => ({
+      properties: {
+        name: each.name,
+        mapbox_id: `location-${each.id}`,
+        full_address: '',
+        feature_type: '',
+        coordinates: {
+          latitude: each.latitude,
+          longitude: each.longitude,
+        },
+      },
+    }))
+
+    setDistrictList(data)
+    setLocationList(locations)
   }
 
   const handleRemoveLocation = (idx: number) => {
@@ -205,7 +261,6 @@ const useAssignForm = (props: AssignAreaFormProps) => {
     regencyList,
     handleSearch,
     fetchLocByRegency,
-    // handleAddLocation,
     handleRemoveLocation,
     handleCloseForm,
     onSubmit,

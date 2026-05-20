@@ -7,6 +7,8 @@ interface MapContextType {
   setMapContainerRef: (ref: HTMLDivElement | null) => void
   selectedLocation: LocationFeature | null
   setSelectedLocation: Dispatch<SetStateAction<LocationFeature | null>>
+  locationList: LocationFeature[]
+  setLocationList: Dispatch<SetStateAction<LocationFeature[]>>
   selectedLocations: LocationFeature[]
   setSelectedLocations: Dispatch<SetStateAction<LocationFeature[]>>
   currentPosition: {
