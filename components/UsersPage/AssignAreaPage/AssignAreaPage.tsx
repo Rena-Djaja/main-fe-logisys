@@ -38,7 +38,7 @@ const AssignAreaPage: FC<CommonFormProps> = ({ id }) => {
           userID={String(id)}
           isOpen={isFormOpen}
           handleClose={handleFormState}
-          mutate={mutate}
+          mutateList={mutate}
         />
       </MapProvider>
       <div className="mt-10 w-full flex flex-col gap-14">

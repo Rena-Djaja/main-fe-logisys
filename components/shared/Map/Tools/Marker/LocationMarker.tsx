@@ -2,7 +2,7 @@
 
 import React, { useRef, useState } from 'react'
 import Marker from '@/components/shared/Map/Tools/Marker/Marker'
-import { MapPin, MapPinCheck } from 'lucide-react'
+import { MapPin, MapPinCheck, MapPinOff } from 'lucide-react'
 import { LocationFeature } from '@/type/Map'
 import { useMapContext } from '@/components/shared/context/MapContext'
 
@@ -12,10 +12,18 @@ interface LocationMarkerProps {
   onHover?: (data: LocationFeature) => void
   onClick?: (data: LocationFeature) => void
   onRemoveClick?: (data: LocationFeature) => void
+  disabledAreas?: string[]
 }
 
 const LocationMarker = (props: LocationMarkerProps) => {
-  const { location, enableClick, onClick, onRemoveClick, onHover } = props
+  const {
+    location,
+    enableClick,
+    onClick,
+    onRemoveClick,
+    onHover,
+    disabledAreas = [],
+  } = props
   const { selectedLocations, setSelectedLocations } = useMapContext()
 
   const debounce = useRef(0)
@@ -65,11 +73,20 @@ const LocationMarker = (props: LocationMarkerProps) => {
       latitude={location.properties.coordinates.latitude}
       data={location}
       onHover={({ isHovered, data }) => handleHover(isHovered, data)}
-      onClick={({ data }) => handleClick && handleClick(data)}
+      onClick={({ data }) => {
+        if (
+          handleClick &&
+          !disabledAreas.includes(location.properties.mapbox_id)
+        ) {
+          handleClick(data)
+        }
+      }}
     >
       <div className="flex items-center justify-center transform transition-all duration-200 drop-shadow-lg cursor-pointer hover:scale-110">
         {isSelected ? (
           <MapPinCheck className="stroke-[2.5px] size-8 text-chart-2 fill-green-200" />
+        ) : disabledAreas.includes(location.properties.mapbox_id) ? (
+          <MapPinOff className="stroke-[2.5px] size-7 text-white fill-gray-500/70 cursor-not-allowed" />
         ) : (
           <MapPin className="stroke-[2.5px] size-8 text-white fill-red-500" />
         )}

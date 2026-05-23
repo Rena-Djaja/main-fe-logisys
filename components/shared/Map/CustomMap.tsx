@@ -18,6 +18,7 @@ interface MapProps {
   onMarkerHover?: (data: LocationFeature) => void
   onMarkerClick?: (data: LocationFeature) => void
   onMarkerRemoveClick?: (data: LocationFeature) => void
+  disabledAreas?: string[]
 }
 
 const CustomMap = ({
@@ -27,6 +28,7 @@ const CustomMap = ({
   onMarkerClick,
   onMarkerRemoveClick,
   onMarkerHover,
+  disabledAreas,
 }: MapProps) => {
   const {
     map,
@@ -96,6 +98,7 @@ const CustomMap = ({
             key={location.properties.mapbox_id}
             location={location}
             enableClick={withMarkerClick}
+            disabledAreas={disabledAreas}
             onHover={(data) => onMarkerHover && onMarkerHover(data)}
             onClick={(data) => onMarkerClick && onMarkerClick(data)}
             onRemoveClick={(data) =>

@@ -57,6 +57,10 @@ const MapProvider = ({ children }: MapComponentProps) => {
     }
   }
 
+  const handleResetSelectedLocations = () => {
+    setSelectedLocations([])
+  }
+
   useEffect(() => {
     loadMap()
   }, [mapContainerRef])
@@ -76,6 +80,7 @@ const MapProvider = ({ children }: MapComponentProps) => {
           setSelectedLocations,
           setLocationList,
           setSelectedLocation,
+          resetSelectedLocations: handleResetSelectedLocations,
         }}
       >
         {children}

@@ -4,10 +4,7 @@ import {
   PaginationResponse,
 } from '@/type/Common'
 import { z } from 'zod'
-import {
-  assignLocationValidationSchema,
-  userFormValidationSchema,
-} from '@/validations/UserValidation'
+import { userFormValidationSchema } from '@/validations/UserValidation'
 
 export interface UserProps {
   id: number
@@ -57,30 +54,6 @@ export interface PostUserRequest {
 
 export interface DeleteUserRequest {
   id: string
-}
-
-export interface AssignedAreaListRequest {
-  sales_id: string
-}
-
-export interface AssignAreaFormProps {
-  userID: string
-  isOpen: boolean
-  handleClose: () => void
-  mutate: () => void
-}
-
-export type AssignLocationFormInputs = z.infer<
-  typeof assignLocationValidationSchema
->
-
-export interface AssignLocationProps {
-  village_id: string
-  salesman_id: string
-}
-
-export interface AssignLocationRequest {
-  locations: AssignLocationProps[]
 }
 
 export interface UserListRequest extends CommonFilterRequest {

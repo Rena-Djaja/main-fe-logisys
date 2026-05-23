@@ -21,6 +21,7 @@ interface MapContextType {
     latitude: number
     longitude: number
   }) => void
+  resetSelectedLocations: () => void
 }
 
 export const MapContext = createContext<MapContextType | null>(null)

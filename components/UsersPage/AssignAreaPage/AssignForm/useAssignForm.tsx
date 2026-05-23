@@ -15,12 +15,6 @@ import { useFieldArray, useForm } from 'react-hook-form'
 import { callAPI } from '@/lib/fetchers'
 import { apiStatusChecker } from '@/lib/utils'
 import { toast } from 'sonner'
-import {
-  AssignAreaFormProps,
-  AssignLocationFormInputs,
-  AssignLocationProps,
-  AssignLocationRequest,
-} from '@/type/User'
 import { useConfirmationStore } from '@/store'
 import { ButtonVariant } from '@/type/FormInputs'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -28,15 +22,20 @@ import { assignLocationValidationSchema } from '@/validations/UserValidation'
 import { useMapContext } from '@/components/shared/context/MapContext'
 import { LocationFeature } from '@/type/Map'
 import { CommonApiResponse } from '@/type/Common'
+import useCommonApi from '@/components/shared/Hooks/CommonApi/useCommonApi'
+import {
+  AssignAreaFormProps,
+  AssignLocationFormInputs,
+  AssignLocationProps,
+  AssignLocationRequest,
+  SalesAreaFilterRequest,
+  SalesAreaListProps,
+} from '@/type/SalesArea'
 
 const useAssignForm = (props: AssignAreaFormProps) => {
-  const {
-    userID,
-    handleClose,
-    // mutate
-  } = props
+  const { userID, handleClose } = props
   const { setConfirmation } = useConfirmationStore()
-  const { map, setLocationList } = useMapContext()
+  const { map, setLocationList, resetSelectedLocations } = useMapContext()
 
   const form = useForm<AssignLocationFormInputs>({
     resolver: zodResolver(assignLocationValidationSchema),
@@ -68,6 +67,16 @@ const useAssignForm = (props: AssignAreaFormProps) => {
     validate: false,
     submit: false,
   })
+
+  const {
+    data: salesAreaList,
+    isValidating,
+    mutate,
+  } = useCommonApi<SalesAreaFilterRequest, SalesAreaListProps>(
+    SalesAreaAPI.GET_SALES_AREA_LIST,
+    { salesman_id: userID },
+    { method: 'GET' }
+  )
 
   const mapLocationResult = (
     key: LocationLevelType,
@@ -254,6 +263,8 @@ const useAssignForm = (props: AssignAreaFormProps) => {
   const handleConfirmClose = () => {
     handleClose()
     form.reset()
+    mutate()
+    resetSelectedLocations()
   }
 
   const handleSuccess = (response: CommonApiResponse) => {
@@ -315,6 +326,8 @@ const useAssignForm = (props: AssignAreaFormProps) => {
     defaultFilter,
     provinceList,
     regencyList,
+    salesAreaList,
+    isValidating,
     handleSearch,
     handleAddLocation,
     fetchLocByRegency,

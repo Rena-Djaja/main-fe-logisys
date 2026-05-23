@@ -21,6 +21,7 @@ export const LocationAPI = {
 }
 
 export const SalesAreaAPI = {
+  GET_SALES_AREA_LIST: baseURL + '/sales-area/list',
   POST_BULK_INSERT_SALES_AREA: baseURL + '/sales-area/bulk',
 }
 

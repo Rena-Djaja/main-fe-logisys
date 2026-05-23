@@ -7,10 +7,10 @@ import { Form } from '@/components/shared/ui/form'
 import CustomButton from '@/components/shared/FormInputs/CustomButton'
 import { ButtonType, ButtonVariant } from '@/type/FormInputs'
 import { DialogClose, DialogFooter } from '@/components/shared/ui/dialog'
-import { AssignAreaFormProps } from '@/type/User'
 import CustomAsyncSelect from '@/components/shared/FormInputs/CustomAsyncSelect'
 import { LocationLevelType } from '@/type/Location'
 import Map from '@/components/shared/Map/CustomMap'
+import { AssignAreaFormProps } from '@/type/SalesArea'
 
 const AssignForm: FC<AssignAreaFormProps> = (props) => {
   const {
@@ -20,6 +20,8 @@ const AssignForm: FC<AssignAreaFormProps> = (props) => {
     defaultFilter,
     provinceList,
     regencyList,
+    salesAreaList,
+    isValidating,
     handleSearch,
     handleAddLocation,
     handleRemoveLocation,
@@ -82,9 +84,12 @@ const AssignForm: FC<AssignAreaFormProps> = (props) => {
             <div className="w-full aspect-video lg:col-span-2 my-4">
               <Map
                 withSearchbox={false}
-                isLoading={searchLoading.disVil}
+                isLoading={searchLoading.disVil || isValidating}
                 onMarkerClick={handleAddLocation}
                 onMarkerRemoveClick={handleRemoveLocation}
+                disabledAreas={salesAreaList?.areas.map(
+                  (each) => each.district_id
+                )}
               />
             </div>
             {/*<div>*/}
