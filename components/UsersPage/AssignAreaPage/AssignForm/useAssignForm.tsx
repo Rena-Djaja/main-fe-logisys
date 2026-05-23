@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { LocationAPI } from '@/constant/APIUrls'
+import { LocationAPI, SalesAreaAPI } from '@/constant/APIUrls'
 import {
   DistrictProps,
   DisVilListRequest,
@@ -15,17 +15,23 @@ import { useFieldArray, useForm } from 'react-hook-form'
 import { callAPI } from '@/lib/fetchers'
 import { apiStatusChecker } from '@/lib/utils'
 import { toast } from 'sonner'
-import { AssignAreaFormProps, AssignLocationFormInputs } from '@/type/User'
+import {
+  AssignAreaFormProps,
+  AssignLocationFormInputs,
+  AssignLocationProps,
+  AssignLocationRequest,
+} from '@/type/User'
 import { useConfirmationStore } from '@/store'
 import { ButtonVariant } from '@/type/FormInputs'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { assignLocationValidationSchema } from '@/validations/UserValidation'
 import { useMapContext } from '@/components/shared/context/MapContext'
 import { LocationFeature } from '@/type/Map'
+import { CommonApiResponse } from '@/type/Common'
 
 const useAssignForm = (props: AssignAreaFormProps) => {
   const {
-    // userID,
+    userID,
     handleClose,
     // mutate
   } = props
@@ -219,8 +225,6 @@ const useAssignForm = (props: AssignAreaFormProps) => {
     }
   }
 
-  console.log(fields, 'fields')
-
   const handleRemoveLocation = (location: LocationFeature) => {
     const selectedIdx = fields.findIndex(
       (each) => each.location_id === location.properties.mapbox_id
@@ -252,22 +256,49 @@ const useAssignForm = (props: AssignAreaFormProps) => {
     form.reset()
   }
 
-  // const handleSuccess = (response: CommonApiResponse) => {
-  //   toast.success(response.message)
-  //   handleConfirmClose()
-  //   mutate()
-  // }
-  //
-  // const handleFailure = (response?: CommonApiResponse) => {
-  //   toast.error(
-  //     response?.message || 'Terjadi kesalahan. Mohon coba beberapa saat lagi.'
-  //   )
-  // }
+  const handleSuccess = (response: CommonApiResponse) => {
+    toast.success(response.message)
+    handleConfirmClose()
+    // mutate()
+  }
+
+  const handleFailure = (response?: CommonApiResponse) => {
+    toast.error(
+      response?.message || 'Terjadi kesalahan. Mohon coba beberapa saat lagi.'
+    )
+  }
 
   const onSubmit = async (data: AssignLocationFormInputs) => {
     setIsLoading((prev) => ({ ...prev, submit: true }))
 
-    console.log(data)
+    try {
+      let locations: AssignLocationProps[] = []
+
+      data.locations.forEach((each) => {
+        const rows = each.villages.map((eachVillage) => ({
+          village_id: eachVillage.id,
+          salesman_id: userID,
+        }))
+        locations = [...locations, ...rows]
+      })
+
+      const apiRes = await callAPI<AssignLocationRequest, CommonApiResponse>(
+        SalesAreaAPI.POST_BULK_INSERT_SALES_AREA,
+        { locations }
+      )
+      const { status, data: assignLocationData } = apiRes
+
+      if (apiStatusChecker(status) && assignLocationData) {
+        handleSuccess(assignLocationData)
+      } else {
+        handleFailure(assignLocationData)
+      }
+    } catch {
+      handleFailure()
+      throw 'Failed to assign location'
+    } finally {
+      setIsLoading((prev) => ({ ...prev, submit: false }))
+    }
   }
 
   useEffect(() => {

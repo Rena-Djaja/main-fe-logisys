@@ -74,9 +74,13 @@ export type AssignLocationFormInputs = z.infer<
   typeof assignLocationValidationSchema
 >
 
+export interface AssignLocationProps {
+  village_id: string
+  salesman_id: string
+}
+
 export interface AssignLocationRequest {
-  sales_id: number
-  locations: { location_id: number }[]
+  locations: AssignLocationProps[]
 }
 
 export interface UserListRequest extends CommonFilterRequest {

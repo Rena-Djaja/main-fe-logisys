@@ -20,6 +20,10 @@ export const LocationAPI = {
   GET_DIS_VIL_LIST: baseURL + '/location/list/disvil',
 }
 
+export const SalesAreaAPI = {
+  POST_BULK_INSERT_SALES_AREA: baseURL + '/sales-area/bulk',
+}
+
 export const UserAPI = {
   GET_USER_LIST: baseURL + '/user/list',
   GET_USER_DETAILS: baseURL + '/user/details',
