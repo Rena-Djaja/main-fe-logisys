@@ -1,15 +1,28 @@
-import { CommonApiResponse, PaginationResponse } from '@/type/Common'
+import {
+  CommonApiResponse,
+  CommonFilterRequest,
+  PaginationResponse,
+} from '@/type/Common'
 import { z } from 'zod'
 import { locationFormValidationSchema } from '@/validations/LocationValidation'
 
 export interface LocationProps {
-  id: number
+  id: string
   name: string
+  latitude: number
+  longitude: number
+  level: string
+  parent_id: null
+  geom: string
 }
 
-export interface LocationListResponse {
-  data: LocationProps[]
+export interface LocationListProps {
+  locations: LocationProps[]
   pagination: PaginationResponse
+}
+
+export interface LocationListResponse extends CommonApiResponse {
+  data: LocationListProps
 }
 
 export interface LocationDetailsRequest {
@@ -34,4 +47,40 @@ export interface ValidateLocationResponse extends CommonApiResponse {
   data: {
     is_available: boolean
   }
+}
+
+export interface LocationFilterRequest extends CommonFilterRequest {
+  level: LocationLevelType
+  parent_id?: string
+}
+
+export enum LocationLevelType {
+  PROVINCE = 'province',
+  REGENCY = 'regency',
+  DISTRICT = 'district',
+  VILLAGE = 'village',
+}
+
+export interface DisVilListRequest {
+  regency_id: string
+}
+
+export interface DistrictProps {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  level: string
+  villages: VillageProps[]
+}
+
+interface VillageProps {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+}
+
+export interface DisVilListResponse extends CommonApiResponse {
+  data: DistrictProps[]
 }

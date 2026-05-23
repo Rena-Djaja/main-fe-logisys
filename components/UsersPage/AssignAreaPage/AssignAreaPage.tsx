@@ -9,20 +9,14 @@ import {
   AvatarImage,
 } from '@/components/shared/ui/avatar'
 import { Badge } from '@/components/shared/ui/badge'
-import {
-  Empty,
-  EmptyContent,
-  EmptyDescription,
-  EmptyHeader,
-  EmptyMedia,
-  EmptyTitle,
-} from '@/components/shared/ui/empty'
 import { MapPinPlus, TextAlignStart } from 'lucide-react'
 import CustomButton from '@/components/shared/FormInputs/CustomButton'
 import AssignForm from '@/components/UsersPage/AssignAreaPage/AssignForm/AssignForm'
 import CustomTable from '@/components/shared/CustomTable/CustomTable'
 import SearchInput from '@/components/shared/SearchInput/SearchInput'
 import { ButtonType } from '@/type/FormInputs'
+import EmptyPlaceholder from '@/components/shared/EmptyPlaceholder/EmptyPlaceholder'
+import MapProvider from '@/components/shared/MapProvider/MapProvider'
 
 const AssignAreaPage: FC<CommonFormProps> = ({ id }) => {
   const {
@@ -39,12 +33,14 @@ const AssignAreaPage: FC<CommonFormProps> = ({ id }) => {
 
   return (
     <>
-      <AssignForm
-        userID={String(id)}
-        isOpen={isFormOpen}
-        handleClose={handleFormState}
-        mutate={mutate}
-      />
+      <MapProvider>
+        <AssignForm
+          userID={String(id)}
+          isOpen={isFormOpen}
+          handleClose={handleFormState}
+          mutateList={mutate}
+        />
+      </MapProvider>
       <div className="mt-10 w-full flex flex-col gap-14">
         <div className="flex items-center space-x-4">
           <Avatar className="size-[6.5rem] rounded-full">
@@ -68,7 +64,7 @@ const AssignAreaPage: FC<CommonFormProps> = ({ id }) => {
         <div className="mt-5 w-full flex flex-col gap-6">
           <div className="w-full flex flex-col lg:flex-row lg:justify-between items-center">
             <h2 className="w-full font-semibold text-[1.25rem]">
-              Assigned Locations
+              Daerah Terdaftar
             </h2>
             <div className="w-full flex gap-4 justify-end">
               <div className="w-full max-w-[15rem]">
@@ -76,7 +72,7 @@ const AssignAreaPage: FC<CommonFormProps> = ({ id }) => {
               </div>
               <div>
                 <CustomButton
-                  label={'Assign'}
+                  label={'Daftar Daerah Baru'}
                   icon={MapPinPlus}
                   type={ButtonType.BUTTON}
                   onClick={handleFormState}
@@ -85,31 +81,15 @@ const AssignAreaPage: FC<CommonFormProps> = ({ id }) => {
             </div>
           </div>
           {!isLocationLoading && !assignedLocations?.data?.length ? (
-            <Empty className="border">
-              <EmptyHeader>
-                <EmptyMedia variant="icon">
-                  <TextAlignStart />
-                </EmptyMedia>
-                <EmptyTitle>
-                  {filter.search
-                    ? `Location "${filter.search}" Not Found`
-                    : 'No Assigned Location Yet'}
-                </EmptyTitle>
-                <EmptyDescription>
-                  {filter.search
-                    ? `You haven't assigned "${filter.search}" to this user. You can add this location by clicking the button below. `
-                    : "You haven't assigned this user to any location yet. Get started by assigning a location."}
-                </EmptyDescription>
-              </EmptyHeader>
-              <EmptyContent>
-                <div className="flex">
-                  <CustomButton
-                    label={'Assign New Location'}
-                    onClick={handleFormState}
-                  />
-                </div>
-              </EmptyContent>
-            </Empty>
+            <EmptyPlaceholder
+              icon={TextAlignStart}
+              title={'Belum Ada Daerah'}
+              description={
+                'Anda belum mendaftarkan daerah kepada pengguna ini.'
+              }
+              buttonText={'Daftar Daerah Baru'}
+              onClick={handleFormState}
+            />
           ) : (
             <div className="w-full">
               <CustomTable

@@ -33,7 +33,7 @@ const LocationsPage = () => {
           <div className="w-full flex gap-2 font-semibold text-[1.25rem]">
             <span>All locations</span>
             <span className="opacity-70">
-              {locationList?.pagination.total_data}
+              {locationList?.data.pagination.total_data}
             </span>
           </div>
           <div className="w-full flex gap-4 justify-end">
@@ -52,12 +52,12 @@ const LocationsPage = () => {
         </div>
         <CustomTable
           headers={locationListHeaders}
-          data={locationList?.data || []}
+          data={locationList?.data.locations || []}
           isLoading={isValidating}
           allowDetails={() => false}
           page={filter.page}
           perPage={filter.per_page}
-          totalData={locationList?.pagination.total_data || 0}
+          totalData={locationList?.data.pagination.total_data || 0}
           onChange={(val) => search('page', val)}
           onRowClick={() => null}
           onUpdate={onUpdate}

@@ -169,6 +169,11 @@
   border-left-color: var(--card);
 }
 
+.mapboxgl-canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

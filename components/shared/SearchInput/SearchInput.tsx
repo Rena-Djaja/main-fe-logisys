@@ -28,7 +28,7 @@ const SearchInput: FC<SearchInputProps> = (props) => {
         <Search className="size-4 text-muted-foreground" />
       </div>
       <Input
-        placeholder={placeholder ?? 'Search...'}
+        placeholder={placeholder ?? 'Cari...'}
         className="pl-10"
         onChange={(e) => handleChange(e?.target?.value)}
       />

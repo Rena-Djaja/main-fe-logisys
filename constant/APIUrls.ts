@@ -17,6 +17,12 @@ export const LocationAPI = {
   POST_ASSIGN_LOCATION: baseURL + '/location/sales',
   GET_LOCATION_SUGGESTIONS: baseURL + '/location/search',
   GET_RETRIEVED_LOCATION: baseURL + '/location/retrieve',
+  GET_DIS_VIL_LIST: baseURL + '/location/list/disvil',
+}
+
+export const SalesAreaAPI = {
+  GET_SALES_AREA_LIST: baseURL + '/sales-area/list',
+  POST_BULK_INSERT_SALES_AREA: baseURL + '/sales-area/bulk',
 }
 
 export const UserAPI = {

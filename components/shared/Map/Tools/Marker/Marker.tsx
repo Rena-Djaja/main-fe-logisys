@@ -32,8 +32,15 @@ type Props = {
   children?: React.ReactNode
 } & MarkerOptions
 
-const Marker = (props: Props) => {
-  const { onHover, onClick, latitude, longitude, data, children } = props
+const Marker = ({
+  onHover,
+  onClick,
+  latitude,
+  longitude,
+  data,
+  children,
+  ...markerOptions
+}: Props) => {
   const { map } = useMapContext()
   const markerRef = useRef<HTMLDivElement | null>(null)
   const markerInstanceRef = useRef<mapboxgl.Marker | null>(null)
@@ -72,7 +79,7 @@ const Marker = (props: Props) => {
 
     const options = {
       element: markerEl,
-      ...props,
+      ...markerOptions,
     }
 
     markerInstanceRef.current = new mapboxgl.Marker(options)
@@ -87,7 +94,7 @@ const Marker = (props: Props) => {
         markerEl.removeEventListener('click', handleClick)
       }
     }
-  }, [map, longitude, latitude, props])
+  }, [map, longitude, latitude, data, onHover, onClick, children])
 
   return (
     <div>

@@ -6,7 +6,7 @@ import CustomInput from '@/components/shared/FormInputs/CustomInput'
 import CustomButton from '@/components/shared/FormInputs/CustomButton'
 import { ButtonType, ButtonVariant } from '@/type/FormInputs'
 import useSavedLocationForm from '@/components/SavedLocationPage/Form/useSavedLocationForm'
-import Map from '@/components/shared/Map/Map'
+import Map from '@/components/shared/Map/CustomMap'
 import {
   Sheet,
   SheetContent,

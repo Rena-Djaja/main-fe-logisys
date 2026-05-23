@@ -4,22 +4,28 @@ import React, { FC } from 'react'
 import CustomModal from '@/components/shared/CustomModal/CustomModal'
 import useAssignForm from '@/components/UsersPage/AssignAreaPage/AssignForm/useAssignForm'
 import { Form } from '@/components/shared/ui/form'
-import CustomSelect from '@/components/shared/FormInputs/CustomSelect'
 import CustomButton from '@/components/shared/FormInputs/CustomButton'
 import { ButtonType, ButtonVariant } from '@/type/FormInputs'
-import { X } from 'lucide-react'
 import { DialogClose, DialogFooter } from '@/components/shared/ui/dialog'
-import { AssignAreaFormProps } from '@/type/User'
+import CustomAsyncSelect from '@/components/shared/FormInputs/CustomAsyncSelect'
+import { LocationLevelType } from '@/type/Location'
+import Map from '@/components/shared/Map/CustomMap'
+import { AssignAreaFormProps } from '@/type/SalesArea'
 
 const AssignForm: FC<AssignAreaFormProps> = (props) => {
   const {
     form,
-    fields,
-    locationList,
-    isLocationLoading,
+    searchLoading,
     isLoading,
+    defaultFilter,
+    provinceList,
+    regencyList,
+    salesAreaList,
+    isValidating,
+    handleSearch,
     handleAddLocation,
     handleRemoveLocation,
+    fetchLocByRegency,
     handleCloseForm,
     onSubmit,
   } = useAssignForm(props)
@@ -28,58 +34,79 @@ const AssignForm: FC<AssignAreaFormProps> = (props) => {
   return (
     <CustomModal
       onClose={handleCloseForm}
+      size={'5xl'}
       open={isOpen}
       title="Assign New Area"
       description="You can add multiple areas to this user"
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="w-full flex gap-2 items-start">
+          <div className="w-full grid lg:grid-cols-2 gap-4">
             <div className="w-full">
-              <CustomSelect
-                name={'location_id'}
+              <CustomAsyncSelect
+                name={'province_id'}
                 control={form.control}
-                placeholder={'Select the location'}
-                options={(locationList?.data || []).map((each) => ({
+                placeholder={'Pilih provinsi'}
+                options={(provinceList?.locations || []).map((each) => ({
                   label: each.name,
-                  value: `${each.id}|${each.name}`,
+                  value: each.id,
                 }))}
-                isLoading={isLocationLoading || isLoading.validate}
-              />
-            </div>
-            <div>
-              <CustomButton
-                label={'Add'}
-                type={ButtonType.BUTTON}
-                onClick={handleAddLocation}
-                disabled={
-                  !form.watch('location_id') ||
-                  !!form.formState.errors?.location_id ||
-                  isLoading.validate ||
-                  fields
-                    .map((each: any) => each.location_id)
-                    .includes(form.watch('location_id'))
+                isLoading={searchLoading.province}
+                defaultFilter={defaultFilter.province}
+                onSearch={(val) =>
+                  handleSearch(LocationLevelType.PROVINCE, val)
+                }
+                customOnChange={(provinceId: string) =>
+                  handleSearch(
+                    LocationLevelType.REGENCY,
+                    defaultFilter.regency,
+                    provinceId
+                  )
                 }
               />
             </div>
-          </div>
-          <div className="mt-4 w-full flex items-center gap-2 flex-wrap">
-            {fields.map((field, idx) => (
-              <div
-                className="border py-1.5 px-3 rounded-md flex items-center gap-1"
-                key={field.id}
-              >
-                <span className="w-max font-semibold text-[0.75rem]">
-                  {field.location_id?.split('|')?.[1]}
-                </span>
-                <button
-                  className="cursor-pointer"
-                  onClick={() => handleRemoveLocation(idx)}
-                >
-                  <X className="size-3 shrink-0" />
-                </button>
-              </div>
-            ))}
+            <div className="w-full">
+              <CustomAsyncSelect
+                name={'regency_id'}
+                control={form.control}
+                placeholder={'Pilih kabupaten/kota'}
+                options={(regencyList?.locations || []).map((each) => ({
+                  label: each.name,
+                  value: each.id,
+                }))}
+                isLoading={searchLoading.regency}
+                defaultFilter={defaultFilter.regency}
+                disabled={!form.watch('province_id')}
+                customOnChange={fetchLocByRegency}
+                onSearch={(val) => handleSearch(LocationLevelType.REGENCY, val)}
+              />
+            </div>
+            <div className="w-full aspect-video lg:col-span-2 my-4">
+              <Map
+                withSearchbox={false}
+                isLoading={searchLoading.disVil || isValidating}
+                onMarkerClick={handleAddLocation}
+                onMarkerRemoveClick={handleRemoveLocation}
+                disabledAreas={salesAreaList?.areas.map(
+                  (each) => each.district_id
+                )}
+              />
+            </div>
+            {/*<div>*/}
+            {/*  <CustomButton*/}
+            {/*    label={'Add'}*/}
+            {/*    type={ButtonType.BUTTON}*/}
+            {/*    onClick={handleAddLocation}*/}
+            {/*    disabled={*/}
+            {/*      !form.watch('location_id') ||*/}
+            {/*      !!form.formState.errors?.location_id ||*/}
+            {/*      isLoading.validate ||*/}
+            {/*      fields*/}
+            {/*        .map((each: any) => each.location_id)*/}
+            {/*        .includes(form.watch('location_id'))*/}
+            {/*    }*/}
+            {/*  />*/}
+            {/*</div>*/}
           </div>
           <DialogFooter className="mt-4">
             <DialogClose asChild>
@@ -93,9 +120,7 @@ const AssignForm: FC<AssignAreaFormProps> = (props) => {
             <CustomButton
               type={ButtonType.SUBMIT}
               label={'Save changes'}
-              disabled={
-                !!form.formState.errors?.location_id || isLoading.validate
-              }
+              disabled={isLoading.validate}
               isLoading={isLoading.submit}
             />
           </DialogFooter>

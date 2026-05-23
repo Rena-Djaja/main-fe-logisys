@@ -12,7 +12,6 @@ import {
 } from '@/components/shared/ui/command'
 import { cn } from '@/lib/utils'
 import { Loader2, MapPin, X } from 'lucide-react'
-import LocationPopup from '@/components/shared/Map/Tools/Popup/LocationPopup'
 
 const Searchbox = () => {
   const {
@@ -20,21 +19,18 @@ const Searchbox = () => {
     isLoading,
     displayValue,
     results,
-    // selectedLocations,
-    selectedLocation,
     handleSearch,
     clearSearch,
     handleSelect,
-    setSelectedLocation,
   } = useSearchbox()
 
   return (
     <>
-      <section className="absolute top-4 left-1/2 sm:left-4 z-10 w-[90vw] sm:w-[350px] -translate-x-1/2 sm:translate-x-0 rounded-lg shadow-lg">
+      <section className="absolute top-2 md:top-4 left-1/2 md:left-4 z-12 w-[80%] md:w-[350px] -translate-x-1/2 sm:translate-x-0 rounded-lg shadow-lg">
         <Command className="rounded-lg">
           <div
             className={cn(
-              '!w-full flex items-center justify-between px-3 gap-1',
+              'w-full! flex items-center justify-between px-3 gap-1',
               isOpen && 'border-b'
             )}
           >
@@ -56,7 +52,7 @@ const Searchbox = () => {
           </div>
 
           {isOpen && (
-            <CommandList className="max-h-60 overflow-y-auto">
+            <CommandList className="max-h-30 md:max-h-60 overflow-y-auto">
               {!results.length ? (
                 <CommandEmpty className="py-6 text-center">
                   <div className="flex flex-col items-center justify-center space-y-1">
@@ -96,21 +92,6 @@ const Searchbox = () => {
           )}
         </Command>
       </section>
-
-      {/*{selectedLocations.map((location) => (*/}
-      {/*  <LocationMarker*/}
-      {/*    key={location.properties.mapbox_id}*/}
-      {/*    location={location}*/}
-      {/*    onHover={(data) => setSelectedLocation(data)}*/}
-      {/*  />*/}
-      {/*))}*/}
-
-      {selectedLocation && (
-        <LocationPopup
-          location={selectedLocation}
-          onClose={() => setSelectedLocation(null)}
-        />
-      )}
     </>
   )
 }

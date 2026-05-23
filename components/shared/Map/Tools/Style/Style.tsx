@@ -28,7 +28,7 @@ const Style = () => {
   }
 
   return (
-    <aside className="absolute bottom-4 left-4 z-10">
+    <aside className="absolute bottom-2 md:bottom-4 left-2 md:left-4 z-10">
       <Tabs value={activeStyle} onValueChange={handleChange}>
         <TabsList className="bg-background shadow-lg">
           {STYLE_OPTIONS.map((style) => (

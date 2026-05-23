@@ -2,7 +2,6 @@
 
 import { useRef, useState } from 'react'
 import {
-  LocationFeature,
   LocationSuggestion,
   RetrievedLocationProps,
   RetrieveLocationRequest,
@@ -17,17 +16,23 @@ import { useMapContext } from '@/components/shared/context/MapContext'
 import { LngLatLike } from 'mapbox-gl'
 
 const useSearchbox = () => {
-  const { map } = useMapContext()
+  const {
+    map,
+    selectedLocation,
+    selectedLocations,
+    setSelectedLocation,
+    setSelectedLocations,
+  } = useMapContext()
   const debounce = useRef(0)
   const [displayValue, setDisplayValue] = useState('')
   const [results, setResults] = useState<LocationSuggestion[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
-  const [selectedLocation, setSelectedLocation] =
-    useState<LocationFeature | null>(null)
-  const [selectedLocations, setSelectedLocations] = useState<LocationFeature[]>(
-    []
-  )
+  // const [selectedLocation, setSelectedLocation] =
+  //   useState<LocationFeature | null>(null)
+  // const [selectedLocations, setSelectedLocations] = useState<LocationFeature[]>(
+  //   []
+  // )
 
   if (map) {
     map.on('click', (e) => {

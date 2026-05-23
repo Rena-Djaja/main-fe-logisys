@@ -4,45 +4,42 @@ import React, { useEffect, useRef, useState } from 'react'
 import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import { MapContext } from '@/components/shared/context/MapContext'
-import { Spinner } from '@/components/shared/ui/spinner'
+import { LocationFeature } from '@/type/Map'
 
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN || ''
 
 type MapComponentProps = {
-  mapContainerRef: React.RefObject<HTMLDivElement | null>
-  initialViewState: {
-    longitude: number
-    latitude: number
-    zoom: number
-  }
-  setCurrentPosition: (position: {
-    hasLocation: boolean
-    latitude: number
-    longitude: number
-  }) => void
   children?: React.ReactNode
 }
 
-const MapProvider = ({
-  mapContainerRef,
-  initialViewState,
-  setCurrentPosition,
-  children,
-}: MapComponentProps) => {
+const MapProvider = ({ children }: MapComponentProps) => {
   const map = useRef<mapboxgl.Map | null>(null)
   const [isLoaded, setIsLoaded] = useState(false)
+  const [mapContainerRef, setMapContainerRef] =
+    useState<HTMLDivElement | null>()
   const [mapContextValue, setMapContextValue] = useState<mapboxgl.Map | null>(
     null
   )
+  const [selectedLocation, setSelectedLocation] =
+    useState<LocationFeature | null>(null)
+  const [locationList, setLocationList] = useState<LocationFeature[]>([])
+  const [selectedLocations, setSelectedLocations] = useState<LocationFeature[]>(
+    []
+  )
+  const [currentPosition, setCurrentPosition] = useState({
+    hasLocation: false,
+    latitude: -6.175,
+    longitude: 106.8283,
+  })
 
   const loadMap = () => {
-    if (!mapContainerRef.current || map.current) return
+    if (!mapContainerRef) return
 
     map.current = new mapboxgl.Map({
-      container: mapContainerRef.current,
+      container: mapContainerRef,
       style: 'mapbox://styles/mapbox/streets-v9',
-      center: [initialViewState.longitude, initialViewState.latitude],
-      zoom: initialViewState.zoom,
+      center: [currentPosition.longitude, currentPosition.latitude],
+      zoom: 15,
       attributionControl: false,
       logoPosition: 'bottom-right',
     })
@@ -60,23 +57,34 @@ const MapProvider = ({
     }
   }
 
+  const handleResetSelectedLocations = () => {
+    setSelectedLocations([])
+  }
+
   useEffect(() => {
     loadMap()
-  }, [initialViewState, mapContainerRef])
+  }, [mapContainerRef])
 
   return (
-    <div className="z-[1000]">
-      <MapContext.Provider value={{ map: mapContextValue, setCurrentPosition }}>
+    <div className="z-1000">
+      <MapContext.Provider
+        value={{
+          map: mapContextValue,
+          isLoaded,
+          currentPosition,
+          selectedLocation,
+          locationList,
+          selectedLocations,
+          setMapContainerRef,
+          setCurrentPosition,
+          setSelectedLocations,
+          setLocationList,
+          setSelectedLocation,
+          resetSelectedLocations: handleResetSelectedLocations,
+        }}
+      >
         {children}
       </MapContext.Provider>
-      {!isLoaded && (
-        <div className="absolute inset-0 flex items-center justify-center bg-background/80 z-[1000]">
-          <div className="flex gap-2 items-center">
-            <Spinner className="size-5" />
-            <span className="text-lg font-medium">Loading map...</span>
-          </div>
-        </div>
-      )}
     </div>
   )
 }
