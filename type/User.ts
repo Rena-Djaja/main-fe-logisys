@@ -61,23 +61,6 @@ export interface UserListRequest extends CommonFilterRequest {
   role_id?: number
 }
 
-export interface AssignedLocationListRequest extends CommonFilterRequest {
-  sales_id: number
-}
-
-export interface AssignedLocationProps {
-  id: number
-  sales_id: number
-  sales_name: string
-  location_id: number
-  location_name: string
-}
-
-export interface AssignedLocationListResponse {
-  data: AssignedLocationProps[]
-  pagination: PaginationResponse
-}
-
 export interface DeleteAssignedLocationRequest {
   id: number
   sales_id: number

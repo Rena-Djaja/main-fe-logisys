@@ -9,26 +9,25 @@ import {
   AvatarImage,
 } from '@/components/shared/ui/avatar'
 import { Badge } from '@/components/shared/ui/badge'
-import { MapPinPlus, TextAlignStart } from 'lucide-react'
+import { MapPinPlus } from 'lucide-react'
 import CustomButton from '@/components/shared/FormInputs/CustomButton'
 import AssignForm from '@/components/UsersPage/AssignAreaPage/AssignForm/AssignForm'
-import CustomTable from '@/components/shared/CustomTable/CustomTable'
 import SearchInput from '@/components/shared/SearchInput/SearchInput'
 import { ButtonType } from '@/type/FormInputs'
-import EmptyPlaceholder from '@/components/shared/EmptyPlaceholder/EmptyPlaceholder'
 import MapProvider from '@/components/shared/MapProvider/MapProvider'
+import AssignedAreaList from '@/components/UsersPage/AssignAreaPage/List/AssignedAreaList'
 
 const AssignAreaPage: FC<CommonFormProps> = ({ id }) => {
   const {
     userDetails,
-    assignedLocations,
-    isLocationLoading,
+    salesAreaList,
+    isValidating,
     isFormOpen,
-    filter,
+    // filter,
     handleFormState,
     mutate,
     search,
-    onDelete,
+    // onDelete,
   } = useAssignArea({ id })
 
   return (
@@ -80,34 +79,13 @@ const AssignAreaPage: FC<CommonFormProps> = ({ id }) => {
               </div>
             </div>
           </div>
-          {!isLocationLoading && !assignedLocations?.data?.length ? (
-            <EmptyPlaceholder
-              icon={TextAlignStart}
-              title={'Belum Ada Daerah'}
-              description={
-                'Anda belum mendaftarkan daerah kepada pengguna ini.'
-              }
-              buttonText={'Daftar Daerah Baru'}
-              onClick={handleFormState}
+          <MapProvider>
+            <AssignedAreaList
+              assignedAreas={salesAreaList}
+              isLoading={isValidating}
+              handleFormState={handleFormState}
             />
-          ) : (
-            <div className="w-full">
-              <CustomTable
-                headers={[{ key: 'location_name', title: 'Location Name' }]}
-                data={assignedLocations?.data || []}
-                isLoading={isLocationLoading}
-                onChange={(val) => search('page', val)}
-                page={assignedLocations?.pagination.page || filter.page}
-                perPage={assignedLocations?.pagination.limit || filter.per_page}
-                totalData={assignedLocations?.pagination.total_data || 0}
-                onRowClick={() => null}
-                allowDetails={() => false}
-                allowEdit={() => false}
-                onUpdate={() => null}
-                onDelete={onDelete}
-              />
-            </div>
-          )}
+          </MapProvider>
         </div>
       </div>
     </>

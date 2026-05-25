@@ -9,8 +9,8 @@ import { ButtonType, ButtonVariant } from '@/type/FormInputs'
 import { DialogClose, DialogFooter } from '@/components/shared/ui/dialog'
 import CustomAsyncSelect from '@/components/shared/FormInputs/CustomAsyncSelect'
 import { LocationLevelType } from '@/type/Location'
-import Map from '@/components/shared/Map/CustomMap'
 import { AssignAreaFormProps } from '@/type/SalesArea'
+import CustomMap from '@/components/shared/Map/CustomMap'
 
 const AssignForm: FC<AssignAreaFormProps> = (props) => {
   const {
@@ -81,8 +81,9 @@ const AssignForm: FC<AssignAreaFormProps> = (props) => {
                 onSearch={(val) => handleSearch(LocationLevelType.REGENCY, val)}
               />
             </div>
-            <div className="w-full aspect-video lg:col-span-2 my-4">
-              <Map
+            <div className="w-full aspect-video lg:col-span-2 my-4 z-1!">
+              <CustomMap
+                mapId={'assign-form-map'}
                 withSearchbox={false}
                 isLoading={searchLoading.disVil || isValidating}
                 onMarkerClick={handleAddLocation}

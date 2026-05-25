@@ -8,7 +8,7 @@ import { LocationFeature } from '@/type/Map'
 type Props = {
   longitude: number
   latitude: number
-  data: any
+  data: LocationFeature
   onHover?: ({
     isHovered,
     position,

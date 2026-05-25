@@ -15,7 +15,22 @@ const UserMarker = (props: UserMarkerProps) => {
   if (!hasLocation) return null
 
   return (
-    <Marker longitude={longitude} latitude={latitude} data={location}>
+    <Marker
+      longitude={longitude}
+      latitude={latitude}
+      data={{
+        properties: {
+          mapbox_id: 'user-currloc',
+          name: 'user-currloc',
+          feature_type: '',
+          full_address: '',
+          coordinates: {
+            latitude,
+            longitude,
+          },
+        },
+      }}
+    >
       <div className="transform transition-all duration-200 bg-blue-400 text-white shadow-lg cursor-pointer stroke-[2.5px] size-3.5 rounded-full outline-[0.4rem] outline-blue-400/30 border-[0.107rem] border-black" />
     </Marker>
   )

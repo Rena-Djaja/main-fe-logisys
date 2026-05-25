@@ -29,7 +29,7 @@ const SavedLocationForm = () => {
             <SheetTitle />
             <SheetDescription />
           </SheetHeader>
-          <Map />
+          <Map mapId={'saved-location-map'} />
         </SheetContent>
       </Sheet>
       <div className="mt-8 w-full flex flex-col gap-10">

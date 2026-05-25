@@ -8,20 +8,19 @@ import {
 } from '@/type/Common'
 import { callAPI } from '@/lib/fetchers'
 import {
-  AssignedLocationListRequest,
-  AssignedLocationListResponse,
   DeleteAssignedLocationRequest,
   UserDetailsRequest,
   UserDetailsResponse,
   UserProps,
 } from '@/type/User'
-import { LocationAPI, UserAPI } from '@/constant/APIUrls'
+import { LocationAPI, SalesAreaAPI, UserAPI } from '@/constant/APIUrls'
 import { apiStatusChecker } from '@/lib/utils'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import useCommonApi from '@/components/shared/Hooks/CommonApi/useCommonApi'
 import { ButtonVariant } from '@/type/FormInputs'
 import { useConfirmationStore } from '@/store'
+import { SalesAreaFilterRequest, SalesAreaListProps } from '@/type/SalesArea'
 
 const useAssignArea = ({ id }: CommonFormProps) => {
   const { push } = useRouter()
@@ -31,28 +30,23 @@ const useAssignArea = ({ id }: CommonFormProps) => {
   const [userDetails, setUserDetails] = useState<UserProps | null>(null)
   const [isFormOpen, setIsFormOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const [filter, setFilter] = useState<AssignedLocationListRequest>({
-    page: 1,
-    per_page: 10,
+  const [filter, setFilter] = useState<SalesAreaFilterRequest>({
     search: '',
-    sales_id: Number(id),
+    salesman_id: id,
   })
 
   const {
-    data: assignedLocations,
-    isValidating: isLocationLoading,
+    data: salesAreaList,
+    isValidating,
     mutate,
-  } = useCommonApi<AssignedLocationListRequest, AssignedLocationListResponse>(
-    LocationAPI.GET_ASSIGNED_LOCATION,
+  } = useCommonApi<SalesAreaFilterRequest, SalesAreaListProps>(
+    SalesAreaAPI.GET_SALES_AREA_LIST,
     filter,
     { method: 'GET' }
   )
 
   const search = (key: keyof CommonFilterRequest, value: number | string) => {
     const newState = { ...filter, [key]: value }
-    if (key === 'search') {
-      newState.page = 1
-    }
 
     setFilter(newState)
   }
@@ -156,8 +150,8 @@ const useAssignArea = ({ id }: CommonFormProps) => {
   return {
     isLoading,
     userDetails,
-    assignedLocations,
-    isLocationLoading,
+    salesAreaList,
+    isValidating,
     isFormOpen,
     filter,
     handleFormState,

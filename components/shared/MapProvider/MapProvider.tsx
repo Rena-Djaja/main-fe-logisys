@@ -66,7 +66,7 @@ const MapProvider = ({ children }: MapComponentProps) => {
   }, [mapContainerRef])
 
   return (
-    <div className="z-1000">
+    <div className="z-1">
       <MapContext.Provider
         value={{
           map: mapContextValue,
