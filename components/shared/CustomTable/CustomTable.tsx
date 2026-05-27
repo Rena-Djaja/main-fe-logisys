@@ -213,7 +213,7 @@ const CustomTable: FC<CustomTableProps> = (props) => {
                               variant={'destructive'}
                               onClick={() => onDelete(each.id)}
                             >
-                              Delete
+                              Hapus
                             </DropdownMenuItem>
                           )}
                         </DropdownMenuContent>

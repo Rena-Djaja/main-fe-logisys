@@ -12,6 +12,7 @@ import LocationPopup from '@/components/shared/Map/Tools/Popup/LocationPopup'
 import { LocationFeature } from '@/type/Map'
 
 interface MapProps {
+  mapId: string
   withSearchbox?: boolean
   isLoading?: boolean
   withMarkerClick?: boolean
@@ -22,6 +23,7 @@ interface MapProps {
 }
 
 const CustomMap = ({
+  mapId,
   withSearchbox = true,
   isLoading,
   withMarkerClick = true,
@@ -78,11 +80,11 @@ const CustomMap = ({
     <div className="w-full h-full relative">
       <div
         ref={(ref) => setMapContainerRef(ref)}
-        id={'assign-form-map'}
+        id={mapId}
         className="absolute inset-0 h-full w-full"
       >
         {(!isLoaded || isLoading) && (
-          <div className="absolute inset-0 flex items-center justify-center bg-background/80 z-1000">
+          <div className="absolute inset-0 flex items-center justify-center bg-background/80 z-100">
             <div className="flex gap-2 items-center">
               <Spinner className="size-5" />
               <span className="text-lg font-medium">Loading map...</span>

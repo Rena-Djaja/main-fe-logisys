@@ -1,5 +1,6 @@
 import { assignLocationValidationSchema } from '@/validations/UserValidation'
 import { z } from 'zod'
+import { DataType } from '@/components/shared/Hooks/CommonApi/useCommonApi'
 
 export interface AssignAreaFormProps {
   userID: string
@@ -29,6 +30,7 @@ export interface SalesAreaFilterRequest {
 
 export interface SalesAreaListProps {
   areas: AreaProps[]
+  total_data: number
 }
 
 export interface AreaProps {
@@ -49,4 +51,16 @@ export interface AreaProps {
     created_at: string
     updated_at: string
   }[]
+}
+
+export interface AssignedAreaListProps {
+  activeTab: ListTabStyle
+  assignedAreas?: DataType<SalesAreaListProps>
+  isLoading: boolean
+  handleFormState: () => void
+}
+
+export enum ListTabStyle {
+  LIST = 'list',
+  MAP = 'map',
 }

@@ -17,7 +17,16 @@ const ThemeProvider = ({
     return null
   }
 
-  return <NextThemesProvider {...props}>{children}</NextThemesProvider>
+  return (
+    <NextThemesProvider
+      {...props}
+      scriptProps={
+        typeof window !== 'undefined' ? { type: 'application/json' } : undefined
+      }
+    >
+      {children}
+    </NextThemesProvider>
+  )
 }
 
 export default ThemeProvider
