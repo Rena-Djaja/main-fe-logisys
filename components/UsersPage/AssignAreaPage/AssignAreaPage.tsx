@@ -12,10 +12,12 @@ import { Badge } from '@/components/shared/ui/badge'
 import { MapPinPlus } from 'lucide-react'
 import CustomButton from '@/components/shared/FormInputs/CustomButton'
 import AssignForm from '@/components/UsersPage/AssignAreaPage/AssignForm/AssignForm'
-import SearchInput from '@/components/shared/SearchInput/SearchInput'
 import { ButtonType } from '@/type/FormInputs'
 import MapProvider from '@/components/shared/MapProvider/MapProvider'
 import AssignedAreaList from '@/components/UsersPage/AssignAreaPage/List/AssignedAreaList'
+import { Tabs, TabsList, TabsTrigger } from '@/components/shared/ui/tabs'
+import { TAB_STYLES } from '@/components/UsersPage/AssignAreaPage/Resource'
+import { ListTabStyle } from '@/type/SalesArea'
 
 const AssignAreaPage: FC<CommonFormProps> = ({ id }) => {
   const {
@@ -23,10 +25,10 @@ const AssignAreaPage: FC<CommonFormProps> = ({ id }) => {
     salesAreaList,
     isValidating,
     isFormOpen,
-    // filter,
+    activeTab,
     handleFormState,
     mutate,
-    search,
+    handleTabChange,
     // onDelete,
   } = useAssignArea({ id })
 
@@ -66,9 +68,25 @@ const AssignAreaPage: FC<CommonFormProps> = ({ id }) => {
               Daerah Terdaftar
             </h2>
             <div className="w-full flex gap-4 justify-end">
-              <div className="w-full max-w-[15rem]">
-                <SearchInput onChange={(val) => search('search', val)} />
-              </div>
+              <Tabs
+                value={activeTab}
+                onValueChange={(value) =>
+                  handleTabChange(value as ListTabStyle)
+                }
+              >
+                <TabsList>
+                  {TAB_STYLES.map((style) => (
+                    <TabsTrigger
+                      key={style.id}
+                      value={style.id}
+                      onClick={() => handleTabChange(style.id)}
+                      className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground text-sm flex items-center sm:px-3 sm:py-1.5"
+                    >
+                      {style.icon}
+                    </TabsTrigger>
+                  ))}
+                </TabsList>
+              </Tabs>
               <div>
                 <CustomButton
                   label={'Daftar Daerah Baru'}
@@ -81,6 +99,7 @@ const AssignAreaPage: FC<CommonFormProps> = ({ id }) => {
           </div>
           <MapProvider>
             <AssignedAreaList
+              activeTab={activeTab}
               assignedAreas={salesAreaList}
               isLoading={isValidating}
               handleFormState={handleFormState}

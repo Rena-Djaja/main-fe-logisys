@@ -20,13 +20,19 @@ import { toast } from 'sonner'
 import useCommonApi from '@/components/shared/Hooks/CommonApi/useCommonApi'
 import { ButtonVariant } from '@/type/FormInputs'
 import { useConfirmationStore } from '@/store'
-import { SalesAreaFilterRequest, SalesAreaListProps } from '@/type/SalesArea'
+import {
+  ListTabStyle,
+  SalesAreaFilterRequest,
+  SalesAreaListProps,
+} from '@/type/SalesArea'
+import { TAB_STYLES } from '@/components/UsersPage/AssignAreaPage/Resource'
 
 const useAssignArea = ({ id }: CommonFormProps) => {
   const { push } = useRouter()
   const { setConfirmation, setLoading, closeConfirmation } =
     useConfirmationStore()
 
+  const [activeTab, setActiveTab] = useState(TAB_STYLES[0].id)
   const [userDetails, setUserDetails] = useState<UserProps | null>(null)
   const [isFormOpen, setIsFormOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -44,6 +50,10 @@ const useAssignArea = ({ id }: CommonFormProps) => {
     filter,
     { method: 'GET' }
   )
+
+  const handleTabChange = (id: ListTabStyle) => {
+    setActiveTab(id)
+  }
 
   const search = (key: keyof CommonFilterRequest, value: number | string) => {
     const newState = { ...filter, [key]: value }
@@ -154,7 +164,9 @@ const useAssignArea = ({ id }: CommonFormProps) => {
     isValidating,
     isFormOpen,
     filter,
+    activeTab,
     handleFormState,
+    handleTabChange,
     mutate,
     search,
     onDelete,

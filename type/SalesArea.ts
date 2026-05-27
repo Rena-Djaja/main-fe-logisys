@@ -54,7 +54,13 @@ export interface AreaProps {
 }
 
 export interface AssignedAreaListProps {
+  activeTab: ListTabStyle
   assignedAreas?: DataType<SalesAreaListProps>
   isLoading: boolean
   handleFormState: () => void
+}
+
+export enum ListTabStyle {
+  LIST = 'list',
+  MAP = 'map',
 }

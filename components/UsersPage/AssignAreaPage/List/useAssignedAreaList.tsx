@@ -1,32 +1,22 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
-import { List, MapIcon } from 'lucide-react'
+import { useEffect, useState } from 'react'
 import { AssignedAreaListProps } from '@/type/SalesArea'
 import { useMapContext } from '@/components/shared/context/MapContext'
 import { LocationFeature } from '@/type/Map'
 
 const useAssignedAreaList = (props: AssignedAreaListProps) => {
-  const { assignedAreas } = props
+  const { assignedAreas, activeTab } = props
   const { map, locationList, setLocationList } = useMapContext()
 
-  const tabStyles = [
-    {
-      id: 'list',
-      label: 'List',
-      icon: <List className="size-5" />,
-    },
-    {
-      id: 'map',
-      label: 'Peta',
-      icon: <MapIcon className="size-5" />,
-    },
-  ]
+  const [openedDistrict, setOpenedDistrict] = useState<string>()
 
-  const [activeTab, setActiveTab] = useState(tabStyles[0].id)
-
-  const handleTabChange = (id: string) => {
-    setActiveTab(id)
+  const handleOpenDistrict = (districtId: string) => {
+    if (openedDistrict === districtId) {
+      setOpenedDistrict(undefined)
+    } else {
+      setOpenedDistrict(districtId)
+    }
   }
 
   const handleFetchLocations = () => {
@@ -65,9 +55,9 @@ const useAssignedAreaList = (props: AssignedAreaListProps) => {
   }, [activeTab, assignedAreas])
 
   return {
-    tabStyles,
     activeTab,
-    handleTabChange,
+    openedDistrict,
+    handleOpenDistrict,
     handleGoToLocations,
   }
 }

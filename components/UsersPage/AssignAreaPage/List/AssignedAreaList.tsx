@@ -1,38 +1,22 @@
 'use client'
 
 import React from 'react'
-import { Tabs, TabsList, TabsTrigger } from '@/components/shared/ui/tabs'
 import useAssignedAreaList from '@/components/UsersPage/AssignAreaPage/List/useAssignedAreaList'
-import { AssignedAreaListProps } from '@/type/SalesArea'
+import { AssignedAreaListProps, ListTabStyle } from '@/type/SalesArea'
 import EmptyPlaceholder from '@/components/shared/EmptyPlaceholder/EmptyPlaceholder'
-import { MapPinned, TextAlignStart } from 'lucide-react'
-import CustomTable from '@/components/shared/CustomTable/CustomTable'
+import { ChevronDown, MapPinned, TextAlignStart } from 'lucide-react'
 import CustomMap from '@/components/shared/Map/CustomMap'
 import { Button } from '@/components/shared/ui/button'
+import { cn } from '@/lib/utils'
 
 const AssignedAreaList = (props: AssignedAreaListProps) => {
   const { assignedAreas, isLoading, handleFormState } = props
-  const { tabStyles, activeTab, handleTabChange, handleGoToLocations } =
+  const { activeTab, openedDistrict, handleOpenDistrict, handleGoToLocations } =
     useAssignedAreaList(props)
 
   return (
     <div className="w-full flex flex-col gap-4">
-      <Tabs value={activeTab} onValueChange={handleTabChange}>
-        <TabsList>
-          {tabStyles.map((style) => (
-            <TabsTrigger
-              key={style.id}
-              value={style.id}
-              onClick={() => handleTabChange(style.id)}
-              className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground text-sm flex items-center sm:px-3 sm:py-1.5"
-            >
-              {style.icon}
-              <span className="hidden lg:inline">{style.label}</span>
-            </TabsTrigger>
-          ))}
-        </TabsList>
-      </Tabs>
-      {activeTab === tabStyles[0].id ? (
+      {activeTab === ListTabStyle.LIST ? (
         !isLoading && !assignedAreas?.areas?.length ? (
           <EmptyPlaceholder
             icon={TextAlignStart}
@@ -42,23 +26,66 @@ const AssignedAreaList = (props: AssignedAreaListProps) => {
             onClick={handleFormState}
           />
         ) : (
-          <div className="w-full">
-            <CustomTable
-              headers={[{ key: 'district_name', title: 'Kecamatan' }]}
-              data={assignedAreas?.areas || []}
-              isLoading={isLoading}
-              withPagination={false}
-              onChange={() => null}
-              page={0}
-              perPage={0}
-              totalData={assignedAreas?.total_data || 0}
-              onRowClick={() => null}
-              allowDetails={() => false}
-              allowDelete={() => false}
-              allowEdit={() => false}
-              onUpdate={() => null}
-              onDelete={() => null}
-            />
+          <div className="w-full flex flex-col gap-4">
+            {assignedAreas?.areas.map((each) => (
+              <div key={each.district_id} className="w-full flex flex-col">
+                <div
+                  key={each.district_id}
+                  className={cn(
+                    'py-6 px-4 bg-card flex rounded-md justify-between',
+                    openedDistrict === each.district_id && 'rounded-b-none'
+                  )}
+                  onClick={() => handleOpenDistrict(each.district_id)}
+                >
+                  <div className="flex gap-5">
+                    <div className="p-3 bg-muted rounded">
+                      <MapPinned className="size-8" />
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      <span className="font-bold">{each.district_name}</span>
+                      <div className="flex gap-2 text-[0.85rem] text-muted-foreground">
+                        <span>Lat: {each.latitude}</span>
+                        <span>Long: {each.longitude}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex gap-6 items-center">
+                    <div className="flex flex-col gap-1">
+                      <span className="font-medium text-[0.8rem] text-muted-foreground uppercase">
+                        Jumlah Kelurahan
+                      </span>
+                      <span className="font-bold text-[0.95rem] self-end">
+                        {each.villages.length} Wilayah
+                      </span>
+                    </div>
+                    <ChevronDown
+                      className={cn(
+                        'size-6 transition-transform duration-300 cursor-pointer',
+                        openedDistrict === each.district_id && 'rotate-180'
+                      )}
+                    />
+                  </div>
+                </div>
+                {openedDistrict === each.district_id && (
+                  <div className="bg-muted/70 w-full grid md:grid-cols-3 gap-4 py-6 px-4 rounded-b-md">
+                    {each.villages.map((village) => (
+                      <div
+                        key={village.id}
+                        className="flex flex-col gap-1 p-4 border rounded-md"
+                      >
+                        <span className="font-bold text-[0.95rem]">
+                          {village.village_name}
+                        </span>
+                        <div className="flex gap-2 text-[0.85rem] text-muted-foreground">
+                          <span>Lat: {village.latitude}</span>
+                          <span>Long: {each.longitude}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
           </div>
         )
       ) : (
