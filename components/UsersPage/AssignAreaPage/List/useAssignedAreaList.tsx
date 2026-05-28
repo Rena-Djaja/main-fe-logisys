@@ -10,6 +10,7 @@ const useAssignedAreaList = (props: AssignedAreaListProps) => {
   const { map, locationList, setLocationList } = useMapContext()
 
   const [openedDistrict, setOpenedDistrict] = useState<string>()
+  const [selectedDistrict, setSelectedDistrict] = useState<string>()
 
   const handleOpenDistrict = (districtId: string) => {
     if (openedDistrict === districtId) {
@@ -50,6 +51,48 @@ const useAssignedAreaList = (props: AssignedAreaListProps) => {
     })
   }
 
+  const handleDistrictClick = (districtId: string) => {
+    const selectedDistrict = assignedAreas?.areas.find(
+      (each) => each.district_id === districtId
+    )
+
+    if (selectedDistrict) {
+      setSelectedDistrict(selectedDistrict.district_name)
+
+      const villageList = selectedDistrict?.villages.map((each) => ({
+        properties: {
+          mapbox_id: each.village_id,
+          name: each.village_name,
+          full_address: '',
+          feature_type: '',
+          coordinates: {
+            latitude: each.latitude,
+            longitude: each.longitude,
+          },
+        },
+      }))
+
+      setLocationList(villageList)
+
+      map?.flyTo({
+        center: [
+          villageList[0].properties.coordinates.longitude,
+          villageList[0].properties.coordinates.latitude,
+        ],
+        zoom: 9,
+        speed: 4,
+        duration: 1000,
+        essential: false,
+      })
+    }
+  }
+
+  const handleBackToDistrict = () => {
+    setSelectedDistrict(undefined)
+    handleFetchLocations()
+    handleGoToLocations()
+  }
+
   useEffect(() => {
     handleFetchLocations()
   }, [activeTab, assignedAreas])
@@ -57,8 +100,11 @@ const useAssignedAreaList = (props: AssignedAreaListProps) => {
   return {
     activeTab,
     openedDistrict,
+    selectedDistrict,
     handleOpenDistrict,
+    handleDistrictClick,
     handleGoToLocations,
+    handleBackToDistrict,
   }
 }
 

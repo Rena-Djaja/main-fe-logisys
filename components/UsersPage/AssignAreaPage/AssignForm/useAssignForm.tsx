@@ -33,7 +33,7 @@ import {
 } from '@/type/SalesArea'
 
 const useAssignForm = (props: AssignAreaFormProps) => {
-  const { userID, handleClose } = props
+  const { userID, handleClose, mutateList } = props
   const { setConfirmation } = useConfirmationStore()
   const { map, setLocationList, resetSelectedLocations } = useMapContext()
 
@@ -270,7 +270,7 @@ const useAssignForm = (props: AssignAreaFormProps) => {
   const handleSuccess = (response: CommonApiResponse) => {
     toast.success(response.message)
     handleConfirmClose()
-    // mutate()
+    mutateList()
   }
 
   const handleFailure = (response?: CommonApiResponse) => {
