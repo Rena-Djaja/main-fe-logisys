@@ -15,7 +15,8 @@ interface MapProps {
   mapId: string
   withSearchbox?: boolean
   isLoading?: boolean
-  withMarkerClick?: boolean
+  withDefaultMarkerClick?: boolean
+  withCustomMarkerClick?: boolean
   onMarkerHover?: (data: LocationFeature) => void
   onMarkerClick?: (data: LocationFeature) => void
   onMarkerRemoveClick?: (data: LocationFeature) => void
@@ -26,7 +27,8 @@ const CustomMap = ({
   mapId,
   withSearchbox = true,
   isLoading,
-  withMarkerClick = true,
+  withDefaultMarkerClick = true,
+  withCustomMarkerClick = true,
   onMarkerClick,
   onMarkerRemoveClick,
   onMarkerHover,
@@ -99,7 +101,8 @@ const CustomMap = ({
           <LocationMarker
             key={location.properties.mapbox_id}
             location={location}
-            enableClick={withMarkerClick}
+            enableDefaultClick={withDefaultMarkerClick}
+            enableCustomClick={withCustomMarkerClick}
             disabledAreas={disabledAreas}
             onHover={(data) => onMarkerHover && onMarkerHover(data)}
             onClick={(data) => onMarkerClick && onMarkerClick(data)}

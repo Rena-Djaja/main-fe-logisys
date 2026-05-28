@@ -8,7 +8,8 @@ import { useMapContext } from '@/components/shared/context/MapContext'
 
 interface LocationMarkerProps {
   location: LocationFeature
-  enableClick: boolean
+  enableDefaultClick: boolean
+  enableCustomClick: boolean
   onHover?: (data: LocationFeature) => void
   onClick?: (data: LocationFeature) => void
   onRemoveClick?: (data: LocationFeature) => void
@@ -18,7 +19,8 @@ interface LocationMarkerProps {
 const LocationMarker = (props: LocationMarkerProps) => {
   const {
     location,
-    enableClick,
+    enableDefaultClick,
+    enableCustomClick,
     onClick,
     onRemoveClick,
     onHover,
@@ -49,22 +51,28 @@ const LocationMarker = (props: LocationMarkerProps) => {
   }
 
   const handleClick = (location: LocationFeature) => {
-    if (enableClick) {
-      const newState = [...selectedLocations]
-      const existedIdx = newState.findIndex(
-        (each) => each.properties.mapbox_id === location.properties.mapbox_id
-      )
+    const newState = [...selectedLocations]
+    const existedIdx = newState.findIndex(
+      (each) => each.properties.mapbox_id === location.properties.mapbox_id
+    )
 
-      if (existedIdx !== -1) {
+    if (existedIdx !== -1) {
+      if (enableDefaultClick) {
         newState.splice(existedIdx, 1)
+      }
+      if (enableCustomClick) {
         onRemoveClick && onRemoveClick(location)
-      } else {
+      }
+    } else {
+      if (enableDefaultClick) {
         newState.push(location)
+      }
+      if (enableCustomClick) {
         onClick && onClick(location)
       }
-
-      setSelectedLocations(newState)
     }
+
+    setSelectedLocations(newState)
   }
 
   return (

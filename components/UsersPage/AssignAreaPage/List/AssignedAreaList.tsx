@@ -4,15 +4,40 @@ import React from 'react'
 import useAssignedAreaList from '@/components/UsersPage/AssignAreaPage/List/useAssignedAreaList'
 import { AssignedAreaListProps, ListTabStyle } from '@/type/SalesArea'
 import EmptyPlaceholder from '@/components/shared/EmptyPlaceholder/EmptyPlaceholder'
-import { ChevronDown, MapPinned, TextAlignStart } from 'lucide-react'
+import {
+  ChevronDown,
+  ChevronLeft,
+  MapPinned,
+  TextAlignStart,
+} from 'lucide-react'
 import CustomMap from '@/components/shared/Map/CustomMap'
 import { Button } from '@/components/shared/ui/button'
 import { cn } from '@/lib/utils'
 
 const AssignedAreaList = (props: AssignedAreaListProps) => {
   const { assignedAreas, isLoading, handleFormState } = props
-  const { activeTab, openedDistrict, handleOpenDistrict, handleGoToLocations } =
-    useAssignedAreaList(props)
+  const {
+    activeTab,
+    openedDistrict,
+    selectedDistrict,
+    handleOpenDistrict,
+    handleDistrictClick,
+    handleGoToLocations,
+    handleBackToDistrict,
+  } = useAssignedAreaList(props)
+
+  if (isLoading) {
+    return (
+      <div className="w-full flex flex-col gap-4">
+        {[...Array(4)].map((_, idx) => (
+          <div
+            key={idx}
+            className="w-full h-24 bg-card flex rounded-md justify-between animate-pulse"
+          />
+        ))}
+      </div>
+    )
+  }
 
   return (
     <div className="w-full flex flex-col gap-4">
@@ -90,10 +115,26 @@ const AssignedAreaList = (props: AssignedAreaListProps) => {
         )
       ) : (
         <div className="relative w-full aspect-square md:aspect-video">
+          {selectedDistrict && (
+            <div className="absolute top-2 md:top-4 left-2 md:left-4 z-10">
+              <Button
+                type="button"
+                className="w-full bg-background flex items-center gap-3 px-2 hover:bg-background/90!"
+                variant="ghost"
+                size="icon"
+                onClick={handleBackToDistrict}
+              >
+                <ChevronLeft className="size-4 md:size-5" />
+                <span className="font-medium text-[0.85rem]">
+                  {selectedDistrict}
+                </span>
+              </Button>
+            </div>
+          )}
           <div className="absolute top-2 md:top-4 right-2 md:right-4 z-10">
             <Button
               type="button"
-              className="bg-background"
+              className="bg-background hover:bg-background/90!"
               variant="ghost"
               size="icon"
               onClick={handleGoToLocations}
@@ -104,7 +145,11 @@ const AssignedAreaList = (props: AssignedAreaListProps) => {
           </div>
           <CustomMap
             mapId={'assigned-area-list'}
-            withMarkerClick={false}
+            withDefaultMarkerClick={false}
+            withCustomMarkerClick={true}
+            onMarkerClick={(loc) =>
+              handleDistrictClick(loc.properties.mapbox_id)
+            }
             withSearchbox={false}
           />
         </div>
