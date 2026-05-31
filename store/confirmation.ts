@@ -25,8 +25,8 @@ export const confirmationDefaultState = {
   isLoading: false,
   title: '',
   description: '',
-  cancelButtonText: 'Cancel',
-  confirmButtonText: 'Yes',
+  cancelButtonText: 'Batal',
+  confirmButtonText: 'Ya',
   confirmButtonVariant: ButtonVariant.DEFAULT,
 }
 

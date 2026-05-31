@@ -113,14 +113,14 @@ const AssignForm: FC<AssignAreaFormProps> = (props) => {
             <DialogClose asChild>
               <CustomButton
                 type={ButtonType.BUTTON}
-                label={'Cancel'}
+                label={'Batal'}
                 variant={ButtonVariant.OUTLINE}
                 disabled={isLoading.submit}
               />
             </DialogClose>
             <CustomButton
               type={ButtonType.SUBMIT}
-              label={'Save changes'}
+              label={'Simpan'}
               disabled={isLoading.validate}
               isLoading={isLoading.submit}
             />

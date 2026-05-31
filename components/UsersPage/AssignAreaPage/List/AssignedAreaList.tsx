@@ -9,13 +9,14 @@ import {
   ChevronLeft,
   MapPinned,
   TextAlignStart,
+  Trash,
 } from 'lucide-react'
 import CustomMap from '@/components/shared/Map/CustomMap'
 import { Button } from '@/components/shared/ui/button'
 import { cn } from '@/lib/utils'
 
 const AssignedAreaList = (props: AssignedAreaListProps) => {
-  const { assignedAreas, isLoading, handleFormState } = props
+  const { assignedAreas, isLoading, handleFormState, handleDelete } = props
   const {
     activeTab,
     openedDistrict,
@@ -60,7 +61,6 @@ const AssignedAreaList = (props: AssignedAreaListProps) => {
                     'py-6 px-4 bg-card flex rounded-md justify-between',
                     openedDistrict === each.district_id && 'rounded-b-none'
                   )}
-                  onClick={() => handleOpenDistrict(each.district_id)}
                 >
                   <div className="flex gap-5">
                     <div className="p-3 bg-muted rounded">
@@ -74,20 +74,29 @@ const AssignedAreaList = (props: AssignedAreaListProps) => {
                       </div>
                     </div>
                   </div>
-                  <div className="flex gap-6 items-center">
-                    <div className="flex flex-col gap-1">
-                      <span className="font-medium text-[0.8rem] text-muted-foreground uppercase">
-                        Jumlah Kelurahan
-                      </span>
-                      <span className="font-bold text-[0.95rem] self-end">
-                        {each.villages.length} Wilayah
-                      </span>
+                  <div className="flex gap-8 items-center">
+                    <div className="flex items-center gap-5">
+                      <div className="flex flex-col gap-1">
+                        <span className="font-medium text-[0.8rem] text-muted-foreground uppercase">
+                          Jumlah Kelurahan
+                        </span>
+                        <span className="font-bold text-[0.95rem] self-end">
+                          {each.villages.length} Wilayah
+                        </span>
+                      </div>
+                      <div
+                        className="cursor-pointer"
+                        onClick={() => handleDelete(each.district_id)}
+                      >
+                        <Trash className="size-5 text-red-500" />
+                      </div>
                     </div>
                     <ChevronDown
                       className={cn(
                         'size-6 transition-transform duration-300 cursor-pointer',
                         openedDistrict === each.district_id && 'rotate-180'
                       )}
+                      onClick={() => handleOpenDistrict(each.district_id)}
                     />
                   </div>
                 </div>

@@ -62,6 +62,6 @@ export interface UserListRequest extends CommonFilterRequest {
 }
 
 export interface DeleteAssignedLocationRequest {
-  id: number
-  sales_id: number
+  district_id: string
+  salesman_id: string
 }

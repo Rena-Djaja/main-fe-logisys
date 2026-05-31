@@ -58,6 +58,7 @@ export interface AssignedAreaListProps {
   assignedAreas?: DataType<SalesAreaListProps>
   isLoading: boolean
   handleFormState: () => void
+  handleDelete: (districtId: string) => void
 }
 
 export enum ListTabStyle {

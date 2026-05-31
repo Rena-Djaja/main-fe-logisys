@@ -13,19 +13,19 @@ import {
   UserDetailsResponse,
   UserProps,
 } from '@/type/User'
-import { LocationAPI, SalesAreaAPI, UserAPI } from '@/constant/APIUrls'
+import { SalesAreaAPI, UserAPI } from '@/constant/APIUrls'
 import { apiStatusChecker } from '@/lib/utils'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import useCommonApi from '@/components/shared/Hooks/CommonApi/useCommonApi'
-import { ButtonVariant } from '@/type/FormInputs'
-import { useConfirmationStore } from '@/store'
 import {
   ListTabStyle,
   SalesAreaFilterRequest,
   SalesAreaListProps,
 } from '@/type/SalesArea'
 import { TAB_STYLES } from '@/components/UsersPage/AssignAreaPage/Resource'
+import { useConfirmationStore } from '@/store'
+import { ButtonVariant } from '@/type/FormInputs'
 
 const useAssignArea = ({ id }: CommonFormProps) => {
   const { push } = useRouter()
@@ -99,15 +99,15 @@ const useAssignArea = ({ id }: CommonFormProps) => {
     }
   }
 
-  const onDelete = (id: number) => {
+  const onDelete = (districtId: string) => {
     setConfirmation({
       isOpen: true,
-      title: 'Are you absolutely sure?',
+      title: 'Apakah Anda yakin?',
       description:
-        'This action cannot be undone. This will permanently delete the data.',
+        'Aksi ini tidak dapat dibatalkan. Area penjualan salesman ini akan hilang secara permanen.',
       confirmButtonVariant: ButtonVariant.DESTRUCTIVES,
-      confirmButtonText: "Yes, I'm sure",
-      onConfirm: () => onConfirmDelete(id),
+      confirmButtonText: 'Ya, saya yakin',
+      onConfirm: () => onConfirmDelete(districtId),
     })
   }
 
@@ -122,7 +122,7 @@ const useAssignArea = ({ id }: CommonFormProps) => {
     )
   }
 
-  const onConfirmDelete = async (salesLocationID: number) => {
+  const onConfirmDelete = async (districtId: string) => {
     setLoading(true)
 
     try {
@@ -130,8 +130,8 @@ const useAssignArea = ({ id }: CommonFormProps) => {
         DeleteAssignedLocationRequest,
         CommonApiResponse
       >(
-        LocationAPI.POST_ASSIGN_LOCATION,
-        { id: salesLocationID, sales_id: Number(id) },
+        SalesAreaAPI.DELETE_SALES_AREA,
+        { district_id: districtId, salesman_id: String(id) },
         { method: 'DELETE' }
       )
 
