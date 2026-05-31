@@ -29,7 +29,7 @@ const AssignAreaPage: FC<CommonFormProps> = ({ id }) => {
     handleFormState,
     mutate,
     handleTabChange,
-    // onDelete,
+    onDelete,
   } = useAssignArea({ id })
 
   return (
@@ -103,6 +103,7 @@ const AssignAreaPage: FC<CommonFormProps> = ({ id }) => {
               assignedAreas={salesAreaList}
               isLoading={isValidating}
               handleFormState={handleFormState}
+              handleDelete={onDelete}
             />
           </MapProvider>
         </div>
