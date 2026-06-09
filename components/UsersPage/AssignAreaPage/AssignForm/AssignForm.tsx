@@ -101,6 +101,7 @@ const AssignForm: FC<AssignAreaFormProps> = (props) => {
                 label={'Batal'}
                 variant={ButtonVariant.OUTLINE}
                 disabled={isLoading.submit}
+                onClick={handleCloseForm}
               />
             </DialogClose>
             <CustomButton
