@@ -29,7 +29,9 @@ const CustomModal: FC<CustomModalProps> = (props) => {
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className={cn('w-full', sizeClasses[size])}>
+      <DialogContent
+        className={cn('w-full max-h-dvh overflow-auto', sizeClasses[size])}
+      >
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>

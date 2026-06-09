@@ -93,21 +93,6 @@ const AssignForm: FC<AssignAreaFormProps> = (props) => {
                 )}
               />
             </div>
-            {/*<div>*/}
-            {/*  <CustomButton*/}
-            {/*    label={'Add'}*/}
-            {/*    type={ButtonType.BUTTON}*/}
-            {/*    onClick={handleAddLocation}*/}
-            {/*    disabled={*/}
-            {/*      !form.watch('location_id') ||*/}
-            {/*      !!form.formState.errors?.location_id ||*/}
-            {/*      isLoading.validate ||*/}
-            {/*      fields*/}
-            {/*        .map((each: any) => each.location_id)*/}
-            {/*        .includes(form.watch('location_id'))*/}
-            {/*    }*/}
-            {/*  />*/}
-            {/*</div>*/}
           </div>
           <DialogFooter className="mt-4">
             <DialogClose asChild>
@@ -116,12 +101,13 @@ const AssignForm: FC<AssignAreaFormProps> = (props) => {
                 label={'Batal'}
                 variant={ButtonVariant.OUTLINE}
                 disabled={isLoading.submit}
+                onClick={handleCloseForm}
               />
             </DialogClose>
             <CustomButton
               type={ButtonType.SUBMIT}
               label={'Simpan'}
-              disabled={isLoading.validate}
+              disabled={isLoading.validate || !form.watch('locations').length}
               isLoading={isLoading.submit}
             />
           </DialogFooter>
