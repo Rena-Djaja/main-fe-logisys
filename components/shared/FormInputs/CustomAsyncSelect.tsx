@@ -154,8 +154,11 @@ const CustomAsyncSelect = <T extends FieldValues = FieldValues>(
                 ? value.filter((v: any) => v !== selectedValue)
                 : [...(value ?? []), selectedValue]
             onChange?.(newValue)
+            customOnChange && customOnChange(newValue)
           } else {
+            setSelected(options?.find((each) => each.value === selectedValue))
             onChange?.(selectedValue)
+            customOnChange && customOnChange(selectedValue)
             setOpen(false)
           }
         }
@@ -193,6 +196,7 @@ const CustomAsyncSelect = <T extends FieldValues = FieldValues>(
                       handleSelect={handleSelect}
                       value={value}
                       onSearch={onSearch}
+                      isLoading={isLoading}
                       defaultFilter={defaultFilter}
                     />
                   </div>
