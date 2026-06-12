@@ -8,7 +8,7 @@ import { ButtonType, ButtonVariant, InputType } from '@/type/FormInputs'
 import useSavedLocationForm from '@/components/SavedLocationPage/Form/useSavedLocationForm'
 import { Separator } from '@/components/shared/ui/separator'
 import CustomSelect from '@/components/shared/FormInputs/CustomSelect'
-import { MapIcon, Search } from 'lucide-react'
+import { Locate, MapIcon, Search } from 'lucide-react'
 import {
   Sheet,
   SheetContent,
@@ -24,7 +24,9 @@ const SavedLocationForm = () => {
     isLoading,
     isMapOpen,
     selectedLocation,
+    currentPosition,
     handleMapOpen,
+    handleSelectCurrentLocation,
     handleConfirmLocation,
     handleSearchLocation,
     onSubmit,
@@ -50,19 +52,30 @@ const SavedLocationForm = () => {
                 <div className="w-full">
                   <CustomInput
                     name={'lat_long'}
-                    placeholder={'Tautan Lokasi Google Maps'}
-                    helperText={'Contoh: -6.47250526, 106.856063011'}
+                    placeholder={'Tautan Lokasi'}
+                    helperText={'Format: {latitude}, {longitude}'}
                     control={form.control}
                   />
                 </div>
-                <div>
-                  <CustomButton
-                    label=""
-                    type={ButtonType.BUTTON}
-                    icon={Search}
-                    disabled={!form.watch('lat_long')}
-                    onClick={handleSearchLocation}
-                  />
+                <div className="flex gap-2">
+                  <div>
+                    <CustomButton
+                      label=""
+                      type={ButtonType.BUTTON}
+                      icon={Search}
+                      disabled={!form.watch('lat_long')}
+                      onClick={handleSearchLocation}
+                    />
+                  </div>
+                  <div>
+                    <CustomButton
+                      label=""
+                      type={ButtonType.BUTTON}
+                      icon={Locate}
+                      disabled={!currentPosition.hasLocation}
+                      onClick={handleSelectCurrentLocation}
+                    />
+                  </div>
                 </div>
               </div>
               <div className="aspect-square lg:aspect-video">

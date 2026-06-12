@@ -17,7 +17,7 @@ import { apiStatusChecker } from '@/lib/utils'
 import { toast } from 'sonner'
 
 const useSavedLocationForm = () => {
-  const { map, setLocationList } = useMapContext()
+  const { map, currentPosition, setLocationList } = useMapContext()
   const form = useForm({
     resolver: zodResolver(savedLocationSchema),
     defaultValues: {
@@ -47,6 +47,13 @@ const useSavedLocationForm = () => {
 
   const handleMapOpen = () => {
     setIsMapOpen((prev) => !prev)
+  }
+
+  const handleSelectCurrentLocation = () => {
+    form.setValue(
+      'lat_long',
+      `${currentPosition.latitude}, ${currentPosition.longitude}`
+    )
   }
 
   const handleSearchLocation = () => {
@@ -122,8 +129,8 @@ const useSavedLocationForm = () => {
       mustUpdateKey.forEach((key) => {
         // @ts-ignore
         form.clearErrors(key)
-        // @ts-ignore
         form.setValue(
+          // @ts-ignore
           key,
           locationRes.data[key as keyof LocationByLatLngRowProps]
         )
@@ -147,10 +154,12 @@ const useSavedLocationForm = () => {
 
   return {
     form,
+    currentPosition,
     isLoading,
     isMapOpen,
     selectedLocation,
     handleMapOpen,
+    handleSelectCurrentLocation,
     handleSearchLocation,
     handleConfirmLocation,
     onSubmit,
