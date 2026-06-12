@@ -53,6 +53,7 @@ const CustomSelect = <T extends FieldValues = FieldValues>(
     name,
     helperText,
     customOnChange,
+    readOnly,
     onSearch,
   } = props
   const [isMounted, setIsMounted] = useState(false)
@@ -98,7 +99,9 @@ const CustomSelect = <T extends FieldValues = FieldValues>(
               <FormControl>
                 <Popover
                   open={open}
-                  onOpenChange={!disabled && !isLoading ? setOpen : undefined}
+                  onOpenChange={
+                    !disabled && !isLoading && !readOnly ? setOpen : undefined
+                  }
                 >
                   <PopoverTrigger asChild>
                     <div>
@@ -110,6 +113,8 @@ const CustomSelect = <T extends FieldValues = FieldValues>(
                         multiple={!!multiple}
                         handleClear={handleClear}
                         isLoading={isLoading}
+                        readOnly={readOnly}
+                        disabled={disabled}
                       />
                     </div>
                   </PopoverTrigger>
@@ -162,7 +167,12 @@ const CustomSelect = <T extends FieldValues = FieldValues>(
           <FormItem>
             {!!label && <FormLabel>{label}</FormLabel>}
             <FormControl>
-              <Drawer open={open} onOpenChange={setOpen}>
+              <Drawer
+                open={open}
+                onOpenChange={
+                  !disabled && !isLoading && !readOnly ? setOpen : undefined
+                }
+              >
                 <DrawerTrigger asChild>
                   <div>
                     <SelectionInput
@@ -173,6 +183,8 @@ const CustomSelect = <T extends FieldValues = FieldValues>(
                       multiple={!!multiple}
                       handleClear={handleClear}
                       isLoading={isLoading}
+                      readOnly={readOnly}
+                      disabled={disabled}
                     />
                   </div>
                 </DrawerTrigger>
@@ -212,6 +224,8 @@ const SelectionInput = (props: {
   multiple: boolean
   handleClear: () => void
   isLoading?: boolean
+  disabled?: boolean
+  readOnly?: boolean
 }) => {
   const {
     value,
@@ -221,6 +235,8 @@ const SelectionInput = (props: {
     handleClear,
     multiple,
     isLoading,
+    disabled,
+    readOnly,
   } = props
 
   return (
@@ -228,7 +244,7 @@ const SelectionInput = (props: {
       disabled={isLoading}
       type={ButtonType.BUTTON}
       variant="outline"
-      className="w-full flex justify-between items-center font-normal h-full"
+      className="w-full flex justify-between items-center font-normal h-full min-h-9.5"
     >
       {multiple ? (
         options?.length && (
@@ -272,11 +288,16 @@ const SelectionInput = (props: {
       )}
       {!isLoading ? (
         (multiple ? !!value?.length : !!value) ? (
-          <div onClick={handleClear}>
+          <div
+            onClick={() => {
+              if (readOnly || disabled) return
+              handleClear()
+            }}
+          >
             <X />
           </div>
         ) : (
-          <ChevronsUpDown className="opacity-50" />
+          !readOnly && <ChevronsUpDown className="opacity-50" />
         )
       ) : (
         <Spinner />

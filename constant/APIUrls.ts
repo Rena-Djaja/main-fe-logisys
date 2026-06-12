@@ -18,6 +18,7 @@ export const LocationAPI = {
   GET_LOCATION_SUGGESTIONS: baseURL + '/location/search',
   GET_RETRIEVED_LOCATION: baseURL + '/location/retrieve',
   GET_DIS_VIL_LIST: baseURL + '/location/list/disvil',
+  GET_LOCATION_BY_LAT_LNG: baseURL + '/location/search-village',
 }
 
 export const SalesAreaAPI = {
