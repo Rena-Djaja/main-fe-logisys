@@ -92,7 +92,7 @@ export const menuList: MenuListProps[] = [
         resourceID: [PermissionTypes.READ_USER, PermissionTypes.WRITE_USER],
       },
       {
-        title: 'Lokasi',
+        title: 'Lokasi Tersimpan',
         icon: MapPin,
         url: '/dashboard/saved-location',
         resourceID: [PermissionTypes.PUBLIC],

@@ -55,6 +55,7 @@ const CustomAsyncSelect = <T extends FieldValues = FieldValues>(
     customOnChange,
     onSearch,
     defaultFilter = '',
+    readOnly,
   } = props
   const [isMounted, setIsMounted] = useState(false)
   const [open, setOpen] = React.useState(false)
@@ -101,7 +102,9 @@ const CustomAsyncSelect = <T extends FieldValues = FieldValues>(
               <FormControl>
                 <Popover
                   open={open}
-                  onOpenChange={!disabled && !isLoading ? setOpen : undefined}
+                  onOpenChange={
+                    !disabled && !isLoading && !readOnly ? setOpen : undefined
+                  }
                 >
                   <PopoverTrigger asChild>
                     <div>
@@ -114,6 +117,8 @@ const CustomAsyncSelect = <T extends FieldValues = FieldValues>(
                         handleClear={handleClear}
                         isLoading={isLoading}
                         selected={selected}
+                        disabled={disabled}
+                        readOnly={readOnly}
                       />
                     </div>
                   </PopoverTrigger>
@@ -171,7 +176,12 @@ const CustomAsyncSelect = <T extends FieldValues = FieldValues>(
           <FormItem>
             {!!label && <FormLabel>{label}</FormLabel>}
             <FormControl>
-              <Drawer open={open} onOpenChange={setOpen}>
+              <Drawer
+                open={open}
+                onOpenChange={
+                  !disabled && !isLoading && !readOnly ? setOpen : undefined
+                }
+              >
                 <DrawerTrigger asChild>
                   <div>
                     <SelectionInput
@@ -183,6 +193,8 @@ const CustomAsyncSelect = <T extends FieldValues = FieldValues>(
                       handleClear={handleClear}
                       isLoading={isLoading}
                       selected={selected}
+                      disabled={disabled}
+                      readOnly={readOnly}
                     />
                   </div>
                 </DrawerTrigger>
@@ -225,6 +237,8 @@ const SelectionInput = (props: {
   handleClear: () => void
   isLoading?: boolean
   selected: OptionType | undefined
+  disabled?: boolean
+  readOnly?: boolean
 }) => {
   const {
     value,
@@ -235,6 +249,8 @@ const SelectionInput = (props: {
     multiple,
     isLoading,
     selected,
+    disabled,
+    readOnly,
   } = props
 
   return (
@@ -242,7 +258,7 @@ const SelectionInput = (props: {
       disabled={isLoading}
       type={ButtonType.BUTTON}
       variant="outline"
-      className="w-full flex justify-between items-center font-normal h-full"
+      className="w-full flex justify-between items-center font-normal h-full min-h-9.5"
     >
       {multiple ? (
         options?.length && (
@@ -284,11 +300,16 @@ const SelectionInput = (props: {
       )}
       {!isLoading ? (
         (multiple ? !!value?.length : !!value) ? (
-          <div onClick={handleClear}>
+          <div
+            onClick={() => {
+              if (readOnly || disabled) return
+              handleClear()
+            }}
+          >
             <X />
           </div>
         ) : (
-          <ChevronsUpDown className="opacity-50" />
+          !readOnly && <ChevronsUpDown className="opacity-50" />
         )
       ) : (
         <Spinner />

@@ -1,8 +1,8 @@
 import React from 'react'
-import SavedLocationForm from '@/components/SavedLocationPage/Form/SavedLocationForm'
+import SavedLocationWrapper from '@/components/SavedLocationPage/Form/SavedLocationWrapper'
 
 const Page = () => {
-  return <SavedLocationForm />
+  return <SavedLocationWrapper />
 }
 
 export default Page

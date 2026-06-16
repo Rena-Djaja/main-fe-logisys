@@ -47,6 +47,7 @@ export interface CustomSelectProps<
   customOnChange?: any
   onSearch?: (value: string) => void
   defaultFilter?: string
+  readOnly?: boolean
 }
 
 export interface OptionType {

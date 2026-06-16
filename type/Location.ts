@@ -84,3 +84,24 @@ interface VillageProps {
 export interface DisVilListResponse extends CommonApiResponse {
   data: DistrictProps[]
 }
+
+export interface GetLocationByLatLngRequest {
+  lat: number
+  long: number
+}
+
+export interface GetLocationByLatLngResponse extends CommonApiResponse {
+  data: LocationByLatLngRowProps
+}
+
+export interface LocationByLatLngRowProps {
+  village_id: string
+  village_name: string
+  district_id: string
+  district_name: string
+  regency_id: string
+  regency_name: string
+  province_id: string
+  province_name: string
+  distance_meters: number
+}
