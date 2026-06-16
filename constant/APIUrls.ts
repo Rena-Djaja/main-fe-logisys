@@ -21,6 +21,10 @@ export const LocationAPI = {
   GET_LOCATION_BY_LAT_LNG: baseURL + '/location/search-village',
 }
 
+export const SavedLocationAPI = {
+  POST_SAVE_LOCATION: baseURL + '/saved-location',
+}
+
 export const SalesAreaAPI = {
   GET_SALES_AREA_LIST: baseURL + '/sales-area/list',
   POST_BULK_INSERT_SALES_AREA: baseURL + '/sales-area/bulk',

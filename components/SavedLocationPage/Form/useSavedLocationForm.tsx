@@ -7,7 +7,7 @@ import { savedLocationSchema } from '@/validations/SavedLocationValidation'
 import { useMapContext } from '@/components/shared/context/MapContext'
 import { LocationFeature } from '@/type/Map'
 import { callAPI } from '@/lib/fetchers'
-import { LocationAPI } from '@/constant/APIUrls'
+import { LocationAPI, SavedLocationAPI } from '@/constant/APIUrls'
 import {
   GetLocationByLatLngRequest,
   GetLocationByLatLngResponse,
@@ -15,10 +15,17 @@ import {
 } from '@/type/Location'
 import { apiStatusChecker } from '@/lib/utils'
 import { toast } from 'sonner'
+import {
+  SavedLocationFormInputs,
+  SavedLocationRequest,
+} from '@/type/SavedLocation'
+import { CommonApiResponse } from '@/type/Common'
+import { useRouter } from 'next/navigation'
 
 const useSavedLocationForm = () => {
+  const { push } = useRouter()
   const { map, currentPosition, setLocationList } = useMapContext()
-  const form = useForm({
+  const form = useForm<SavedLocationFormInputs>({
     resolver: zodResolver(savedLocationSchema),
     defaultValues: {
       name: '',
@@ -38,12 +45,10 @@ const useSavedLocationForm = () => {
     latitude: number
     longitude: number
   }>()
-  const [isLoading] = useState({
+  const [isLoading, setIsLoading] = useState({
     form: false,
     submit: false,
   })
-
-  console.log(selectedLatLong)
 
   const handleMapOpen = () => {
     setIsMapOpen((prev) => !prev)
@@ -148,8 +153,48 @@ const useSavedLocationForm = () => {
     }
   }
 
-  const onSubmit = async (data: any) => {
-    console.log(data)
+  const handleSuccess = (response: CommonApiResponse) => {
+    const { message } = response
+    toast.success(message)
+    push('/dashboard/saved-location')
+  }
+
+  const handleFailure = (response?: CommonApiResponse) => {
+    toast.error(
+      response?.error || 'Terjadi kesalahan. Mohon coba beberapa saat lagi.'
+    )
+  }
+
+  const onSubmit = async (data: SavedLocationFormInputs) => {
+    setIsLoading((prev) => ({ ...prev, submit: true }))
+    try {
+      const req: SavedLocationRequest = {
+        name: data.name,
+        village_id: data.village_id,
+        address: data.address,
+        address_type: data.address_type.toLowerCase(),
+        latitude: Number(selectedLatLong?.latitude),
+        longitude: Number(selectedLatLong?.longitude),
+      }
+
+      const apiRes = await callAPI<SavedLocationRequest, CommonApiResponse>(
+        SavedLocationAPI.POST_SAVE_LOCATION,
+        req,
+        { method: 'POST' }
+      )
+
+      const { data: saveLocationRes, status } = apiRes
+      if (apiStatusChecker(status) && saveLocationRes) {
+        handleSuccess(saveLocationRes)
+      } else {
+        handleFailure(saveLocationRes)
+      }
+    } catch {
+      handleFailure()
+      throw 'Failed to save location'
+    } finally {
+      setIsLoading((prev) => ({ ...prev, submit: false }))
+    }
   }
 
   return {

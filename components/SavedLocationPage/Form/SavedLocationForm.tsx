@@ -133,9 +133,6 @@ const SavedLocationForm = () => {
                   name={'address'}
                   control={form.control}
                   placeholder={'Masukkan alamat lengkap lokasi'}
-                  helperText={
-                    'Mohon untuk tidak mencantumkan Kelurahan, Kecamatan, Kota/Kab, Provinsi'
-                  }
                 />
               </div>
             </div>
