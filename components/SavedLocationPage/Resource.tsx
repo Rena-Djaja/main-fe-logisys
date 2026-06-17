@@ -4,6 +4,7 @@ import { TableHeaderProps } from '@/type/CustomTable'
 import { formattedDate } from '@/lib/utils'
 import { Badge } from '@/components/shared/ui/badge'
 import { SavedLocationProps } from '@/type/SavedLocation'
+import { handleFetchLocationType } from '@/lib/locations'
 
 export const savedLocationListHeaders: TableHeaderProps[] = [
   {
@@ -18,7 +19,9 @@ export const savedLocationListHeaders: TableHeaderProps[] = [
     key: 'address_type',
     title: 'Jenis Lokasi',
     customComponent: ({ data }: { data: SavedLocationProps }) => (
-      <Badge className="capitalize">{data.address_type}</Badge>
+      <Badge className="capitalize">
+        {handleFetchLocationType(data.address_type)}
+      </Badge>
     ),
   },
   {
