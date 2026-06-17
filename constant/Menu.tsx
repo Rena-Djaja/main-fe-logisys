@@ -75,7 +75,7 @@ export const menuList: MenuListProps[] = [
         ],
       },
       {
-        title: 'Manajemen Pengguna',
+        title: 'Manajemen User',
         icon: UsersRound,
         children: [
           {
@@ -158,6 +158,7 @@ export const userMenuList = [
 ]
 
 export const breadcrumbMap: Record<string, string> = {
-  users: 'Manajemen User',
+  users: 'Pengguna',
+  'saved-location': 'Lokasi Tersimpan',
   locations: 'Lokasi Penjualan',
 }
