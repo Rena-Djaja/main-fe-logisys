@@ -142,6 +142,7 @@ const CustomTable: FC<CustomTableProps> = (props) => {
                   {headers.map((h, headerIdx) => (
                     <TableCell
                       key={`cell-${rowIdx}-${headerIdx}`}
+                      className="max-w-[14rem]"
                       onClick={() =>
                         allowDetails(each) &&
                         !disabledIds?.has(String(each.id)) &&
@@ -151,7 +152,9 @@ const CustomTable: FC<CustomTableProps> = (props) => {
                       {h?.customComponent ? (
                         <h.customComponent data={each} />
                       ) : (
-                        <span>{each?.[h.key] || '-'}</span>
+                        <span className="text-wrap">
+                          {each?.[h.key] || '-'}
+                        </span>
                       )}
                     </TableCell>
                   ))}
