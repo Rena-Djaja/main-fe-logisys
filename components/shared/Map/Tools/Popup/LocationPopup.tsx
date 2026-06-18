@@ -7,14 +7,17 @@ import { LocateIcon, MapPin, Navigation, Pin } from 'lucide-react'
 import { Separator } from '@/components/shared/ui/separator'
 import CustomButton from '@/components/shared/FormInputs/CustomButton'
 import { ButtonSize, ButtonVariant, IconPlacementType } from '@/type/FormInputs'
+import { cn } from '@/lib/utils'
 
 type LocationPopupProps = {
   location: LocationFeature
+  withCloseButton?: boolean
+  withSelectButton?: boolean
   onClose?: () => void
 }
 
 const LocationPopup = (props: LocationPopupProps) => {
-  const { location, onClose } = props
+  const { location, withCloseButton, withSelectButton, onClose } = props
 
   if (!location) return null
 
@@ -32,7 +35,7 @@ const LocationPopup = (props: LocationPopupProps) => {
       longitude={lng}
       onClose={onClose}
       offset={15}
-      closeButton={true}
+      closeButton={withCloseButton}
       closeOnClick={false}
       className="location-popup"
       focusAfterOpen={false}
@@ -92,7 +95,7 @@ const LocationPopup = (props: LocationPopupProps) => {
 
         <Separator className="my-3" />
 
-        <div className="grid grid-cols-2 gap-2">
+        <div className={cn('grid gap-2', withSelectButton && 'grid-cols-2')}>
           <CustomButton
             variant={ButtonVariant.OUTLINE}
             size={ButtonSize.SMALL}
@@ -106,19 +109,21 @@ const LocationPopup = (props: LocationPopupProps) => {
               )
             }}
           />
-          <CustomButton
-            variant={ButtonVariant.DEFAULT}
-            size={ButtonSize.SMALL}
-            icon={Pin}
-            iconPlacement={IconPlacementType.LEFT}
-            label={properties.mapbox_id ? 'Choose Location' : 'Save Location'}
-            onClick={() => {
-              window.open(
-                `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`,
-                '_blank'
-              )
-            }}
-          />
+          {withSelectButton && (
+            <CustomButton
+              variant={ButtonVariant.DEFAULT}
+              size={ButtonSize.SMALL}
+              icon={Pin}
+              iconPlacement={IconPlacementType.LEFT}
+              label={properties.mapbox_id ? 'Choose Location' : 'Save Location'}
+              onClick={() => {
+                window.open(
+                  `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`,
+                  '_blank'
+                )
+              }}
+            />
+          )}
 
           {/*<Button*/}
           {/*  variant="outline"*/}

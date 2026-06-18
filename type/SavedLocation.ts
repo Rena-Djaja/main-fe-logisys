@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { savedLocationSchema } from '@/validations/SavedLocationValidation'
-import { PaginationResponse } from '@/type/Common'
+import { CommonApiResponse, PaginationResponse } from '@/type/Common'
 import { UserProps } from '@/type/User'
 
 export type SavedLocationFormInputs = z.infer<typeof savedLocationSchema>
@@ -36,4 +36,12 @@ export interface SavedLocationProps {
   longitude: number
   created_at: string
   updated_at: string
+}
+
+export interface SavedLocationDetailsRequest {
+  location_id: string
+}
+
+export interface SavedLocationDetailsResponse extends CommonApiResponse {
+  data: SavedLocationProps
 }

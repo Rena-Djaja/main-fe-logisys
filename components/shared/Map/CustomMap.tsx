@@ -15,6 +15,7 @@ interface MapProps {
   mapId: string
   withSearchbox?: boolean
   isLoading?: boolean
+  withCurrentLocation?: boolean
   withDefaultMarkerClick?: boolean
   withCustomMarkerClick?: boolean
   onMarkerHover?: (data: LocationFeature) => void
@@ -27,6 +28,7 @@ const CustomMap = ({
   mapId,
   withSearchbox = true,
   isLoading,
+  withCurrentLocation = true,
   withDefaultMarkerClick = true,
   withCustomMarkerClick = true,
   onMarkerClick,
@@ -61,13 +63,15 @@ const CustomMap = ({
           longitude: position.coords.longitude,
         })
 
-        map?.flyTo({
-          center: [position.coords.longitude, position.coords.latitude],
-          zoom: 15,
-          speed: 4,
-          duration: 1000,
-          essential: true,
-        })
+        if (withCurrentLocation) {
+          map?.flyTo({
+            center: [position.coords.longitude, position.coords.latitude],
+            zoom: 15,
+            speed: 4,
+            duration: 1000,
+            essential: true,
+          })
+        }
       })
     } else {
       console.error('Geolocation is not supported by this browser.')

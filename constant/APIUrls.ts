@@ -23,6 +23,7 @@ export const LocationAPI = {
 
 export const SavedLocationAPI = {
   GET_SAVED_LOCATION_LIST: baseURL + '/saved-location/list',
+  GET_SAVED_LOCATION_DETAILS: baseURL + '/saved-location/details',
   POST_SAVE_LOCATION: baseURL + '/saved-location',
 }
 

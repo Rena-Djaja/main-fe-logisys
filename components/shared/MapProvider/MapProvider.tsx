@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useEffect, useRef, useState } from 'react'
-import mapboxgl from 'mapbox-gl'
+import mapboxgl, { MapOptions } from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import { MapContext } from '@/components/shared/context/MapContext'
 import { LocationFeature } from '@/type/Map'
@@ -35,17 +35,39 @@ const MapProvider = ({ children }: MapComponentProps) => {
   const loadMap = () => {
     if (!mapContainerRef) return
 
-    map.current = new mapboxgl.Map({
+    const mapConfig: MapOptions = {
       container: mapContainerRef,
       style: 'mapbox://styles/mapbox/streets-v9',
-      center: [currentPosition.longitude, currentPosition.latitude],
       zoom: 15,
       attributionControl: false,
       logoPosition: 'bottom-right',
-    })
+    }
+
+    if (selectedLocation) {
+      mapConfig.center = [
+        selectedLocation.properties.coordinates.longitude,
+        selectedLocation.properties.coordinates.latitude,
+      ]
+    } else {
+      mapConfig.center = [currentPosition.longitude, currentPosition.latitude]
+    }
+
+    map.current = new mapboxgl.Map(mapConfig)
 
     map.current.on('load', () => {
       setIsLoaded(true)
+      if (selectedLocation) {
+        map?.current?.flyTo({
+          center: [
+            selectedLocation.properties.coordinates.longitude,
+            selectedLocation.properties.coordinates.latitude,
+          ],
+          zoom: 15,
+          speed: 4,
+          duration: 1000,
+          essential: true,
+        })
+      }
       setMapContextValue(map.current)
     })
 
@@ -63,7 +85,7 @@ const MapProvider = ({ children }: MapComponentProps) => {
 
   useEffect(() => {
     loadMap()
-  }, [mapContainerRef])
+  }, [mapContainerRef, selectedLocation])
 
   return (
     <div className="z-1">

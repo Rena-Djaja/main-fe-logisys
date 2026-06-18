@@ -17,6 +17,7 @@ import {
   SheetTitle,
 } from '@/components/shared/ui/sheet'
 import CustomMap from '@/components/shared/Map/CustomMap'
+import { LOCATION_TYPES } from '@/constant/Location'
 
 const SavedLocationForm = () => {
   const {
@@ -117,11 +118,7 @@ const SavedLocationForm = () => {
                 <CustomSelect
                   label={'Jenis Lokasi'}
                   name={'address_type'}
-                  options={[
-                    { label: 'Rumah/Properti Pribadi', value: 'private' },
-                    { label: 'Pasar', value: 'market' },
-                    { label: 'Gudang', value: 'warehouse' },
-                  ]}
+                  options={LOCATION_TYPES}
                   control={form.control}
                   placeholder={'Pilih jenis lokasi'}
                 />
