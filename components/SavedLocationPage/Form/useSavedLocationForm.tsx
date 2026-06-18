@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { savedLocationSchema } from '@/validations/SavedLocationValidation'
@@ -16,13 +16,15 @@ import {
 import { apiStatusChecker } from '@/lib/utils'
 import { toast } from 'sonner'
 import {
+  SavedLocationDetailsRequest,
+  SavedLocationDetailsResponse,
   SavedLocationFormInputs,
   SavedLocationRequest,
 } from '@/type/SavedLocation'
-import { CommonApiResponse } from '@/type/Common'
+import { CommonApiResponse, CommonFormProps } from '@/type/Common'
 import { useRouter } from 'next/navigation'
 
-const useSavedLocationForm = () => {
+const useSavedLocationForm = ({ id }: CommonFormProps) => {
   const { push } = useRouter()
   const { map, currentPosition, setLocationList } = useMapContext()
   const form = useForm<SavedLocationFormInputs>({
@@ -38,6 +40,14 @@ const useSavedLocationForm = () => {
       lat_long: '',
     },
   })
+
+  const locationFormKey = [
+    'province_id',
+    'regency_id',
+    'district_id',
+    'village_id',
+  ]
+
   const [isMapOpen, setIsMapOpen] = useState(false)
   const [selectedLocation, setSelectedLocation] =
     useState<LocationByLatLngRowProps>()
@@ -52,6 +62,78 @@ const useSavedLocationForm = () => {
 
   const handleMapOpen = () => {
     setIsMapOpen((prev) => !prev)
+  }
+
+  const handleSuccessFetchDetails = (
+    response: SavedLocationDetailsResponse
+  ) => {
+    const { data } = response
+
+    ;[
+      'name',
+      'address',
+      'address_type',
+      'village_id',
+      'district_id',
+      'regency_id',
+      'province_id',
+    ].forEach((each) => {
+      form.setValue(
+        each as keyof SavedLocationFormInputs,
+        // @ts-ignore
+        String(data[each])
+      )
+    })
+
+    setSelectedLatLong({ latitude: data.latitude, longitude: data.longitude })
+    setSelectedLocation({
+      village_id: data.village_id,
+      village_name: data.village_name,
+      district_id: data.district_id,
+      district_name: data.district_name,
+      regency_id: data.regency_id,
+      regency_name: data.regency_name,
+      province_id: data.province_id,
+      province_name: data.province_name,
+      distance_meters: 0,
+    })
+  }
+
+  const handleFailureFetchDetails = (
+    response?: SavedLocationDetailsResponse
+  ) => {
+    toast.error(
+      response?.message || 'Terjadi kesalahan. Mohon coba beberapa saat lagi.'
+    )
+    push('/dashboard/saved-location')
+  }
+
+  const fetchDetails = async () => {
+    setIsLoading((prev) => ({ ...prev, form: true }))
+
+    try {
+      const apiRes = await callAPI<
+        SavedLocationDetailsRequest,
+        SavedLocationDetailsResponse
+      >(
+        SavedLocationAPI.GET_SAVED_LOCATION_DETAILS,
+        { location_id: String(id) },
+        { method: 'GET' }
+      )
+
+      const { data: savedLocationDetailsData, status } = apiRes
+
+      if (apiStatusChecker(status) && savedLocationDetailsData) {
+        handleSuccessFetchDetails(savedLocationDetailsData)
+      } else {
+        handleFailureFetchDetails(savedLocationDetailsData)
+      }
+    } catch {
+      handleFailureFetchDetails()
+      throw 'Failed to fetch user details'
+    } finally {
+      setIsLoading((prev) => ({ ...prev, form: false }))
+    }
   }
 
   const handleSelectCurrentLocation = () => {
@@ -120,18 +202,12 @@ const useSavedLocationForm = () => {
     >(LocationAPI.GET_LOCATION_BY_LAT_LNG, req, { method: 'GET' })
 
     if (apiStatusChecker(status) && locationRes) {
-      const mustUpdateKey = [
-        'province_id',
-        'regency_id',
-        'district_id',
-        'village_id',
-      ]
       setSelectedLocation(locationRes.data)
       setSelectedLatLong({
         latitude: location.properties.coordinates.latitude,
         longitude: location.properties.coordinates.longitude,
       })
-      mustUpdateKey.forEach((key) => {
+      locationFormKey.forEach((key) => {
         // @ts-ignore
         form.clearErrors(key)
         form.setValue(
@@ -169,6 +245,7 @@ const useSavedLocationForm = () => {
     setIsLoading((prev) => ({ ...prev, submit: true }))
     try {
       const req: SavedLocationRequest = {
+        ...(id && { id }),
         name: data.name,
         village_id: data.village_id,
         address: data.address,
@@ -180,7 +257,7 @@ const useSavedLocationForm = () => {
       const apiRes = await callAPI<SavedLocationRequest, CommonApiResponse>(
         SavedLocationAPI.POST_SAVE_LOCATION,
         req,
-        { method: 'POST' }
+        { method: id ? 'PUT' : 'POST' }
       )
 
       const { data: saveLocationRes, status } = apiRes
@@ -196,6 +273,12 @@ const useSavedLocationForm = () => {
       setIsLoading((prev) => ({ ...prev, submit: false }))
     }
   }
+
+  useEffect(() => {
+    if (id) {
+      fetchDetails()
+    }
+  }, [id])
 
   return {
     form,

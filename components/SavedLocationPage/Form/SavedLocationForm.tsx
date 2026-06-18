@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { FC } from 'react'
 import { Form } from '@/components/shared/ui/form'
 import CustomInput from '@/components/shared/FormInputs/CustomInput'
 import CustomButton from '@/components/shared/FormInputs/CustomButton'
@@ -18,8 +18,9 @@ import {
 } from '@/components/shared/ui/sheet'
 import CustomMap from '@/components/shared/Map/CustomMap'
 import { LOCATION_TYPES } from '@/constant/Location'
+import { CommonFormProps } from '@/type/Common'
 
-const SavedLocationForm = () => {
+const SavedLocationForm: FC<CommonFormProps> = (props) => {
   const {
     form,
     isLoading,
@@ -31,7 +32,7 @@ const SavedLocationForm = () => {
     handleConfirmLocation,
     handleSearchLocation,
     onSubmit,
-  } = useSavedLocationForm()
+  } = useSavedLocationForm(props)
 
   return (
     <Form {...form}>
@@ -240,7 +241,7 @@ const SavedLocationForm = () => {
               type={ButtonType.BUTTON}
               variant={ButtonVariant.OUTLINE}
               label={'Batal'}
-              link={'/dashboard/locations'}
+              link={'/dashboard/saved-location'}
               disabled={isLoading.submit}
             />
             <CustomButton label={'Simpan'} isLoading={isLoading.submit} />

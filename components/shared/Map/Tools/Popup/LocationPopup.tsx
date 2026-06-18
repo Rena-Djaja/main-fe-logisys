@@ -3,7 +3,7 @@
 import React from 'react'
 import { LocationFeature } from '@/type/Map'
 import PopupWrapper from '@/components/shared/Map/Tools/Popup/PopupWrapper'
-import { LocateIcon, MapPin, Navigation, Pin } from 'lucide-react'
+import { LocateIcon, MapPin, Pin, Route } from 'lucide-react'
 import { Separator } from '@/components/shared/ui/separator'
 import CustomButton from '@/components/shared/FormInputs/CustomButton'
 import { ButtonSize, ButtonVariant, IconPlacementType } from '@/type/FormInputs'
@@ -40,7 +40,7 @@ const LocationPopup = (props: LocationPopupProps) => {
       className="location-popup"
       focusAfterOpen={false}
     >
-      <div className="w-[300px] sm:w-[350px]">
+      <div className="w-[250px] md:w-[350px]">
         <div className="flex items-start gap-3">
           <div className="bg-rose-500/10 p-2 rounded-full shrink-0">
             <LocateIcon className="h-5 w-5" />
@@ -99,9 +99,9 @@ const LocationPopup = (props: LocationPopupProps) => {
           <CustomButton
             variant={ButtonVariant.OUTLINE}
             size={ButtonSize.SMALL}
-            icon={Navigation}
+            icon={Route}
             iconPlacement={IconPlacementType.LEFT}
-            label={'Directions'}
+            label={'Rute'}
             onClick={() => {
               window.open(
                 `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`,
