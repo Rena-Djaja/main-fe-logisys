@@ -24,7 +24,7 @@ const SavedLocationDetails = (props: CommonDetailsComponentProps) => {
       open={detailsState.isOpen}
       onOpenChange={() => handleDetails('close')}
     >
-      <SheetContent className="w-[55rem] max-w-dvw md:max-w-dvw lg:max-w-none overflow-auto">
+      <SheetContent className="w-[55rem] max-w-dvw md:max-w-dvw lg:max-w-none overflow-auto pb-10">
         <SheetHeader>
           <SheetTitle>Detail Lokasi</SheetTitle>
           <SheetDescription>
@@ -85,7 +85,7 @@ const SavedLocationDetails = (props: CommonDetailsComponentProps) => {
                   </span>
                 </div>
               </div>
-              <div className="w-full aspect-video">
+              <div className="w-full aspect-square md:aspect-video">
                 <CustomMap
                   mapId={'saved-location-details-map'}
                   withSearchbox={false}
