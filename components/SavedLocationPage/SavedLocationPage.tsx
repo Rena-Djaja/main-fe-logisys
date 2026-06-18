@@ -9,13 +9,17 @@ import CustomTable from '@/components/shared/CustomTable/CustomTable'
 import { userCustomActions } from '@/components/UsersPage/Resource'
 import useSavedLocation from '@/components/SavedLocationPage/useSavedLocation'
 import { savedLocationListHeaders } from '@/components/SavedLocationPage/Resource'
+import SavedLocationDetails from '@/components/SavedLocationPage/Details/SavedLocationDetails'
+import MapProvider from '@/components/shared/MapProvider/MapProvider'
 
 const SavedLocationPage = () => {
   const {
     savedLocationList,
     isValidating,
     filter,
+    detailsState,
     search,
+    handleDetails,
     onRowClick,
     onAdd,
     onUpdate,
@@ -24,6 +28,12 @@ const SavedLocationPage = () => {
 
   return (
     <>
+      <MapProvider>
+        <SavedLocationDetails
+          detailsState={detailsState}
+          handleDetails={handleDetails}
+        />
+      </MapProvider>
       <div className="mt-8 w-full flex flex-col gap-10">
         <div className="w-full flex flex-col">
           <h1 className="font-semibold text-[2rem]">List Lokasi Tersimpan</h1>

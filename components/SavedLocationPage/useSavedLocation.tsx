@@ -125,6 +125,7 @@ const useSavedLocation = () => {
     isValidating,
     filter,
     detailsState,
+    handleDetails,
     search,
     onRowClick,
     onAdd,
