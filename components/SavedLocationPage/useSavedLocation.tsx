@@ -1,17 +1,19 @@
 'use client'
 
 import useCommonApi from '@/components/shared/Hooks/CommonApi/useCommonApi'
-import { SavedLocationAPI, UserAPI } from '@/constant/APIUrls'
+import { SavedLocationAPI } from '@/constant/APIUrls'
 import { useState } from 'react'
 import {
   CommonApiResponse,
   CommonDetailsStateProps,
   CommonFilterRequest,
 } from '@/type/Common'
-import { SavedLocationListResponse } from '@/type/SavedLocation'
+import {
+  DeleteSavedLocationRequest,
+  SavedLocationListResponse,
+} from '@/type/SavedLocation'
 import { ButtonVariant } from '@/type/FormInputs'
 import { callAPI } from '@/lib/fetchers'
-import { DeleteUserRequest } from '@/type/User'
 import { apiStatusChecker } from '@/lib/utils'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
@@ -87,18 +89,21 @@ const useSavedLocation = () => {
     setLoading(true)
 
     try {
-      const apiRes = await callAPI<DeleteUserRequest, CommonApiResponse>(
-        UserAPI.POST_USER,
-        { id },
+      const apiRes = await callAPI<
+        DeleteSavedLocationRequest,
+        CommonApiResponse
+      >(
+        SavedLocationAPI.POST_SAVE_LOCATION,
+        { location_id: id },
         { method: 'DELETE' }
       )
 
-      const { status, data: deleteUserRes } = apiRes
+      const { status, data: deleteSavedLocationRes } = apiRes
 
-      if (apiStatusChecker(status) && deleteUserRes) {
-        handleSuccessDelete(deleteUserRes)
+      if (apiStatusChecker(status) && deleteSavedLocationRes) {
+        handleSuccessDelete(deleteSavedLocationRes)
       } else {
-        handleFailureDelete(deleteUserRes)
+        handleFailureDelete(deleteSavedLocationRes)
       }
     } catch (err) {
       handleFailureDelete()
