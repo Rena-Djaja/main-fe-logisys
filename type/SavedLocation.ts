@@ -45,3 +45,5 @@ export interface SavedLocationDetailsRequest {
 export interface SavedLocationDetailsResponse extends CommonApiResponse {
   data: SavedLocationProps
 }
+
+export type DeleteSavedLocationRequest = SavedLocationDetailsRequest
