@@ -1,10 +1,10 @@
 import React from 'react'
-import SupplierForm from '@/components/SuppliersPage/Form/SupplierForm'
 import { CommonServerFormProps } from '@/type/Common'
+import SupplierFormWrapper from '@/components/SuppliersPage/Form/SupplierFormWrapper'
 
 const Form = async ({ params }: CommonServerFormProps) => {
   const { slug } = await params
-  return <SupplierForm id={slug} />
+  return <SupplierFormWrapper id={slug} />
 }
 
 export default Form
