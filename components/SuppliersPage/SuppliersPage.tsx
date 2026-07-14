@@ -32,15 +32,15 @@ const SuppliersPage = () => {
       />
       <div className="mt-8 w-full flex flex-col gap-10">
         <div className="w-full flex flex-col">
-          <h1 className="font-semibold text-[2rem]">Supplier List</h1>
+          <h1 className="font-semibold text-[2rem]">Daftar Supplier</h1>
           <span className="font-medium text-[0.95rem]">
-            Manage all the supplier listed below
+            Kelola semua supplier dibawah ini
           </span>
         </div>
         <div className="w-full flex flex-col gap-6">
           <div className="w-full flex justify-between">
             <div className="w-full flex gap-2 font-semibold text-[1.25rem]">
-              <span>All suppliers</span>
+              <span>Semua supplier</span>
               <span className="opacity-70">
                 {supplierList?.pagination.total_data}
               </span>
@@ -51,7 +51,7 @@ const SuppliersPage = () => {
               </div>
               <div>
                 <CustomButton
-                  label={'Add New'}
+                  label={'Tambah'}
                   icon={Plus}
                   type={ButtonType.BUTTON}
                   onClick={onAdd}
