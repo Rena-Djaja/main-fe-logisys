@@ -1,34 +1,42 @@
 'use client'
 
 import { TableHeaderProps } from '@/type/CustomTable'
-import { UserProps } from '@/type/User'
 import { formattedDate } from '@/lib/utils'
+import { SupplierProps } from '@/type/Supplier'
+import StatusBadge from '@/components/shared/StatusBadge/StatusBadge'
 
 export const supplierListHeaders: TableHeaderProps[] = [
   {
     key: 'name',
-    title: 'Name',
+    title: 'Nama Supplier',
   },
   {
-    key: 'location',
-    title: 'Location',
+    key: 'address',
+    title: 'Alamat',
   },
   {
     key: 'phone_number',
-    title: 'Phone Number',
+    title: 'No. Telp',
   },
   {
     key: 'created_at',
-    title: 'Date added',
-    customComponent: ({ data }: { data: UserProps }) => (
+    title: 'Tanggal Dibuat',
+    customComponent: ({ data }: { data: SupplierProps }) => (
       <span>{formattedDate(data.created_at, true)}</span>
     ),
   },
   {
     key: 'updated_at',
-    title: 'Last Updated',
-    customComponent: ({ data }: { data: UserProps }) => (
+    title: 'Terakhir Diperbaharui',
+    customComponent: ({ data }: { data: SupplierProps }) => (
       <span>{formattedDate(data.updated_at, true)}</span>
+    ),
+  },
+  {
+    key: 'is_deleted',
+    title: 'Status',
+    customComponent: ({ data }: { data: SupplierProps }) => (
+      <StatusBadge isActive={!data.deleted_at} />
     ),
   },
 ]

@@ -61,9 +61,6 @@ const SupplierDetails: FC<CommonDetailsComponentProps> = (props) => {
                       <span className="font-medium text-[0.85rem]">
                         {formattedDate(supplierDetails?.created_at, true)}
                       </span>
-                      <span className="text-[0.85rem]">
-                        by <b>{supplierDetails?.created_by.name}</b>
-                      </span>
                     </div>
                   </div>
                   <div className="flex flex-col gap-2">
@@ -73,9 +70,6 @@ const SupplierDetails: FC<CommonDetailsComponentProps> = (props) => {
                     <div className="flex flex-col gap-1">
                       <span className="font-medium text-[0.85rem]">
                         {formattedDate(supplierDetails?.updated_at, true)}
-                      </span>
-                      <span className="text-[0.85rem]">
-                        by <b>{supplierDetails?.updated_by.name}</b>
                       </span>
                     </div>
                   </div>
