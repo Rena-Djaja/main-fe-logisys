@@ -61,7 +61,7 @@ const SuppliersPage = () => {
           </div>
           <CustomTable
             headers={supplierListHeaders}
-            data={supplierList?.data || []}
+            data={supplierList?.suppliers || []}
             isLoading={isValidating}
             page={filter.page}
             perPage={filter.per_page}

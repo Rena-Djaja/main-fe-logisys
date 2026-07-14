@@ -22,13 +22,12 @@ export interface SupplierProps {
   longitude: number
   phone_number: string | null
   created_at: string
-  created_by: CommonOwnerProps
   updated_at: string
-  updated_by: CommonOwnerProps
+  deleted_at: string | null
 }
 
 export interface SupplierListResponse {
-  data: SupplierProps[]
+  suppliers: SupplierProps[]
   pagination: PaginationResponse
 }
 
