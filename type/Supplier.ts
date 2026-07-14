@@ -44,5 +44,5 @@ export interface SupplierDetailsResponse extends CommonApiResponse {
 export type SupplierFormInputs = z.infer<typeof supplierFormValidationSchema>
 
 export interface DeleteSupplierRequest {
-  id: number
+  supplier_id: string
 }

@@ -69,25 +69,25 @@ const useSuppliers = () => {
     redirect(`/dashboard/suppliers/form/${id}`)
   }
 
-  const onDelete = (id: number) => {
+  const onDelete = (supplier_id: string) => {
     setConfirmation({
       isOpen: true,
-      title: 'Are you absolutely sure?',
+      title: 'Apakah Anda yakin?',
       description:
-        'This action cannot be undone. This will permanently delete this account and remove the data.',
+        'Aksi ini tidak dapat dibatalkan. Anda akan menghapus supplier ini secara permanen.',
       confirmButtonVariant: ButtonVariant.DESTRUCTIVES,
-      confirmButtonText: "Yes, I'm sure",
-      onConfirm: () => onConfirmDelete(id),
+      confirmButtonText: 'Saya Yakin',
+      onConfirm: () => onConfirmDelete(supplier_id),
     })
   }
 
-  const onConfirmDelete = async (id: number) => {
+  const onConfirmDelete = async (supplier_id: string) => {
     setLoading(true)
 
     try {
       const apiRes = await callAPI<DeleteSupplierRequest, CommonApiResponse>(
         SupplierAPI.POST_SUPPLIER,
-        { id },
+        { supplier_id },
         { method: 'DELETE' }
       )
 
