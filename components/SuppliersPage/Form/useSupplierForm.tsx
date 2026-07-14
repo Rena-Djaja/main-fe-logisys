@@ -110,13 +110,12 @@ const useSupplierForm = (props: CommonFormProps) => {
   }
 
   const handleSuccessFetchDetails = (response: SupplierDetailsResponse) => {
-    const { data } = response
+    const fieldsToUpdate = ['name', 'address', 'phone_number'] as const
+    type SelectedFields = (typeof fieldsToUpdate)[number]
+    const { data }: { data: Record<SelectedFields, string> } = response
 
-    ;['name', 'address', 'phone_number'].forEach((each) => {
-      form.setValue(
-        each as keyof SupplierFormInputs,
-        data[each as keyof SupplierFormInputs] || ''
-      )
+    fieldsToUpdate.forEach((each) => {
+      form.setValue(each, data[each] || '')
     })
   }
 
@@ -134,7 +133,11 @@ const useSupplierForm = (props: CommonFormProps) => {
       const apiRes = await callAPI<
         SupplierDetailsRequest,
         SupplierDetailsResponse
-      >(SupplierAPI.GET_SUPPLIER_DETAILS, { id: Number(id) }, { method: 'GET' })
+      >(
+        SupplierAPI.GET_SUPPLIER_DETAILS,
+        { supplier_id: String(id) },
+        { method: 'GET' }
+      )
 
       const { data: supplierDetailsData, status } = apiRes
 

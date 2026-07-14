@@ -9,6 +9,7 @@ import CustomTable from '@/components/shared/CustomTable/CustomTable'
 import useSuppliers from '@/components/SuppliersPage/useSuppliers'
 import { supplierListHeaders } from '@/components/SuppliersPage/Resource'
 import SupplierDetails from '@/components/SuppliersPage/Details/SupplierDetails'
+import MapProvider from '@/components/shared/MapProvider/MapProvider'
 
 const SuppliersPage = () => {
   const {
@@ -26,10 +27,12 @@ const SuppliersPage = () => {
 
   return (
     <>
-      <SupplierDetails
-        detailsState={detailsState}
-        handleDetails={handleDetails}
-      />
+      <MapProvider>
+        <SupplierDetails
+          detailsState={detailsState}
+          handleDetails={handleDetails}
+        />
+      </MapProvider>
       <div className="mt-8 w-full flex flex-col gap-10">
         <div className="w-full flex flex-col">
           <h1 className="font-semibold text-[2rem]">Daftar Supplier</h1>

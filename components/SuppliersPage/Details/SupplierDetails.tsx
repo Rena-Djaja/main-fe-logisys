@@ -13,6 +13,7 @@ import {
 import { Skeleton } from '@/components/shared/ui/skeleton'
 import { MapPin, Phone } from 'lucide-react'
 import { formattedDate } from '@/lib/utils'
+import CustomMap from '@/components/shared/Map/CustomMap'
 
 const SupplierDetails: FC<CommonDetailsComponentProps> = (props) => {
   const { supplierDetails, isLoading } = useSupplierDetails(props)
@@ -24,19 +25,19 @@ const SupplierDetails: FC<CommonDetailsComponentProps> = (props) => {
       open={detailsState.isOpen}
       onOpenChange={() => handleDetails('close')}
     >
-      <SheetContent>
+      <SheetContent className="w-[55rem] max-w-dvw md:max-w-dvw lg:max-w-none overflow-auto pb-10">
         <SheetHeader>
-          <SheetTitle>User Details</SheetTitle>
+          <SheetTitle>Detail Supplier</SheetTitle>
           <SheetDescription>
-            View the details of the selected user
+            Lihat detail dari supplier yang dipilih
           </SheetDescription>
         </SheetHeader>
         <div className="px-6 mt-2">
           {isLoading ? (
             <DetailsSkeleton />
           ) : (
-            <div className="flex items-center space-x-4">
-              <div className="flex flex-col gap-3">
+            <div className="w-full flex items-center space-x-4">
+              <div className="w-full flex flex-col gap-3">
                 <span className="font-semibold text-[1.75rem]">
                   {supplierDetails?.name}
                 </span>
@@ -48,14 +49,24 @@ const SupplierDetails: FC<CommonDetailsComponentProps> = (props) => {
                 </div>
                 <div className="flex items-center gap-2">
                   <Phone className="size-4" />
-                  <span className="font-medium text-[0.85rem]">
-                    {supplierDetails?.phone_number || '-'}
-                  </span>
+                  <a href={`tel:${supplierDetails?.phone_number}`}>
+                    <span className="font-medium text-[0.85rem] underline">
+                      {supplierDetails?.phone_number || '-'}
+                    </span>
+                  </a>
+                </div>
+                <div className="w-full aspect-square md:aspect-video">
+                  <CustomMap
+                    mapId={'supplier-details-map'}
+                    withSearchbox={false}
+                    withCurrentLocation={false}
+                    withPopupCloseButton={false}
+                  />
                 </div>
                 <div className="mt-8 flex flex-col gap-6">
                   <div className="flex flex-col gap-2">
                     <span className="font-bold text-[0.75rem] text-muted-foreground">
-                      Created
+                      Dibuat
                     </span>
                     <div className="flex flex-col gap-1">
                       <span className="font-medium text-[0.85rem]">
@@ -65,7 +76,7 @@ const SupplierDetails: FC<CommonDetailsComponentProps> = (props) => {
                   </div>
                   <div className="flex flex-col gap-2">
                     <span className="font-bold text-[0.75rem] text-muted-foreground">
-                      Last Updated
+                      Diperbaharui
                     </span>
                     <div className="flex flex-col gap-1">
                       <span className="font-medium text-[0.85rem]">
