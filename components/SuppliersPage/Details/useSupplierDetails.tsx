@@ -11,12 +11,16 @@ import {
   SupplierDetailsResponse,
   SupplierProps,
 } from '@/type/Supplier'
+import { useMapContext } from '@/components/shared/context/MapContext'
+import { LocationFeature } from '@/type/Map'
 
 const useSupplierDetails = (props: CommonDetailsComponentProps) => {
   const {
     detailsState: { id, isOpen },
     handleDetails,
   } = props
+
+  const { setSelectedLocation } = useMapContext()
 
   const [supplierDetails, setSupplierDetails] = useState<
     SupplierProps | undefined
@@ -27,6 +31,20 @@ const useSupplierDetails = (props: CommonDetailsComponentProps) => {
     const { data } = response
 
     setSupplierDetails(data)
+
+    const location: LocationFeature = {
+      properties: {
+        name: data.name,
+        full_address: data.address,
+        mapbox_id: data.id,
+        feature_type: 'supplier-location',
+        coordinates: {
+          latitude: data.location.latitude,
+          longitude: data.location.longitude,
+        },
+      },
+    }
+    setSelectedLocation(location)
   }
 
   const handleFailure = (response?: SupplierDetailsResponse) => {
@@ -43,7 +61,11 @@ const useSupplierDetails = (props: CommonDetailsComponentProps) => {
       const apiRes = await callAPI<
         SupplierDetailsRequest,
         SupplierDetailsResponse
-      >(SupplierAPI.GET_SUPPLIER_DETAILS, { id: Number(id) }, { method: 'GET' })
+      >(
+        SupplierAPI.GET_SUPPLIER_DETAILS,
+        { supplier_id: id },
+        { method: 'GET' }
+      )
 
       const { data: supplierDetailsData, status } = apiRes
 

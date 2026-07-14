@@ -90,6 +90,7 @@ const SavedLocationDetails = (props: CommonDetailsComponentProps) => {
                   mapId={'saved-location-details-map'}
                   withSearchbox={false}
                   withCurrentLocation={false}
+                  withPopupCloseButton={false}
                 />
               </div>
             </div>
