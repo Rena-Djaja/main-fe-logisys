@@ -42,7 +42,7 @@ const useSearchbox = () => {
         properties: {
           name: `${coordinates.lat}, ${coordinates.lng}`,
           feature_type: '',
-          mapbox_id: '',
+          mapbox_id: `loc-${coordinates.lat}-${coordinates.lng}`,
           full_address: '',
           coordinates: {
             longitude: coordinates.lng,
@@ -55,7 +55,7 @@ const useSearchbox = () => {
         center: [coordinates.lng, coordinates.lat],
         zoom: 15,
         speed: 4,
-        duration: 1000,
+        duration: 1500,
         essential: true,
       })
 
@@ -129,7 +129,6 @@ const useSearchbox = () => {
 
           setDisplayValue(loc.properties.name)
 
-          setSelectedLocations((prev) => [...prev, loc])
           setSelectedLocation(loc)
 
           setResults([])

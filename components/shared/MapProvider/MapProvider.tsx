@@ -15,6 +15,7 @@ type MapComponentProps = {
 const MapProvider = ({ children }: MapComponentProps) => {
   const map = useRef<mapboxgl.Map | null>(null)
   const [isLoaded, setIsLoaded] = useState(false)
+  const [isSelectButtonLoading, setIsSelectButtonLoading] = useState(false)
   const [mapContainerRef, setMapContainerRef] =
     useState<HTMLDivElement | null>()
   const [mapContextValue, setMapContextValue] = useState<mapboxgl.Map | null>(
@@ -97,6 +98,8 @@ const MapProvider = ({ children }: MapComponentProps) => {
           selectedLocation,
           locationList,
           selectedLocations,
+          isSelectButtonLoading,
+          setIsSelectButtonLoading,
           setMapContainerRef,
           setCurrentPosition,
           setSelectedLocations,

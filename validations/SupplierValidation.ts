@@ -3,12 +3,26 @@ import { z } from 'zod'
 export const supplierFormValidationSchema = z
   .object({
     name: z
-      .string('Please insert company name')
-      .min(1, 'Please insert company name'),
-    location: z
-      .string('Please insert company address')
-      .min(1, 'Please insert company address'),
+      .string('Nama perusahaan harus diisi')
+      .min(1, 'Nama perusahaan harus diisi'),
+    address: z
+      .string('Alamat usaha harus diisi')
+      .min(1, 'Alamat usaha harus diisi'),
     phone_number: z.string().nullable(),
+    latitude: z.number(),
+    longitude: z.number(),
+    province_id: z
+      .string('Harus ada provinsi terpilih')
+      .min(1, 'Harus ada provinsi terpilih'),
+    regency_id: z
+      .string('Harus ada kabupaten/kota terpilih')
+      .min(1, 'Harus ada kabupaten/kota terpilih'),
+    district_id: z
+      .string('Harus ada kecamatan terpilih')
+      .min(1, 'Harus ada kecamatan terpilih'),
+    village_id: z
+      .string('Harus ada desa/kelurahan terpilih')
+      .min(1, 'Harus ada desa/kelurahan terpilih'),
   })
   .superRefine((data, ctx) => {
     if (data.phone_number) {

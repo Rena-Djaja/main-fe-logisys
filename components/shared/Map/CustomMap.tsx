@@ -22,6 +22,10 @@ interface MapProps {
   onMarkerClick?: (data: LocationFeature) => void
   onMarkerRemoveClick?: (data: LocationFeature) => void
   disabledAreas?: string[]
+  withPopupCloseButton?: boolean
+  withPopupSelectButton?: boolean
+  onPopupClose?: () => void
+  handlePopupSelect?: (location: LocationFeature) => void
 }
 
 const CustomMap = ({
@@ -35,10 +39,14 @@ const CustomMap = ({
   onMarkerRemoveClick,
   onMarkerHover,
   disabledAreas,
+  withPopupCloseButton = true,
+  withPopupSelectButton = false,
+  handlePopupSelect,
 }: MapProps) => {
   const {
     map,
     isLoaded,
+    isSelectButtonLoading,
     currentPosition,
     selectedLocation,
     locationList,
@@ -79,8 +87,10 @@ const CustomMap = ({
   }
 
   useEffect(() => {
-    locateCurrentLocation()
-  }, [map])
+    if (!selectedLocation) {
+      locateCurrentLocation()
+    }
+  }, [map, selectedLocation])
 
   return (
     <div className="w-full h-full relative">
@@ -120,6 +130,10 @@ const CustomMap = ({
           <LocationPopup
             location={selectedLocation}
             onClose={() => console.log(null)}
+            withCloseButton={withPopupCloseButton}
+            withSelectButton={withPopupSelectButton}
+            handleSelect={handlePopupSelect}
+            selectButtonLoading={isSelectButtonLoading}
           />
         )}
       </div>

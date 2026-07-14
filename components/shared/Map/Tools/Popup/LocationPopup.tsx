@@ -3,21 +3,37 @@
 import React from 'react'
 import { LocationFeature } from '@/type/Map'
 import PopupWrapper from '@/components/shared/Map/Tools/Popup/PopupWrapper'
-import { LocateIcon, MapPin, Pin, Route } from 'lucide-react'
+import { Check, LocateIcon, MapPin, Pin, Route } from 'lucide-react'
 import { Separator } from '@/components/shared/ui/separator'
 import CustomButton from '@/components/shared/FormInputs/CustomButton'
-import { ButtonSize, ButtonVariant, IconPlacementType } from '@/type/FormInputs'
+import {
+  ButtonSize,
+  ButtonType,
+  ButtonVariant,
+  IconPlacementType,
+} from '@/type/FormInputs'
 import { cn } from '@/lib/utils'
+import { useMapContext } from '@/components/shared/context/MapContext'
 
 type LocationPopupProps = {
   location: LocationFeature
   withCloseButton?: boolean
   withSelectButton?: boolean
   onClose?: () => void
+  handleSelect?: (location: LocationFeature) => void
+  selectButtonLoading?: boolean
 }
 
 const LocationPopup = (props: LocationPopupProps) => {
-  const { location, withCloseButton, withSelectButton, onClose } = props
+  const { selectedLocations } = useMapContext()
+  const {
+    location,
+    withCloseButton,
+    withSelectButton,
+    selectButtonLoading,
+    onClose,
+    handleSelect,
+  } = props
 
   if (!location) return null
 
@@ -97,6 +113,7 @@ const LocationPopup = (props: LocationPopupProps) => {
 
         <div className={cn('grid gap-2', withSelectButton && 'grid-cols-2')}>
           <CustomButton
+            type={ButtonType.BUTTON}
             variant={ButtonVariant.OUTLINE}
             size={ButtonSize.SMALL}
             icon={Route}
@@ -111,16 +128,36 @@ const LocationPopup = (props: LocationPopupProps) => {
           />
           {withSelectButton && (
             <CustomButton
+              type={ButtonType.BUTTON}
               variant={ButtonVariant.DEFAULT}
               size={ButtonSize.SMALL}
-              icon={Pin}
-              iconPlacement={IconPlacementType.LEFT}
-              label={properties.mapbox_id ? 'Choose Location' : 'Save Location'}
-              onClick={() => {
-                window.open(
-                  `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`,
-                  '_blank'
+              icon={
+                selectedLocations.some(
+                  (each) =>
+                    each.properties.mapbox_id === location.properties.mapbox_id
                 )
+                  ? Check
+                  : Pin
+              }
+              iconPlacement={IconPlacementType.LEFT}
+              label={
+                selectedLocations.some(
+                  (each) =>
+                    each.properties.mapbox_id === location.properties.mapbox_id
+                )
+                  ? 'Terpilih'
+                  : 'Pilih Lokasi'
+              }
+              isLoading={selectButtonLoading}
+              disabled={
+                selectButtonLoading ||
+                selectedLocations.some(
+                  (each) =>
+                    each.properties.mapbox_id === location.properties.mapbox_id
+                )
+              }
+              onClick={() => {
+                handleSelect && handleSelect(location)
               }}
             />
           )}
