@@ -9,7 +9,17 @@ import { supplierFormValidationSchema } from '@/validations/SupplierValidation'
 export interface SupplierProps {
   id: number
   name: string
-  location: string
+  address: string
+  province_id: string
+  province_name: string
+  regency_id: string
+  regency_name: string
+  district_id: string
+  district_name: string
+  village_id: string
+  village_name: string
+  latitude: number
+  longitude: number
   phone_number: string | null
   created_at: string
   created_by: CommonOwnerProps

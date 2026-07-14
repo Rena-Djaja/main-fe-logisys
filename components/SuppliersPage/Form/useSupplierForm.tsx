@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { supplierFormValidationSchema } from '@/validations/SupplierValidation'
 import { callAPI } from '@/lib/fetchers'
-import { SupplierAPI } from '@/constant/APIUrls'
+import { LocationAPI, SupplierAPI } from '@/constant/APIUrls'
 import {
   SupplierDetailsRequest,
   SupplierDetailsResponse,
@@ -15,15 +15,42 @@ import { CommonApiResponse, CommonFormProps } from '@/type/Common'
 import { apiStatusChecker } from '@/lib/utils'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
+import { useMapContext } from '@/components/shared/context/MapContext'
+import { LocationFeature } from '@/type/Map'
+import {
+  GetLocationByLatLngRequest,
+  GetLocationByLatLngResponse,
+  LocationByLatLngRowProps,
+} from '@/type/Location'
+
+const locationFormKey = [
+  'province_id',
+  'regency_id',
+  'district_id',
+  'village_id',
+]
 
 const useSupplierForm = (props: CommonFormProps) => {
   const { id } = props
+  const {
+    selectedLocation: locDetails,
+    setSelectedLocations,
+    setIsSelectButtonLoading,
+  } = useMapContext()
+  const [selectedLocation, setSelectedLocation] =
+    useState<LocationByLatLngRowProps>()
   const form = useForm<SupplierFormInputs>({
     resolver: zodResolver(supplierFormValidationSchema),
     defaultValues: {
       name: '',
-      location: '',
+      address: '',
       phone_number: '',
+      province_id: '',
+      regency_id: '',
+      district_id: '',
+      village_id: '',
+      latitude: 0,
+      longitude: 0,
     },
   })
 
@@ -34,10 +61,58 @@ const useSupplierForm = (props: CommonFormProps) => {
     submit: false,
   })
 
+  const handleSelectLocation = async (location: LocationFeature) => {
+    setIsSelectButtonLoading(true)
+
+    try {
+      const req: GetLocationByLatLngRequest = {
+        lat: location.properties.coordinates.latitude,
+        long: location.properties.coordinates.longitude,
+      }
+      const { data: locationRes, status } = await callAPI<
+        GetLocationByLatLngRequest,
+        GetLocationByLatLngResponse
+      >(LocationAPI.GET_LOCATION_BY_LAT_LNG, req, { method: 'GET' })
+
+      if (apiStatusChecker(status) && locationRes) {
+        setSelectedLocations([locDetails as LocationFeature])
+        setSelectedLocation(locationRes.data)
+        form.setValue('address', locDetails?.properties.full_address || '')
+        form.setValue(
+          'latitude',
+          Number(locDetails?.properties.coordinates.latitude)
+        )
+        form.setValue(
+          'longitude',
+          Number(locDetails?.properties.coordinates.longitude)
+        )
+
+        locationFormKey.forEach((key) => {
+          // @ts-ignore
+          form.clearErrors(key)
+          form.setValue(
+            // @ts-ignore
+            key,
+            locationRes.data[key as keyof LocationByLatLngRowProps]
+          )
+        })
+      } else {
+        toast.error(
+          locationRes?.error ||
+            'Terjadi kesalahan. Mohon coba beberapa saat lagi.'
+        )
+      }
+    } catch {
+      toast.error('Terjadi kesalahan. Mohon coba beberapa saat lagi.')
+    } finally {
+      setIsSelectButtonLoading(false)
+    }
+  }
+
   const handleSuccessFetchDetails = (response: SupplierDetailsResponse) => {
     const { data } = response
 
-    ;['name', 'location', 'phone_number'].forEach((each) => {
+    ;['name', 'address', 'phone_number'].forEach((each) => {
       form.setValue(
         each as keyof SupplierFormInputs,
         data[each as keyof SupplierFormInputs] || ''
@@ -125,7 +200,9 @@ const useSupplierForm = (props: CommonFormProps) => {
   return {
     form,
     isLoading,
+    selectedLocation,
     onSubmit,
+    handleSelectLocation,
   }
 }
 

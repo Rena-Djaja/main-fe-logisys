@@ -43,7 +43,7 @@ const SupplierDetails: FC<CommonDetailsComponentProps> = (props) => {
                 <div className="flex items-center gap-2">
                   <MapPin className="size-4" />
                   <span className="font-medium text-[0.85rem]">
-                    {supplierDetails?.location}
+                    {supplierDetails?.address}
                   </span>
                 </div>
                 <div className="flex items-center gap-2">

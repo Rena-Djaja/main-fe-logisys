@@ -4,6 +4,8 @@ import { LocationFeature } from '@/type/Map'
 interface MapContextType {
   map: mapboxgl.Map | null
   isLoaded: boolean
+  isSelectButtonLoading: boolean
+  setIsSelectButtonLoading: Dispatch<SetStateAction<boolean>>
   setMapContainerRef: (ref: HTMLDivElement | null) => void
   selectedLocation: LocationFeature | null
   setSelectedLocation: Dispatch<SetStateAction<LocationFeature | null>>

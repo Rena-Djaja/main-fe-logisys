@@ -1,8 +1,8 @@
 import React from 'react'
-import SupplierForm from '@/components/SuppliersPage/Form/SupplierForm'
+import SupplierFormWrapper from '@/components/SuppliersPage/Form/SupplierFormWrapper'
 
 const Form = () => {
-  return <SupplierForm />
+  return <SupplierFormWrapper />
 }
 
 export default Form
