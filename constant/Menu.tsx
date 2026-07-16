@@ -8,6 +8,7 @@ import {
   RectangleEllipsis,
   SlidersHorizontal,
   UserPen,
+  UserRoundKey,
   UsersRound,
 } from 'lucide-react'
 import { MenuListProps } from '@/type/MainLayout'
@@ -32,13 +33,19 @@ export const menuList: MenuListProps[] = [
     title: 'master data',
     menuItems: [
       {
-        title: 'Suppliers',
+        title: 'Supplier',
         url: '/dashboard/suppliers',
         icon: Network,
         resourceID: [
           PermissionTypes.READ_SUPPLIER,
           PermissionTypes.WRITE_SUPPLIER,
         ],
+      },
+      {
+        title: 'Pelanggan',
+        url: '/dashboard/customers',
+        icon: UsersRound,
+        resourceID: [PermissionTypes.PUBLIC, PermissionTypes.PUBLIC],
       },
       {
         title: 'Lokasi Penjualan',
@@ -76,7 +83,7 @@ export const menuList: MenuListProps[] = [
       },
       {
         title: 'Manajemen User',
-        icon: UsersRound,
+        icon: UserRoundKey,
         children: [
           {
             title: 'Pengguna',

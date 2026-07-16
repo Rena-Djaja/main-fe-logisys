@@ -76,6 +76,7 @@ export enum InputType {
   TEXT = 'text',
   PASSWORD = 'password',
   TEXTAREA = 'textarea',
+  FILE = 'file',
 }
 
 export enum IconPlacementType {

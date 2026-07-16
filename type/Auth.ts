@@ -47,6 +47,8 @@ export enum PermissionTypes {
   WRITE_ROLE = 'write_role',
   READ_SUPPLIER = 'read_supplier',
   WRITE_SUPPLIER = 'write_supplier',
+  READ_CUSTOMER = 'read_customer',
+  WRITE_CUSTOMER = 'write_customer',
   READ_LOCATION = 'read_location',
   WRITE_LOCATION = 'write_location',
   READ_PRODUCT = 'read_product',
