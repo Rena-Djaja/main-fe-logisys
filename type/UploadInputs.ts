@@ -38,7 +38,7 @@ export interface FileProps {
 export interface FileInputProps {
   control: any
   name: string
-  handleChange: (file: FileProps[]) => void
+  handleChange?: (file: FileProps[]) => void
   isMulti?: boolean
   allowedTypes: FileTypes[]
   allowedSize?: number
@@ -46,4 +46,10 @@ export interface FileInputProps {
   error?: string | FieldError | Merge<FieldError, FieldErrorsImpl<any>>
   helperText?: string
   defaultValues?: string[]
+}
+
+export enum UploadStatus {
+  UPLOADING = 'uploading',
+  SUCCESS = 'success',
+  FAILED = 'failed',
 }

@@ -8,6 +8,10 @@ export const AuthAPI = {
   GET_PERMISSION_LIST: privateBaseURL + '/permission/list',
 }
 
+export const FileAPI = {
+  POST_UPLOAD_FILE: baseURL + '/file/upload',
+}
+
 export const LocationAPI = {
   GET_LOCATION_LIST: baseURL + '/location/list',
   GET_LOCATION_DETAILS: baseURL + '/location/details',

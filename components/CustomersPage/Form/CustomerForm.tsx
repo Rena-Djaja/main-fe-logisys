@@ -14,7 +14,7 @@ const CustomerForm = () => {
         control={control}
         name={'file-input'}
         handleChange={(file) => console.log(file)}
-        allowedTypes={[FileTypes.PNG]}
+        allowedTypes={[FileTypes.PNG, FileTypes.JPEG, FileTypes.JPG]}
         files={[]}
       />
     </div>

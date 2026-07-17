@@ -2,12 +2,22 @@
 
 import React, { useEffect, useState } from 'react'
 import { Controller } from 'react-hook-form'
-import { cn } from '@/lib/utils'
+import { apiStatusChecker, cn } from '@/lib/utils'
 import { ButtonType } from '@/type/FormInputs'
-import { CirclePlus, CloudUpload, FolderOpen, Trash2 } from 'lucide-react'
+import {
+  CircleCheck,
+  CirclePlus,
+  CloudUpload,
+  FolderOpen,
+  Trash2,
+  XCircle,
+} from 'lucide-react'
 import FileInputWrapper from '@/components/shared/FileInput/FileInputWrapper'
-import { FileInputProps, FileProps } from '@/type/UploadInputs'
+import { FileInputProps, FileProps, UploadStatus } from '@/type/UploadInputs'
 import { fileSizeHandler, getPreviewImage, MimeType } from '@/lib/uploadUtils'
+import { Progress } from '@/components/shared/ui/progress'
+import { callAPI } from '@/lib/fetchers'
+import { FileAPI } from '@/constant/APIUrls'
 
 const FileInput = (props: FileInputProps) => {
   const {
@@ -22,19 +32,69 @@ const FileInput = (props: FileInputProps) => {
     defaultValues = [],
   } = props
 
+  const [loadingProgress, setLoadingProgress] = useState(0)
+  const [isLoading, setIsLoading] = useState(false)
+  const [uploadStatus, setuploadStatus] = useState<UploadStatus>(
+    UploadStatus.UPLOADING
+  )
   const [selectedFiles, setSelectedFiles] = useState<FileProps[] | []>([])
 
-  const handleFileChange = (file: File) => {
-    const newState = [
-      ...(isMulti ? [...selectedFiles] : []),
-      {
-        file: file,
-        blob: URL.createObjectURL(file),
-      },
-    ]
+  const handleFileChange = async (file: File) => {
+    setIsLoading(true)
+    setLoadingProgress(0)
+    setuploadStatus(UploadStatus.UPLOADING)
 
-    setSelectedFiles(newState)
-    handleChange(newState)
+    const loadInterval = setInterval(() => {
+      setLoadingProgress((prevProgress) => {
+        if (prevProgress >= 95) {
+          return prevProgress
+        }
+
+        const increment = Math.floor(Math.random() * 15) + 5
+        return Math.min(prevProgress + increment, 95)
+      })
+    }, 420)
+
+    try {
+      const formData = new FormData()
+      if (file) {
+        formData.append('file', file)
+      }
+
+      const newState = [
+        ...(isMulti ? [...selectedFiles] : []),
+        {
+          file: file,
+          blob: URL.createObjectURL(file),
+        },
+      ]
+
+      setSelectedFiles(newState)
+      if (handleChange) {
+        handleChange(newState)
+      }
+
+      const apiRes = await callAPI(FileAPI.POST_UPLOAD_FILE, formData, {
+        method: 'POST',
+        isMultipart: true,
+      })
+      const { data: uploadFileRes, status } = apiRes
+
+      if (apiStatusChecker(status) && uploadFileRes) {
+        setuploadStatus(UploadStatus.SUCCESS)
+      } else {
+        setuploadStatus(UploadStatus.FAILED)
+      }
+    } catch (error) {
+      console.error('Error uploading file:', error)
+      setuploadStatus(UploadStatus.FAILED)
+    } finally {
+      setLoadingProgress(100)
+      clearInterval(loadInterval)
+      await new Promise((resolve) => setTimeout(resolve, 500)).then(() => {
+        setIsLoading(false)
+      })
+    }
   }
 
   const handleDeleteFile = (
@@ -47,7 +107,9 @@ const FileInput = (props: FileInputProps) => {
 
     onChange('')
     setSelectedFiles(newState)
-    handleChange(newState)
+    if (handleChange) {
+      handleChange(newState)
+    }
   }
 
   const fetchDefaultImages = async () => {
@@ -109,7 +171,7 @@ const FileInput = (props: FileInputProps) => {
                   : 'text-[0.7rem] text-primary-grey/80'
               )}
             >
-              {String(error) ?? helperText}
+              {error ? String(error) : helperText}
             </span>
           </div>
           {selectedFiles.length > 0 && (
@@ -138,6 +200,33 @@ const FileInput = (props: FileInputProps) => {
                         <span className="font-light text-[0.7rem] text-primary-grey/70">
                           {fileSizeHandler(Number(file.file.size))}
                         </span>
+                        <div className="flex items-center gap-2 mt-1">
+                          {isLoading ? (
+                            <>
+                              <Progress
+                                value={loadingProgress}
+                                className="w-full h-1.5"
+                              />
+                              <span className="transition-all duration-150 text-[0.825rem]">
+                                {loadingProgress}%
+                              </span>
+                            </>
+                          ) : !isLoading && uploadStatus === 'success' ? (
+                            <div className="flex items-center gap-0.5">
+                              <CircleCheck className="size-4.5 fill-chart-2 stroke-primary-foreground" />
+                              <span className="font-semibold text-[0.75rem] text-chart-2">
+                                Terunggah
+                              </span>
+                            </div>
+                          ) : !isLoading && uploadStatus === 'failed' ? (
+                            <div className="flex items-center gap-1">
+                              <XCircle className="size-4 fill-destructive stroke-primary-foreground" />
+                              <span className="font-semibold text-[0.75rem] text-destructive">
+                                Gagal Diunggah
+                              </span>
+                            </div>
+                          ) : null}
+                        </div>
                       </div>
                     </div>
                   </a>
